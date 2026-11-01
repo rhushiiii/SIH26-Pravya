@@ -1,0 +1,2858 @@
+{
+ "url": "https://collectiveos.vercel.app/",
+ "at": "2026-11-01T05:00:36.408Z",
+ "allow": [],
+ "viewports": [
+  {
+   "width": 1440,
+   "height": 900,
+   "load": "load",
+   "screens": 8,
+   "filled": [
+    0.41,
+    0.38,
+    0.4,
+    0.56,
+    0.77,
+    0.29,
+    0.71,
+    0.84
+   ],
+   "motion": {
+    "elements": 28,
+    "css": 5,
+    "transitions": 23,
+    "scripted": 0,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "page": {
+     "height": 6557,
+     "screens": 7.3,
+     "words": 763,
+     "img": 15,
+     "video": 0,
+     "canvas": 0,
+     "svg": 71,
+     "sections": 5,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 1,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [
+      "★",
+      "⚡"
+     ],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Power Agency Growth Through Partners",
+     "words": 5,
+     "chars": 36,
+     "lines": 2,
+     "size": 80,
+     "vw": 5.6,
+     "font": "ui-sans-serif",
+     "weight": 700,
+     "tracking": -0.025,
+     "leading": 1.08,
+     "upper": false,
+     "italic": false,
+     "mono": false,
+     "align": "center",
+     "position": "center",
+     "widthRatio": 0.56,
+     "top": 219,
+     "tag": "h1",
+     "kind": "heading"
+    },
+    "h1": {
+     "text": "Power Agency Growth Through Partners",
+     "words": 5,
+     "lines": 2,
+     "size": 80,
+     "font": "ui-sans-serif"
+    },
+    "headings": [
+     {
+      "text": "Power Agency Growth Through Partners",
+      "words": 5,
+      "chars": 36,
+      "lines": 2,
+      "size": 80,
+      "vw": 5.6,
+      "font": "ui-sans-serif",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1.08,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.56,
+      "top": 219,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "Overview",
+      "words": 1,
+      "chars": 8,
+      "lines": 1,
+      "size": 28,
+      "vw": 1.9,
+      "font": "ui-sans-serif",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1.5,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.23,
+      "top": 732,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Three Steps to Growth",
+      "words": 4,
+      "chars": 21,
+      "lines": 1,
+      "size": 51.2,
+      "vw": 3.6,
+      "font": "ui-sans-serif",
+      "weight": 800,
+      "tracking": -0.03,
+      "leading": 1.5,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.8,
+      "top": 1493,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Why Agencies Choose Us",
+      "words": 4,
+      "chars": 22,
+      "lines": 1,
+      "size": 51.2,
+      "vw": 3.6,
+      "font": "ui-sans-serif",
+      "weight": 800,
+      "tracking": -0.03,
+      "leading": 1.5,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.8,
+      "top": 3491,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Loved by Agencies Worldwide",
+      "words": 4,
+      "chars": 27,
+      "lines": 1,
+      "size": 51.2,
+      "vw": 3.6,
+      "font": "ui-sans-serif",
+      "weight": 800,
+      "tracking": -0.03,
+      "leading": 1.5,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.8,
+      "top": 4450,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Frequently Asked Questions",
+      "words": 3,
+      "chars": 26,
+      "lines": 1,
+      "size": 51.2,
+      "vw": 3.6,
+      "font": "ui-sans-serif",
+      "weight": 800,
+      "tracking": -0.03,
+      "leading": 1.5,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.53,
+      "top": 5193,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Ready to Grow?",
+      "words": 3,
+      "chars": 14,
+      "lines": 1,
+      "size": 56,
+      "vw": 3.9,
+      "font": "ui-sans-serif",
+      "weight": 800,
+      "tracking": -0.03,
+      "leading": 1.5,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.62,
+      "top": 5897,
+      "tag": "h2",
+      "kind": "heading"
+     }
+    ],
+    "headingSummary": {
+     "count": 7,
+     "maxLines": 2,
+     "over2Lines": 0,
+     "statements": 0,
+     "centered": 6,
+     "medianWords": 4,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "ui-sans-serif",
+       "share": 1,
+       "mono": false
+      },
+      {
+       "family": "Caveat",
+       "share": 0,
+       "mono": false
+      }
+     ],
+     "familyCount": 2,
+     "sizes": [
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      22,
+      24,
+      28,
+      51,
+      56,
+      80
+     ],
+     "sizeCount": 17,
+     "notLoaded": [],
+     "body": {
+      "font": "ui-sans-serif",
+      "size": 14,
+      "leading": 1.63,
+      "weight": 500,
+      "tracking": 0,
+      "contrast": 6.7
+     },
+     "measureChars": 109,
+     "max": {
+      "size": 80,
+      "vw": 5.6,
+      "font": "ui-sans-serif",
+      "text": "Power Agency GrowthThrough Partners"
+     },
+     "monoShare": 0,
+     "monoProseShare": 0,
+     "monoFamilies": [],
+     "monoSamples": [],
+     "microLabels": 27,
+     "microLabelShare": 0.054,
+     "microSamples": [
+      "New",
+      "Main",
+      "Total Revenue",
+      "Active Partners",
+      "Open Opportunities",
+      "Win Rate"
+     ],
+     "upperShare": 0.06,
+     "centerShare": 0.16,
+     "smallText": 27
+    },
+    "eyebrows": [
+     {
+      "text": "New",
+      "above": "Power Agency Growth Through Partners",
+      "upper": true,
+      "tracked": true,
+      "mono": false,
+      "pill": true,
+      "size": 11,
+      "top": 151
+     },
+     {
+      "text": "How It Works",
+      "above": "Three Steps to Growth",
+      "upper": true,
+      "tracked": true,
+      "mono": false,
+      "pill": true,
+      "size": 11,
+      "top": 1445
+     },
+     {
+      "text": "Features",
+      "above": "Why Agencies Choose Us",
+      "upper": true,
+      "tracked": true,
+      "mono": false,
+      "pill": true,
+      "size": 11,
+      "top": 3440
+     },
+     {
+      "text": "Testimonials",
+      "above": "Loved by Agencies Worldwide",
+      "upper": true,
+      "tracked": true,
+      "mono": false,
+      "pill": true,
+      "size": 11,
+      "top": 4402
+     },
+     {
+      "text": "FAQ",
+      "above": "Frequently Asked Questions",
+      "upper": true,
+      "tracked": true,
+      "mono": false,
+      "pill": true,
+      "size": 11,
+      "top": 5145
+     }
+    ],
+    "numbered": [
+     {
+      "text": "Step 01",
+      "size": 11,
+      "top": 1785
+     },
+     {
+      "text": "Step 02",
+      "size": 11,
+      "top": 2275
+     },
+     {
+      "text": "Step 03",
+      "size": 11,
+      "top": 2777
+     }
+    ],
+    "color": {
+     "bodyBg": "#f6f3ec",
+     "bodyBgHsl": {
+      "h": 42,
+      "s": 0.36,
+      "l": 0.95
+     },
+     "dark": false,
+     "sectionBgs": [
+      {
+       "color": "#ffffff",
+       "top": 649,
+       "hsl": {
+        "h": 0,
+        "s": 0,
+        "l": 1
+       }
+      },
+      {
+       "color": "#1c1a17",
+       "top": 3328,
+       "hsl": {
+        "h": 36,
+        "s": 0.1,
+        "l": 0.1
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#6a7282",
+       "share": 0.33
+      },
+      {
+       "color": "#99a1af",
+       "share": 0.28
+      },
+      {
+       "color": "#101828",
+       "share": 0.13
+      },
+      {
+       "color": "#4a5565",
+       "share": 0.08
+      },
+      {
+       "color": "#ffffff",
+       "share": 0.08
+      }
+     ],
+     "button": {
+      "bg": "#ffffff",
+      "hsl": {
+       "h": 0,
+       "s": 0,
+       "l": 1
+      },
+      "fg": "#101828"
+     },
+     "lowContrast": [
+      {
+       "text": "Step 01",
+       "ratio": 2.3,
+       "need": 4.5,
+       "size": 11,
+       "fg": "#99a1af",
+       "bg": "#f6f3ec"
+      },
+      {
+       "text": "Step 02",
+       "ratio": 2.3,
+       "need": 4.5,
+       "size": 11,
+       "fg": "#99a1af",
+       "bg": "#f6f3ec"
+      },
+      {
+       "text": "Step 03",
+       "ratio": 2.3,
+       "need": 4.5,
+       "size": 11,
+       "fg": "#99a1af",
+       "bg": "#f6f3ec"
+      },
+      {
+       "text": "High",
+       "ratio": 2.5,
+       "need": 4.5,
+       "size": 10,
+       "fg": "#ff6b6b",
+       "bg": "#fef2f2"
+      },
+      {
+       "text": "Startup",
+       "ratio": 2.6,
+       "need": 4.5,
+       "size": 10.5,
+       "fg": "#99a1af",
+       "bg": "#ffffff"
+      },
+      {
+       "text": "Remote",
+       "ratio": 2.6,
+       "need": 4.5,
+       "size": 10.5,
+       "fg": "#99a1af",
+       "bg": "#ffffff"
+      }
+     ]
+    },
+    "buttons": {
+     "count": 10,
+     "inHero": 5,
+     "radius": "pill",
+     "height": 42,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Contact Us",
+      "Join the Network",
+      "Watch & See How",
+      "Overview",
+      "New Deal"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 35,
+     "shadowOverlay": 2,
+     "shadowSamples": [
+      "div.inline-flex.items-center → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0",
+      "button.w-full.sm:w-auto → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0",
+      "button.w-full.sm:w-auto → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0",
+      "div.bg-white/95.backdrop-blur-xl → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0"
+     ],
+     "gradients": 6,
+     "scrims": 1,
+     "gradientSamples": [
+      "div.flex-1.bg-gradient-to-br → linear-gradient(to right bottom in oklab, rgb(255, 255, 255) 0%, rgb(253, 253, 253) 100%)",
+      "div.absolute.inset-0 → linear-gradient(to top in oklab, rgb(253, 253, 253) 0%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0) 100%)",
+      "div.absolute.inset-0 → linear-gradient(to right bottom in oklab, rgb(255, 245, 235) 0%, rgb(255, 251, 245) 100%)",
+      "div.absolute.inset-0 → linear-gradient(to right bottom in oklab, rgb(239, 246, 255) 0%, rgb(245, 248, 255) 100%)"
+     ],
+     "gradientText": 0,
+     "hairlines": 3,
+     "hairlineSamples": [
+      "div.w-[240px].bg-[#FCFCFA] 240px",
+      "div.max-w-6xl.mx-auto 1152px",
+      "div.border-t.border-white/10 1152px"
+     ],
+     "outlinedBoxes": 25,
+     "dashed": 0,
+     "blurred": 13,
+     "roundedBoxes": 25,
+     "boxRadius": 20,
+     "squareMedia": 1,
+     "roundedMedia": 0,
+     "mediaRadius": 0,
+     "textShadow": 0,
+     "cardRows": [
+      {
+       "count": 4,
+       "iconTopped": true,
+       "rounded": true,
+       "top": 829
+      },
+      {
+       "count": 6,
+       "iconTopped": true,
+       "rounded": true,
+       "top": 3698
+      },
+      {
+       "count": 3,
+       "iconTopped": true,
+       "rounded": true,
+       "top": 4657
+      }
+     ]
+    },
+    "heroMedia": [
+     {
+      "type": "bg-image",
+      "ratio": 1
+     }
+    ],
+    "nav": {
+     "links": 7,
+     "fixed": true,
+     "height": 52,
+     "floatingPill": true,
+     "blur": true
+    },
+    "fontsLoaded": [
+     "caveat"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "pageH": 6557,
+    "margins": {
+     "left": 165,
+     "right": 188
+    },
+    "sections": [
+     {
+      "sel": "section.relative.pt-36",
+      "tag": "section",
+      "top": 0,
+      "height": 1333,
+      "words": 125,
+      "media": 5,
+      "middle": 13,
+      "heading": {
+       "text": "Power Agency Growth",
+       "size": 80,
+       "tag": "h1"
+      },
+      "left": 126,
+      "right": 173,
+      "textLeft": 126,
+      "textRight": 173,
+      "fullBleed": true,
+      "footer": false,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "section#how-it-works.py-28.px-6",
+      "tag": "section",
+      "top": 1333,
+      "height": 1995,
+      "words": 227,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Three Steps to Growth",
+       "size": 51,
+       "tag": "h2"
+      },
+      "left": 144,
+      "right": 150,
+      "textLeft": 144,
+      "textRight": 150,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "section#features.py-28.px-6",
+      "tag": "section",
+      "top": 3328,
+      "height": 961,
+      "words": 119,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Why Agencies Choose Us",
+       "size": 51,
+       "tag": "h2"
+      },
+      "left": 173,
+      "right": 183,
+      "textLeft": 173,
+      "textRight": 183,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "section#testimonials.py-28.px-6",
+      "tag": "section",
+      "top": 4290,
+      "height": 743,
+      "words": 92,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Loved by Agencies Worldwide",
+       "size": 51,
+       "tag": "h2"
+      },
+      "left": 177,
+      "right": 179,
+      "textLeft": 177,
+      "textRight": 179,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "section#faq.py-28.px-6",
+      "tag": "section",
+      "top": 5033,
+      "height": 784,
+      "words": 40,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Frequently Asked Questions",
+       "size": 51,
+       "tag": "h2"
+      },
+      "left": 337,
+      "right": 337,
+      "textLeft": 365,
+      "textRight": 387,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "footer.bg-[var(--color-dark-bg)].text-white",
+      "tag": "footer",
+      "top": 5817,
+      "height": 740,
+      "words": 53,
+      "media": 0,
+      "middle": 114,
+      "heading": {
+       "text": "Ready to Grow?",
+       "size": 56,
+       "tag": "h2"
+      },
+      "left": 144,
+      "right": 333,
+      "textLeft": 144,
+      "textRight": 333,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Power Agency Growth Through Partners",
+      "size": 80,
+      "top": 219,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 173,
+      "n": 5
+     },
+     {
+      "x": 564,
+      "n": 5
+     },
+     {
+      "x": 954,
+      "n": 5
+     },
+     {
+      "x": 144,
+      "n": 2
+     },
+     {
+      "x": 216,
+      "n": 2
+     },
+     {
+      "x": 481,
+      "n": 2
+     },
+     {
+      "x": 816,
+      "n": 1
+     },
+     {
+      "x": 888,
+      "n": 1
+     }
+    ],
+    "leftBlocks": 23,
+    "bodySize": 15,
+    "stage": false,
+    "explains": false,
+    "slivers": [],
+    "voidShare": 0,
+    "voidBox": null
+   },
+   "app": null,
+   "consoleErrors": []
+  },
+  {
+   "width": 768,
+   "height": 1024,
+   "load": "load",
+   "screens": 8,
+   "filled": [
+    0.57,
+    0.41,
+    0.55,
+    0.36,
+    0.99,
+    0.72,
+    0.58,
+    0.91
+   ],
+   "motion": {
+    "elements": 27,
+    "css": 4,
+    "transitions": 23,
+    "scripted": 0,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "page": {
+     "height": 7753,
+     "screens": 7.6,
+     "words": 756,
+     "img": 15,
+     "video": 0,
+     "canvas": 0,
+     "svg": 71,
+     "sections": 5,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 1,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [
+      "★",
+      "⚡"
+     ],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Power Agency Growth Through Partners",
+     "words": 5,
+     "chars": 36,
+     "lines": 3,
+     "size": 80,
+     "vw": 10.4,
+     "font": "ui-sans-serif",
+     "weight": 700,
+     "tracking": -0.025,
+     "leading": 1.08,
+     "upper": false,
+     "italic": false,
+     "mono": false,
+     "align": "center",
+     "position": "center",
+     "widthRatio": 0.96,
+     "top": 219,
+     "tag": "h1",
+     "kind": "heading"
+    },
+    "h1": {
+     "text": "Power Agency Growth Through Partners",
+     "words": 5,
+     "lines": 3,
+     "size": 80,
+     "font": "ui-sans-serif"
+    },
+    "headings": [
+     {
+      "text": "Power Agency Growth Through Partners",
+      "words": 5,
+      "chars": 36,
+      "lines": 3,
+      "size": 80,
+      "vw": 10.4,
+      "font": "ui-sans-serif",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1.08,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.96,
+      "top": 219,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "Overview",
+      "words": 1,
+      "chars": 8,
+      "lines": 1,
+      "size": 28,
+      "vw": 3.6,
+      "font": "ui-sans-serif",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1.5,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "right",
+      "widthRatio": 0.39,
+      "top": 827,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Three Steps to Growth",
+      "words": 4,
+      "chars": 21,
+      "lines": 1,
+      "size": 51.2,
+      "vw": 6.7,
+      "font": "ui-sans-serif",
+      "weight": 800,
+      "tracking": -0.03,
+      "leading": 1.5,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.94,
+      "top": 1580,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Why Agencies Choose Us",
+      "words": 4,
+      "chars": 22,
+      "lines": 1,
+      "size": 51.2,
+      "vw": 6.7,
+      "font": "ui-sans-serif",
+      "weight": 800,
+      "tracking": -0.03,
+      "leading": 1.5,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.94,
+      "top": 4328,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Loved by Agencies Worldwide",
+      "words": 4,
+      "chars": 27,
+      "lines": 1,
+      "size": 51.2,
+      "vw": 6.7,
+      "font": "ui-sans-serif",
+      "weight": 800,
+      "tracking": -0.03,
+      "leading": 1.5,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.94,
+      "top": 5538,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Frequently Asked Questions",
+      "words": 3,
+      "chars": 26,
+      "lines": 1,
+      "size": 51.2,
+      "vw": 6.7,
+      "font": "ui-sans-serif",
+      "weight": 800,
+      "tracking": -0.03,
+      "leading": 1.5,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.94,
+      "top": 6389,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Ready to Grow?",
+      "words": 3,
+      "chars": 14,
+      "lines": 1,
+      "size": 56,
+      "vw": 7.3,
+      "font": "ui-sans-serif",
+      "weight": 800,
+      "tracking": -0.03,
+      "leading": 1.5,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.94,
+      "top": 7092,
+      "tag": "h2",
+      "kind": "heading"
+     }
+    ],
+    "headingSummary": {
+     "count": 7,
+     "maxLines": 3,
+     "over2Lines": 1,
+     "statements": 0,
+     "centered": 6,
+     "medianWords": 4,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "ui-sans-serif",
+       "share": 1,
+       "mono": false
+      },
+      {
+       "family": "Caveat",
+       "share": 0,
+       "mono": false
+      }
+     ],
+     "familyCount": 2,
+     "sizes": [
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      22,
+      24,
+      28,
+      51,
+      56,
+      80
+     ],
+     "sizeCount": 17,
+     "notLoaded": [],
+     "body": {
+      "font": "ui-sans-serif",
+      "size": 14,
+      "leading": 1.63,
+      "weight": 500,
+      "tracking": 0,
+      "contrast": 6.7
+     },
+     "measureChars": 103,
+     "max": {
+      "size": 80,
+      "vw": 10.4,
+      "font": "ui-sans-serif",
+      "text": "Power Agency GrowthThrough Partners"
+     },
+     "monoShare": 0,
+     "monoProseShare": 0,
+     "monoFamilies": [],
+     "monoSamples": [],
+     "microLabels": 27,
+     "microLabelShare": 0.055,
+     "microSamples": [
+      "New",
+      "Main",
+      "Total Revenue",
+      "Active Partners",
+      "Open Opportunities",
+      "Win Rate"
+     ],
+     "upperShare": 0.06,
+     "centerShare": 0.16,
+     "smallText": 27
+    },
+    "eyebrows": [
+     {
+      "text": "New",
+      "above": "Power Agency Growth Through Partners",
+      "upper": true,
+      "tracked": true,
+      "mono": false,
+      "pill": true,
+      "size": 11,
+      "top": 151
+     },
+     {
+      "text": "skfarhad97@",
+      "above": "Overview",
+      "upper": false,
+      "tracked": false,
+      "mono": false,
+      "pill": true,
+      "size": 10,
+      "top": 790
+     },
+     {
+      "text": "How It Works",
+      "above": "Three Steps to Growth",
+      "upper": true,
+      "tracked": true,
+      "mono": false,
+      "pill": true,
+      "size": 11,
+      "top": 1531
+     },
+     {
+      "text": "Features",
+      "above": "Why Agencies Choose Us",
+      "upper": true,
+      "tracked": true,
+      "mono": false,
+      "pill": true,
+      "size": 11,
+      "top": 4278
+     },
+     {
+      "text": "Testimonials",
+      "above": "Loved by Agencies Worldwide",
+      "upper": true,
+      "tracked": true,
+      "mono": false,
+      "pill": true,
+      "size": 11,
+      "top": 5489
+     },
+     {
+      "text": "FAQ",
+      "above": "Frequently Asked Questions",
+      "upper": true,
+      "tracked": true,
+      "mono": false,
+      "pill": true,
+      "size": 11,
+      "top": 6340
+     }
+    ],
+    "numbered": [
+     {
+      "text": "Step 01",
+      "size": 11,
+      "top": 1810
+     },
+     {
+      "text": "Step 02",
+      "size": 11,
+      "top": 2465
+     },
+     {
+      "text": "Step 03",
+      "size": 11,
+      "top": 3276
+     }
+    ],
+    "color": {
+     "bodyBg": "#f6f3ec",
+     "bodyBgHsl": {
+      "h": 42,
+      "s": 0.36,
+      "l": 0.95
+     },
+     "dark": false,
+     "sectionBgs": [
+      {
+       "color": "#ffffff",
+       "top": 735,
+       "hsl": {
+        "h": 0,
+        "s": 0,
+        "l": 1
+       }
+      },
+      {
+       "color": "#1c1a17",
+       "top": 4166,
+       "hsl": {
+        "h": 36,
+        "s": 0.1,
+        "l": 0.1
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#6a7282",
+       "share": 0.33
+      },
+      {
+       "color": "#99a1af",
+       "share": 0.28
+      },
+      {
+       "color": "#101828",
+       "share": 0.12
+      },
+      {
+       "color": "#4a5565",
+       "share": 0.08
+      },
+      {
+       "color": "#ffffff",
+       "share": 0.08
+      }
+     ],
+     "button": {
+      "bg": "#ffffff",
+      "hsl": {
+       "h": 0,
+       "s": 0,
+       "l": 1
+      },
+      "fg": "#101828"
+     },
+     "lowContrast": [
+      {
+       "text": "Step 01",
+       "ratio": 2.3,
+       "need": 4.5,
+       "size": 11,
+       "fg": "#99a1af",
+       "bg": "#f6f3ec"
+      },
+      {
+       "text": "Step 02",
+       "ratio": 2.3,
+       "need": 4.5,
+       "size": 11,
+       "fg": "#99a1af",
+       "bg": "#f6f3ec"
+      },
+      {
+       "text": "Step 03",
+       "ratio": 2.3,
+       "need": 4.5,
+       "size": 11,
+       "fg": "#99a1af",
+       "bg": "#f6f3ec"
+      },
+      {
+       "text": "CEO, PixelForge Studios",
+       "ratio": 2.6,
+       "need": 4.5,
+       "size": 12,
+       "fg": "#99a1af",
+       "bg": "#ffffff"
+      },
+      {
+       "text": "Founder, GrowthStack Agency",
+       "ratio": 2.6,
+       "need": 4.5,
+       "size": 12,
+       "fg": "#99a1af",
+       "bg": "#ffffff"
+      },
+      {
+       "text": "COO, Nordic Digital",
+       "ratio": 2.6,
+       "need": 4.5,
+       "size": 12,
+       "fg": "#99a1af",
+       "bg": "#ffffff"
+      }
+     ]
+    },
+    "buttons": {
+     "count": 10,
+     "inHero": 5,
+     "radius": "pill",
+     "height": 42,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Contact Us",
+      "Join the Network",
+      "Watch & See How",
+      "Overview",
+      "New Deal"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 34,
+     "shadowOverlay": 2,
+     "shadowSamples": [
+      "div.inline-flex.items-center → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0",
+      "button.w-full.sm:w-auto → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0",
+      "button.w-full.sm:w-auto → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0",
+      "div.bg-white/95.backdrop-blur-xl → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0"
+     ],
+     "gradients": 7,
+     "scrims": 1,
+     "gradientSamples": [
+      "div.flex-1.bg-gradient-to-br → linear-gradient(to right bottom in oklab, rgb(255, 255, 255) 0%, rgb(253, 253, 253) 100%)",
+      "div.absolute.inset-0 → linear-gradient(to top in oklab, rgb(253, 253, 253) 0%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0) 100%)",
+      "div.absolute.inset-0 → linear-gradient(to right bottom in oklab, rgb(255, 245, 235) 0%, rgb(255, 251, 245) 100%)",
+      "div.mt-4.bg-gradient-to-r → linear-gradient(to right in oklab, rgb(236, 253, 245) 0%, rgb(240, 253, 244) 100%)"
+     ],
+     "gradientText": 0,
+     "hairlines": 3,
+     "hairlineSamples": [
+      "div.w-[240px].bg-[#FCFCFA] 240px",
+      "div.max-w-6xl.mx-auto 720px",
+      "div.border-t.border-white/10 720px"
+     ],
+     "outlinedBoxes": 25,
+     "dashed": 0,
+     "blurred": 12,
+     "roundedBoxes": 25,
+     "boxRadius": 20,
+     "squareMedia": 1,
+     "roundedMedia": 0,
+     "mediaRadius": 0,
+     "textShadow": 0,
+     "cardRows": [
+      {
+       "count": 4,
+       "iconTopped": true,
+       "rounded": true,
+       "top": 944
+      },
+      {
+       "count": 6,
+       "iconTopped": true,
+       "rounded": true,
+       "top": 4536
+      },
+      {
+       "count": 3,
+       "iconTopped": true,
+       "rounded": true,
+       "top": 5745
+      }
+     ]
+    },
+    "heroMedia": [
+     {
+      "type": "bg-image",
+      "ratio": 1
+     }
+    ],
+    "nav": {
+     "links": 7,
+     "fixed": true,
+     "height": 52,
+     "floatingPill": false,
+     "blur": true
+    },
+    "fontsLoaded": [
+     "caveat",
+     "caveat fallback"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "pageH": 7753,
+    "margins": {
+     "left": 25,
+     "right": 25
+    },
+    "sections": [
+     {
+      "sel": "section.relative.pt-36",
+      "tag": "section",
+      "top": 0,
+      "height": 1419,
+      "words": 118,
+      "media": 5,
+      "middle": 0,
+      "heading": {
+       "text": "Power Agency Growth",
+       "size": 80,
+       "tag": "h1"
+      },
+      "left": 0,
+      "right": 52,
+      "textLeft": -58,
+      "textRight": 52,
+      "fullBleed": true,
+      "footer": false,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "section#how-it-works.py-28.px-6",
+      "tag": "section",
+      "top": 1419,
+      "height": 2747,
+      "words": 227,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Three Steps to Growth",
+       "size": 51,
+       "tag": "h2"
+      },
+      "left": 117,
+      "right": 117,
+      "textLeft": 117,
+      "textRight": 117,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "section#features.py-28.px-6",
+      "tag": "section",
+      "top": 4166,
+      "height": 1211,
+      "words": 119,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Why Agencies Choose Us",
+       "size": 51,
+       "tag": "h2"
+      },
+      "left": 53,
+      "right": 54,
+      "textLeft": 53,
+      "textRight": 54,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "section#testimonials.py-28.px-6",
+      "tag": "section",
+      "top": 5377,
+      "height": 851,
+      "words": 92,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Loved by Agencies Worldwide",
+       "size": 51,
+       "tag": "h2"
+      },
+      "left": 24,
+      "right": 24,
+      "textLeft": 24,
+      "textRight": 24,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "section#faq.py-28.px-6",
+      "tag": "section",
+      "top": 6228,
+      "height": 784,
+      "words": 40,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Frequently Asked Questions",
+       "size": 51,
+       "tag": "h2"
+      },
+      "left": 25,
+      "right": 25,
+      "textLeft": 51,
+      "textRight": 51,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "footer.bg-[var(--color-dark-bg)].text-white",
+      "tag": "footer",
+      "top": 7012,
+      "height": 740,
+      "words": 53,
+      "media": 0,
+      "middle": 18,
+      "heading": {
+       "text": "Ready to Grow?",
+       "size": 56,
+       "tag": "h2"
+      },
+      "left": 24,
+      "right": 105,
+      "textLeft": 24,
+      "textRight": 105,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Power Agency Growth Through Partners",
+      "size": 80,
+      "top": 219,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [
+     {
+      "text": "Verified Partners",
+      "side": "left",
+      "px": 1
+     }
+    ],
+    "edges": [
+     {
+      "x": 53,
+      "n": 7
+     },
+     {
+      "x": 423,
+      "n": 6
+     },
+     {
+      "x": 144,
+      "n": 3
+     },
+     {
+      "x": 216,
+      "n": 3
+     },
+     {
+      "x": 297,
+      "n": 3
+     },
+     {
+      "x": 553,
+      "n": 1
+     }
+    ],
+    "leftBlocks": 23,
+    "bodySize": 15,
+    "stage": false,
+    "explains": false,
+    "slivers": [],
+    "voidShare": 0,
+    "voidBox": null
+   },
+   "app": null,
+   "consoleErrors": []
+  },
+  {
+   "width": 390,
+   "height": 844,
+   "load": "load",
+   "screens": 12,
+   "filled": [
+    0.43,
+    0.55,
+    0.57,
+    0.64,
+    0.62,
+    0.7,
+    1,
+    0.76,
+    0.63,
+    0.51,
+    0.94,
+    1
+   ],
+   "motion": {
+    "elements": 24,
+    "css": 1,
+    "transitions": 23,
+    "scripted": 0,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "page": {
+     "height": 10088,
+     "screens": 12,
+     "words": 705,
+     "img": 15,
+     "video": 0,
+     "canvas": 0,
+     "svg": 71,
+     "sections": 5,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 1,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [
+      "★",
+      "⚡"
+     ],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Power Agency Growth Through Partners",
+     "words": 5,
+     "chars": 36,
+     "lines": 4,
+     "size": 51.2,
+     "vw": 13.1,
+     "font": "ui-sans-serif",
+     "weight": 700,
+     "tracking": -0.025,
+     "leading": 1.08,
+     "upper": false,
+     "italic": false,
+     "mono": false,
+     "align": "center",
+     "position": "center",
+     "widthRatio": 0.92,
+     "top": 219,
+     "tag": "h1",
+     "kind": "heading"
+    },
+    "h1": {
+     "text": "Power Agency Growth Through Partners",
+     "words": 5,
+     "lines": 4,
+     "size": 51.2,
+     "font": "ui-sans-serif"
+    },
+    "headings": [
+     {
+      "text": "Power Agency Growth Through Partners",
+      "words": 5,
+      "chars": 36,
+      "lines": 4,
+      "size": 51.2,
+      "vw": 13.1,
+      "font": "ui-sans-serif",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1.08,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.92,
+      "top": 219,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "Overview",
+      "words": 1,
+      "chars": 8,
+      "lines": 1,
+      "size": 28,
+      "vw": 7.2,
+      "font": "ui-sans-serif",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1.5,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.47,
+      "top": 867,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "$284,500.00",
+      "words": 1,
+      "chars": 11,
+      "lines": 1,
+      "size": 24,
+      "vw": 6.2,
+      "font": "ui-sans-serif",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1.5,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.23,
+      "top": 1050,
+      "tag": "div",
+      "kind": "heading"
+     },
+     {
+      "text": "500k Partners",
+      "words": 2,
+      "chars": 13,
+      "lines": 2,
+      "size": 24,
+      "vw": 6.2,
+      "font": "ui-sans-serif",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1.5,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "right",
+      "widthRatio": 0.23,
+      "top": 1050,
+      "tag": "div",
+      "kind": "heading"
+     },
+     {
+      "text": "23.00",
+      "words": 1,
+      "chars": 5,
+      "lines": 1,
+      "size": 24,
+      "vw": 6.2,
+      "font": "ui-sans-serif",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1.5,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.23,
+      "top": 1278,
+      "tag": "div",
+      "kind": "heading"
+     },
+     {
+      "text": "88%",
+      "words": 1,
+      "chars": 3,
+      "lines": 1,
+      "size": 24,
+      "vw": 6.2,
+      "font": "ui-sans-serif",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1.5,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "right",
+      "widthRatio": 0.23,
+      "top": 1278,
+      "tag": "div",
+      "kind": "heading"
+     },
+     {
+      "text": "Three Steps to Growth",
+      "words": 4,
+      "chars": 21,
+      "lines": 2,
+      "size": 40,
+      "vw": 10.3,
+      "font": "ui-sans-serif",
+      "weight": 800,
+      "tracking": -0.03,
+      "leading": 1.5,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.88,
+      "top": 1633,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Create Your Agency Profile",
+      "words": 4,
+      "chars": 26,
+      "lines": 2,
+      "size": 24,
+      "vw": 6.2,
+      "font": "ui-sans-serif",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1.25,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "right",
+      "widthRatio": 0.7,
+      "top": 1949,
+      "tag": "h3",
+      "kind": "heading"
+     },
+     {
+      "text": "AI-Powered Smart Matching",
+      "words": 3,
+      "chars": 25,
+      "lines": 2,
+      "size": 24,
+      "vw": 6.2,
+      "font": "ui-sans-serif",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1.25,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "right",
+      "widthRatio": 0.71,
+      "top": 2687,
+      "tag": "h3",
+      "kind": "heading"
+     },
+     {
+      "text": "Collaborate & Close Deals",
+      "words": 4,
+      "chars": 25,
+      "lines": 2,
+      "size": 24,
+      "vw": 6.2,
+      "font": "ui-sans-serif",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1.25,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "right",
+      "widthRatio": 0.7,
+      "top": 3557,
+      "tag": "h3",
+      "kind": "heading"
+     },
+     {
+      "text": "Why Agencies Choose Us",
+      "words": 4,
+      "chars": 22,
+      "lines": 2,
+      "size": 40,
+      "vw": 10.3,
+      "font": "ui-sans-serif",
+      "weight": 800,
+      "tracking": -0.03,
+      "leading": 1.5,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.88,
+      "top": 4643,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Loved by Agencies Worldwide",
+      "words": 4,
+      "chars": 27,
+      "lines": 3,
+      "size": 40,
+      "vw": 10.3,
+      "font": "ui-sans-serif",
+      "weight": 800,
+      "tracking": -0.03,
+      "leading": 1.5,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.88,
+      "top": 6645,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Frequently Asked Questions",
+      "words": 3,
+      "chars": 26,
+      "lines": 2,
+      "size": 40,
+      "vw": 10.3,
+      "font": "ui-sans-serif",
+      "weight": 800,
+      "tracking": -0.03,
+      "leading": 1.5,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.88,
+      "top": 8042,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Ready to Grow?",
+      "words": 3,
+      "chars": 14,
+      "lines": 1,
+      "size": 40,
+      "vw": 10.3,
+      "font": "ui-sans-serif",
+      "weight": 800,
+      "tracking": -0.03,
+      "leading": 1.5,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.88,
+      "top": 8879,
+      "tag": "h2",
+      "kind": "heading"
+     }
+    ],
+    "headingSummary": {
+     "count": 14,
+     "maxLines": 4,
+     "over2Lines": 2,
+     "statements": 0,
+     "centered": 6,
+     "medianWords": 3,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "ui-sans-serif",
+       "share": 1,
+       "mono": false
+      }
+     ],
+     "familyCount": 1,
+     "sizes": [
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      24,
+      28,
+      40,
+      51
+     ],
+     "sizeCount": 15,
+     "notLoaded": [],
+     "body": {
+      "font": "ui-sans-serif",
+      "size": 14,
+      "leading": 1.63,
+      "weight": 500,
+      "tracking": 0,
+      "contrast": 6.7
+     },
+     "measureChars": 49,
+     "max": {
+      "size": 51.2,
+      "vw": 13.1,
+      "font": "ui-sans-serif",
+      "text": "Power Agency GrowthThrough Partners"
+     },
+     "monoShare": 0,
+     "monoProseShare": 0,
+     "monoFamilies": [],
+     "monoSamples": [],
+     "microLabels": 26,
+     "microLabelShare": 0.058,
+     "microSamples": [
+      "New",
+      "Total Revenue",
+      "Active Partners",
+      "Open Opportunities",
+      "Win Rate",
+      "How It Works"
+     ],
+     "upperShare": 0.06,
+     "centerShare": 0.17,
+     "smallText": 26
+    },
+    "eyebrows": [
+     {
+      "text": "New",
+      "above": "Power Agency Growth Through Partners",
+      "upper": true,
+      "tracked": true,
+      "mono": false,
+      "pill": true,
+      "size": 11,
+      "top": 151
+     },
+     {
+      "text": "Total Revenue",
+      "above": "$284,500.00",
+      "upper": true,
+      "tracked": true,
+      "mono": false,
+      "pill": false,
+      "size": 11,
+      "top": 1005
+     },
+     {
+      "text": "Active Partners",
+      "above": "500k Partners",
+      "upper": true,
+      "tracked": true,
+      "mono": false,
+      "pill": false,
+      "size": 11,
+      "top": 1005
+     },
+     {
+      "text": "Open Opportunities",
+      "above": "23.00",
+      "upper": true,
+      "tracked": true,
+      "mono": false,
+      "pill": false,
+      "size": 11,
+      "top": 1233
+     },
+     {
+      "text": "Win Rate",
+      "above": "88%",
+      "upper": true,
+      "tracked": true,
+      "mono": false,
+      "pill": false,
+      "size": 11,
+      "top": 1233
+     },
+     {
+      "text": "How It Works",
+      "above": "Three Steps to Growth",
+      "upper": true,
+      "tracked": true,
+      "mono": false,
+      "pill": true,
+      "size": 11,
+      "top": 1585
+     },
+     {
+      "text": "Step 01",
+      "above": "Create Your Agency Profile",
+      "upper": true,
+      "tracked": true,
+      "mono": false,
+      "pill": false,
+      "size": 11,
+      "top": 1931
+     },
+     {
+      "text": "Step 02",
+      "above": "AI-Powered Smart Matching",
+      "upper": true,
+      "tracked": true,
+      "mono": false,
+      "pill": false,
+      "size": 11,
+      "top": 2669
+     },
+     {
+      "text": "Step 03",
+      "above": "Collaborate & Close Deals",
+      "upper": true,
+      "tracked": true,
+      "mono": false,
+      "pill": false,
+      "size": 11,
+      "top": 3539
+     },
+     {
+      "text": "Features",
+      "above": "Why Agencies Choose Us",
+      "upper": true,
+      "tracked": true,
+      "mono": false,
+      "pill": true,
+      "size": 11,
+      "top": 4592
+     },
+     {
+      "text": "Testimonials",
+      "above": "Loved by Agencies Worldwide",
+      "upper": true,
+      "tracked": true,
+      "mono": false,
+      "pill": true,
+      "size": 11,
+      "top": 6597
+     },
+     {
+      "text": "FAQ",
+      "above": "Frequently Asked Questions",
+      "upper": true,
+      "tracked": true,
+      "mono": false,
+      "pill": true,
+      "size": 11,
+      "top": 7994
+     }
+    ],
+    "numbered": [
+     {
+      "text": "Step 01",
+      "size": 11,
+      "top": 1931
+     },
+     {
+      "text": "Step 02",
+      "size": 11,
+      "top": 2669
+     },
+     {
+      "text": "Step 03",
+      "size": 11,
+      "top": 3539
+     }
+    ],
+    "color": {
+     "bodyBg": "#f6f3ec",
+     "bodyBgHsl": {
+      "h": 42,
+      "s": 0.36,
+      "l": 0.95
+     },
+     "dark": false,
+     "sectionBgs": [
+      {
+       "color": "#ffffff",
+       "top": 789,
+       "hsl": {
+        "h": 0,
+        "s": 0,
+        "l": 1
+       }
+      },
+      {
+       "color": "#1c1a17",
+       "top": 4480,
+       "hsl": {
+        "h": 36,
+        "s": 0.1,
+        "l": 0.1
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#6a7282",
+       "share": 0.34
+      },
+      {
+       "color": "#99a1af",
+       "share": 0.29
+      },
+      {
+       "color": "#101828",
+       "share": 0.11
+      },
+      {
+       "color": "#4a5565",
+       "share": 0.09
+      },
+      {
+       "color": "#ffffff",
+       "share": 0.08
+      }
+     ],
+     "button": {
+      "bg": "#ffffff",
+      "hsl": {
+       "h": 0,
+       "s": 0,
+       "l": 1
+      },
+      "fg": "#101828"
+     },
+     "lowContrast": [
+      {
+       "text": "Step 01",
+       "ratio": 2.3,
+       "need": 4.5,
+       "size": 11,
+       "fg": "#99a1af",
+       "bg": "#f6f3ec"
+      },
+      {
+       "text": "Step 02",
+       "ratio": 2.3,
+       "need": 4.5,
+       "size": 11,
+       "fg": "#99a1af",
+       "bg": "#f6f3ec"
+      },
+      {
+       "text": "Step 03",
+       "ratio": 2.3,
+       "need": 4.5,
+       "size": 11,
+       "fg": "#99a1af",
+       "bg": "#f6f3ec"
+      },
+      {
+       "text": "From sign-up to closing deals — it only ",
+       "ratio": 4.4,
+       "need": 4.5,
+       "size": 16.8,
+       "fg": "#6a7282",
+       "bg": "#f6f3ec"
+      },
+      {
+       "text": "Set up your agency with services, specia",
+       "ratio": 4.4,
+       "need": 4.5,
+       "size": 15,
+       "fg": "#6a7282",
+       "bg": "#f6f3ec"
+      },
+      {
+       "text": "Our algorithm analyzes 40+ data points —",
+       "ratio": 4.4,
+       "need": 4.5,
+       "size": 15,
+       "fg": "#6a7282",
+       "bg": "#f6f3ec"
+      }
+     ]
+    },
+    "buttons": {
+     "count": 8,
+     "inHero": 2,
+     "radius": "pill",
+     "height": 42,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Join the Network",
+      "Watch & See How"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 30,
+     "shadowOverlay": 0,
+     "shadowSamples": [
+      "div.inline-flex.items-center → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0",
+      "button.w-full.sm:w-auto → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0",
+      "button.w-full.sm:w-auto → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0",
+      "div.dashboard-border.relative → rgba(0, 0, 0, 0.15) 0px 40px 80px -20px"
+     ],
+     "gradients": 7,
+     "scrims": 1,
+     "gradientSamples": [
+      "div.flex-1.bg-gradient-to-br → linear-gradient(to right bottom in oklab, rgb(255, 255, 255) 0%, rgb(253, 253, 253) 100%)",
+      "div.absolute.inset-0 → linear-gradient(to top in oklab, rgb(253, 253, 253) 0%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0) 100%)",
+      "div.absolute.inset-0 → linear-gradient(to right bottom in oklab, rgb(255, 245, 235) 0%, rgb(255, 251, 245) 100%)",
+      "div.mt-4.bg-gradient-to-r → linear-gradient(to right in oklab, rgb(236, 253, 245) 0%, rgb(240, 253, 244) 100%)"
+     ],
+     "gradientText": 0,
+     "hairlines": 2,
+     "hairlineSamples": [
+      "div.max-w-6xl.mx-auto 342px",
+      "div.border-t.border-white/10 342px"
+     ],
+     "outlinedBoxes": 19,
+     "dashed": 0,
+     "blurred": 8,
+     "roundedBoxes": 19,
+     "boxRadius": 20,
+     "squareMedia": 1,
+     "roundedMedia": 0,
+     "mediaRadius": 0,
+     "textShadow": 0,
+     "cardRows": [
+      {
+       "count": 6,
+       "iconTopped": true,
+       "rounded": true,
+       "top": 4893
+      },
+      {
+       "count": 3,
+       "iconTopped": true,
+       "rounded": true,
+       "top": 6955
+      }
+     ]
+    },
+    "heroMedia": [
+     {
+      "type": "bg-image",
+      "ratio": 1
+     }
+    ],
+    "nav": {
+     "links": 0,
+     "fixed": true,
+     "height": 0,
+     "floatingPill": false,
+     "blur": true
+    },
+    "fontsLoaded": []
+   },
+   "layout": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "pageH": 10088,
+    "margins": {
+     "left": 24,
+     "right": 24
+    },
+    "sections": [
+     {
+      "sel": "div.hero-bg",
+      "tag": "div",
+      "top": 0,
+      "height": 1013,
+      "words": 0,
+      "media": 1,
+      "middle": 0,
+      "heading": null,
+      "left": null,
+      "right": null,
+      "textLeft": null,
+      "textRight": null,
+      "fullBleed": true,
+      "footer": false,
+      "hero": true,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "div.reveal.active",
+      "tag": "div",
+      "top": 144,
+      "height": 557,
+      "words": 38,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Power Agency Growth",
+       "size": 51,
+       "tag": "h1"
+      },
+      "left": 16,
+      "right": 16,
+      "textLeft": 26,
+      "textRight": 26,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "div.reveal.active",
+      "tag": "div",
+      "top": 781,
+      "height": 596,
+      "words": 41,
+      "media": 4,
+      "middle": 0,
+      "heading": {
+       "text": "Overview",
+       "size": 28,
+       "tag": "h2"
+      },
+      "left": 57,
+      "right": 57,
+      "textLeft": 57,
+      "textRight": 80,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section#how-it-works.py-28.px-6",
+      "tag": "section",
+      "top": 1473,
+      "height": 3008,
+      "words": 227,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Three Steps to Growth",
+       "size": 40,
+       "tag": "h2"
+      },
+      "left": 24,
+      "right": 24,
+      "textLeft": 24,
+      "textRight": 24,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "section#features.py-28.px-6",
+      "tag": "section",
+      "top": 4480,
+      "height": 2004,
+      "words": 119,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Why Agencies Choose Us",
+       "size": 40,
+       "tag": "h2"
+      },
+      "left": 31,
+      "right": 31,
+      "textLeft": 31,
+      "textRight": 31,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "section#testimonials.py-28.px-6",
+      "tag": "section",
+      "top": 6485,
+      "height": 1397,
+      "words": 92,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Loved by Agencies Worldwide",
+       "size": 40,
+       "tag": "h2"
+      },
+      "left": 52,
+      "right": 52,
+      "textLeft": 52,
+      "textRight": 52,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "section#faq.py-28.px-6",
+      "tag": "section",
+      "top": 7882,
+      "height": 917,
+      "words": 40,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Frequently Asked Questions",
+       "size": 40,
+       "tag": "h2"
+      },
+      "left": 25,
+      "right": 25,
+      "textLeft": 33,
+      "textRight": 33,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "footer.bg-[var(--color-dark-bg)].text-white",
+      "tag": "footer",
+      "top": 8799,
+      "height": 1290,
+      "words": 53,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Ready to Grow?",
+       "size": 40,
+       "tag": "h2"
+      },
+      "left": 24,
+      "right": 24,
+      "textLeft": 24,
+      "textRight": 41,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [
+     {
+      "top": 6344,
+      "height": 256
+     },
+     {
+      "top": 7736,
+      "height": 260
+     }
+    ],
+    "h1s": [
+     {
+      "text": "Power Agency Growth Through Partners",
+      "size": 51,
+      "top": 219,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 53,
+      "n": 16
+     },
+     {
+      "x": 24,
+      "n": 3
+     },
+     {
+      "x": 91,
+      "n": 3
+     }
+    ],
+    "leftBlocks": 22,
+    "bodySize": 15,
+    "stage": false,
+    "explains": false,
+    "slivers": [],
+    "voidShare": 0,
+    "voidBox": null
+   },
+   "app": null,
+   "consoleErrors": []
+  }
+ ],
+ "findings": [
+  {
+   "level": "FAIL",
+   "id": "eyebrow",
+   "width": 1440,
+   "message": "5 eyebrow/kicker label(s) above headings: \"New\" (pill) above \"Power Agency Growth Through Partners\"; \"How It Works\" (pill) above \"Three Steps to Growth\"; \"Features\" (pill) above \"Why Agencies Choose Us\"; \"Testimonials\" (pill) above \"Loved by Agencies Worldwide\"; \"FAQ\" (pill) above \"Frequently Asked Questions\"",
+   "fix": "Delete them. If the label carried real information, fold it into the headline or the supporting sentence.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "FAIL",
+   "id": "numbering",
+   "width": 1440,
+   "message": "Decorative index numbers: \"Step 01\", \"Step 02\", \"Step 03\"",
+   "fix": "Remove them. If order truly matters, write it into the words (\"First, …\") or use a real <ol>.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "FAIL",
+   "id": "micro-label",
+   "width": 1440,
+   "message": "27 tiny uppercase letter-spaced labels (e.g. \"New\", \"Main\", \"Total Revenue\", \"Active Partners\").",
+   "fix": "Use sentence-case text at a readable size, or delete the label.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "FAIL",
+   "id": "emoji",
+   "width": 1440,
+   "message": "Emoji in the page: ★ ⚡",
+   "fix": "Remove. Use words or real imagery.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "FAIL",
+   "id": "gradient",
+   "width": 1440,
+   "message": "6 gradient fill(s): div.flex-1.bg-gradient-to-br → linear-gradient(to right bottom in oklab, rgb(255, 255, 255) 0%, rgb(253, 253, 253) 100%) | div.absolute.inset-0 → linear-gradient(to top in oklab, rgb(253, 253, 253) 0%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0) 100%) | div.absolute.inset-0 → linear-gradient(to right bottom in oklab, rgb(255, 245, 235) 0%, rgb(255, 251, 245) 100%)",
+   "fix": "Use a flat colour or a real image. The only gradient allowed by default is a neutral scrim over a photo for legibility.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "FAIL",
+   "id": "shadow",
+   "width": 1440,
+   "message": "35 box-shadow(s) on elements at rest: div.inline-flex.items-center → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0 | button.w-full.sm:w-auto → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0 | button.w-full.sm:w-auto → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0",
+   "fix": "Remove. Separate surfaces with a tone step or space. Shadows are for things that really float (menus, dialogs, sticky bars).",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "FAIL",
+   "id": "hairline",
+   "width": 1440,
+   "message": "3 thin rule(s)/divider line(s): div.w-[240px].bg-[#FCFCFA] 240px | div.max-w-6xl.mx-auto 1152px | div.border-t.border-white/10 1152px",
+   "fix": "Delete. Separate with space, a tone change, or scale. Lines are only for real tables and form fields.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "FAIL",
+   "id": "outlined-box",
+   "width": 1440,
+   "message": "25 boxes drawn with a 1px outline.",
+   "fix": "Define a surface by its fill (one tone step from the page) or leave the content unboxed.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "WARN",
+   "id": "glass",
+   "width": 1440,
+   "message": "13 backdrop-blur surfaces.",
+   "fix": "One blurred sticky bar at most; glass cards are a tell.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "FAIL",
+   "id": "icon-cards",
+   "width": 1440,
+   "message": "3 row(s) of identical cards each topped with a small icon (4, 6, 3 cards).",
+   "fix": "Replace with one composed section from the direction: a narrative split, a list set in large type, or real imagery per item.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "WARN",
+   "id": "pill-nav",
+   "width": 1440,
+   "message": "Floating rounded pill navigation.",
+   "fix": "Use a plain bar: wordmark left, a few links, one action."
+  },
+  {
+   "level": "WARN",
+   "id": "palette-cream",
+   "width": 1440,
+   "message": "Yellow-cream background (page background #f6f3ec).",
+   "fix": "Use the drawn palette. If you want warmth, take a low-chroma stone or bone, not a yellow cream.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "FAIL",
+   "id": "contrast",
+   "width": 1440,
+   "message": "Unreadable text: \"Step 01\" 2.3:1 (#99a1af on #f6f3ec); \"Step 02\" 2.3:1 (#99a1af on #f6f3ec); \"Step 03\" 2.3:1 (#99a1af on #f6f3ec); \"High\" 2.5:1 (#ff6b6b on #fef2f2)",
+   "fix": "Raise contrast to at least 4.5:1 for text, 3:1 for large display.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "WARN",
+   "id": "size-count",
+   "width": 1440,
+   "message": "17 different font sizes (8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 22, 24, 28, 51, 56, 80).",
+   "fix": "A page needs about five: display, heading, lead, body, small.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "FAIL",
+   "id": "body-size",
+   "width": 1440,
+   "message": "Body text is 14px (the size most of the running text is set in).",
+   "fix": "Body copy 16–20px. Map small sizes from blueprints onto your body step.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "WARN",
+   "id": "grey-body",
+   "width": 1440,
+   "message": "The running text is a soft grey on its ground (6.7:1).",
+   "fix": "Set body copy in the full ink (7:1 or more). Keep the muted ink for secondary notes; pages read thin and unfinished when everything is grey.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "FAIL",
+   "id": "few-pictures",
+   "width": 1440,
+   "message": "Only 1 picture(s) on the page (1 photographs, footage or raster images, 0 interface fragments). Drawings in SVG do not count.",
+   "fix": "Find real pictures of the subject's world with scripts/assets.mjs (photographs, archival images, maps, engravings, footage), download them to assets/ and give them room: a hero picture, one per section that has a subject, a full-width band. At least four, usually six to twelve."
+  },
+  {
+   "level": "WARN",
+   "id": "no-footage",
+   "width": 1440,
+   "message": "No video anywhere on the page.",
+   "fix": "Look for one honest clip with scripts/assets.mjs --video (the place, the material, the process) and use it as a muted loop with a poster frame. Defend its absence only if no clip fits the subject."
+  },
+  {
+   "level": "WARN",
+   "id": "measure",
+   "width": 1440,
+   "message": "Longest paragraph runs about 109 characters per line.",
+   "fix": "Cap paragraphs at 45–75 characters (max-width: 60ch).",
+   "alsoAt": [
+    768
+   ]
+  },
+  {
+   "level": "FAIL",
+   "id": "small-text",
+   "width": 1440,
+   "message": "27 text blocks under 13px.",
+   "fix": "Nothing meant to be read goes below 13px.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "WARN",
+   "id": "off-centre",
+   "width": 1440,
+   "message": "The margins differ: 165px on the left, 188px on the right, at 1440px.",
+   "fix": "Put the navigation and the content on one pair of margins; check for padding on one side only, a scrollbar gutter, or a header on another inset than the page."
+  },
+  {
+   "level": "FAIL",
+   "id": "headline-lines",
+   "width": 768,
+   "message": "1 headline(s) wrap past two lines at 768px: \"Power Agency Growth Through Partners\" → 3 lines (5 words, 80px)",
+   "fix": "Cut words first (a headline is a title, not a sentence). Then give it a wider measure. Lower the size only as a last resort and never below the scale you chose. A real statement paragraph belongs in a <p> or <blockquote> at 32px or less."
+  },
+  {
+   "level": "FAIL",
+   "id": "edge-text",
+   "width": 768,
+   "message": "1 text block(s) sit within 16px of the screen edge: \"Verified Partners\" (1px from the left)",
+   "fix": "Keep text inside the page margin (16–32px or more). Only display type deliberately bled past the edge may touch it."
+  },
+  {
+   "level": "FAIL",
+   "id": "headline-lines",
+   "width": 390,
+   "message": "2 headline(s) wrap past two lines at 390px: \"Power Agency Growth Through Partners\" → 4 lines (5 words, 51.2px); \"Loved by Agencies Worldwide\" → 3 lines (4 words, 40px)",
+   "fix": "Cut words first (a headline is a title, not a sentence). Then give it a wider measure. Lower the size only as a last resort and never below the scale you chose. A real statement paragraph belongs in a <p> or <blockquote> at 24px or less."
+  }
+ ],
+ "images": [
+  {
+   "viewport": "desktop",
+   "width": 1440,
+   "fold": "C:\\Users\\Rhushikesh\\OneDrive\\Desktop\\New folder (10)\\PS-3\\.taste-skill\\reference\\desktop-fold.jpg",
+   "pages": [
+    "C:\\Users\\Rhushikesh\\OneDrive\\Desktop\\New folder (10)\\PS-3\\.taste-skill\\reference\\desktop-page-01.jpg",
+    "C:\\Users\\Rhushikesh\\OneDrive\\Desktop\\New folder (10)\\PS-3\\.taste-skill\\reference\\desktop-page-02.jpg"
+   ],
+   "film": []
+  },
+  {
+   "viewport": "tablet",
+   "width": 768,
+   "fold": "C:\\Users\\Rhushikesh\\OneDrive\\Desktop\\New folder (10)\\PS-3\\.taste-skill\\reference\\tablet-fold.jpg",
+   "pages": [
+    "C:\\Users\\Rhushikesh\\OneDrive\\Desktop\\New folder (10)\\PS-3\\.taste-skill\\reference\\tablet-page-01.jpg",
+    "C:\\Users\\Rhushikesh\\OneDrive\\Desktop\\New folder (10)\\PS-3\\.taste-skill\\reference\\tablet-page-02.jpg"
+   ],
+   "film": []
+  },
+  {
+   "viewport": "mobile",
+   "width": 390,
+   "fold": "C:\\Users\\Rhushikesh\\OneDrive\\Desktop\\New folder (10)\\PS-3\\.taste-skill\\reference\\mobile-fold.jpg",
+   "pages": [
+    "C:\\Users\\Rhushikesh\\OneDrive\\Desktop\\New folder (10)\\PS-3\\.taste-skill\\reference\\mobile-page-01.jpg",
+    "C:\\Users\\Rhushikesh\\OneDrive\\Desktop\\New folder (10)\\PS-3\\.taste-skill\\reference\\mobile-page-02.jpg"
+   ],
+   "film": []
+  }
+ ]
+}

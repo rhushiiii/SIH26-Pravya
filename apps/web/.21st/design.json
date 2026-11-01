@@ -1,0 +1,286 @@
+{
+  "version": 1,
+  "project": {
+    "name": "sih26263-web",
+    "productType": null,
+    "stack": ["nextjs", "react", "shadcn", "tailwind-v4"]
+  },
+  "sources": {
+    "tokens": ["src/app/globals.css"],
+    "components": ["src/components/ui"],
+    "assets": [],
+    "instructions": ["AGENTS.md"]
+  },
+  "design": {
+    "colorMode": "light",
+    "colors": {
+      "--color-gallery-white": {
+        "value": "#ffffff",
+        "source": "src/app/globals.css"
+      },
+      "--color-studio-mist": {
+        "value": "#f5f5f7",
+        "source": "src/app/globals.css"
+      },
+      "--color-paper-frost": {
+        "value": "#fafafc",
+        "source": "src/app/globals.css"
+      },
+      "--color-hairline-silver": {
+        "value": "#d6d6d6",
+        "source": "src/app/globals.css"
+      },
+      "--color-control-gray": {
+        "value": "#e6e6e8",
+        "source": "src/app/globals.css"
+      },
+      "--color-ink": {
+        "value": "#1d1d1f",
+        "source": "src/app/globals.css"
+      },
+      "--color-slate": {
+        "value": "#4b5563",
+        "source": "src/app/globals.css"
+      },
+      "--color-steel": {
+        "value": "#86868b",
+        "source": "src/app/globals.css"
+      },
+      "--color-functional-blue": {
+        "value": "#0066cc",
+        "source": "src/app/globals.css"
+      },
+      "--color-action-blue": {
+        "value": "#0071e3",
+        "source": "src/app/globals.css"
+      },
+      "--color-severity-amber": {
+        "value": "#b64400",
+        "source": "src/app/globals.css"
+      },
+      "--color-paper-cream": {
+        "value": "#ffedd7",
+        "source": "src/app/globals.css"
+      },
+      "--color-ink-black": {
+        "value": "#100904",
+        "source": "src/app/globals.css"
+      },
+      "--color-clay": {
+        "value": "#6c5f51",
+        "source": "src/app/globals.css"
+      },
+      "--color-signal-orange": {
+        "value": "#dc5000",
+        "source": "src/app/globals.css"
+      },
+      "--color-olive": {
+        "value": "#445231",
+        "source": "src/app/globals.css"
+      },
+      "--color-danger": {
+        "value": "#b3261e",
+        "source": "src/app/globals.css"
+      },
+      "--muted": {
+        "value": "#4b5563",
+        "source": "src/app/globals.css"
+      }
+    },
+    "typography": {
+      "--font-interface": {
+        "value": "var(--next-font-interface), \"SF Pro Text\", \"Helvetica Neue\", Arial,\n    sans-serif",
+        "source": "src/app/globals.css"
+      },
+      "--font-editorial-display": {
+        "value": "var(--next-font-interface), Inter, ui-sans-serif, system-ui, sans-serif",
+        "source": "src/app/globals.css"
+      },
+      "--font-editorial-serif": {
+        "value": "var(--next-font-literata), \"Source Serif 4\", Georgia, serif",
+        "source": "src/app/globals.css"
+      },
+      "--font-technical": {
+        "value": "var(--next-font-dm-mono), \"IBM Plex Mono\", ui-monospace, monospace",
+        "source": "src/app/globals.css"
+      },
+      "--text-table-cell": {
+        "value": "14px",
+        "source": "src/app/globals.css"
+      },
+      "--text-nav-label": {
+        "value": "12px",
+        "source": "src/app/globals.css"
+      },
+      "--text-body": {
+        "value": "17px",
+        "source": "src/app/globals.css"
+      },
+      "--text-card-title": {
+        "value": "20px",
+        "source": "src/app/globals.css"
+      },
+      "--text-technical": {
+        "value": "13px",
+        "source": "src/app/globals.css"
+      },
+      "--text-severity": {
+        "value": "12px",
+        "source": "src/app/globals.css"
+      },
+      "--text-section-kicker": {
+        "value": "21px",
+        "source": "src/app/globals.css"
+      },
+      "--text-feature-heading": {
+        "value": "40px",
+        "source": "src/app/globals.css"
+      },
+      "--text-hero-display": {
+        "value": "88px",
+        "source": "src/app/globals.css"
+      },
+      "--text-pull-quote": {
+        "value": "28px",
+        "source": "src/app/globals.css"
+      },
+      "--bronze-text": {
+        "value": "var(--color-severity-amber)",
+        "source": "src/app/globals.css"
+      },
+      "--font-heading": {
+        "value": "var(--font-interface)",
+        "source": "src/app/globals.css"
+      },
+      "--font-body": {
+        "value": "var(--font-interface)",
+        "source": "src/app/globals.css"
+      }
+    },
+    "spacing": {
+      "--section-gap-interface": {
+        "value": "40px",
+        "source": "src/app/globals.css"
+      },
+      "--section-gap-editorial": {
+        "value": "90px",
+        "source": "src/app/globals.css"
+      }
+    },
+    "radius": {
+      "--radius-cards": {
+        "value": "28px",
+        "source": "src/app/globals.css"
+      },
+      "--radius-inputs": {
+        "value": "980px",
+        "source": "src/app/globals.css"
+      },
+      "--radius-buttons": {
+        "value": "9999px",
+        "source": "src/app/globals.css"
+      },
+      "--radius-media-frame": {
+        "value": "2rem",
+        "source": "src/app/globals.css"
+      },
+      "--radius-cta-pill": {
+        "value": "2.5em",
+        "source": "src/app/globals.css"
+      },
+      "--radius-badge": {
+        "value": "1.75em",
+        "source": "src/app/globals.css"
+      }
+    },
+    "shadows": {
+      "--shadow-subtle": {
+        "value": "rgb(230, 230, 232) 0 0 0 1px",
+        "source": "src/app/globals.css"
+      },
+      "--shadow-subtle-2": {
+        "value": "rgb(134, 134, 139) 0 0 0 1px",
+        "source": "src/app/globals.css"
+      },
+      "--shadow-glow-soft": {
+        "value": "0 0 1em var(--color-signal-orange)",
+        "source": "src/app/globals.css"
+      },
+      "--shadow-glow-strong": {
+        "value": "0 0 10px 3px #ff8c0099, 0 0 60px 45px #e6500a40",
+        "source": "src/app/globals.css"
+      }
+    },
+    "motion": {
+      "--ease-out": {
+        "value": "cubic-bezier(0.23, 1, 0.32, 1)",
+        "source": "src/app/globals.css"
+      }
+    },
+    "density": "unknown"
+  },
+  "components": {
+    "installed": [
+      "button",
+      "confirm-dialog",
+      "feedback",
+      "filters",
+      "icon",
+      "pagination"
+    ],
+    "preferredPrimitives": [],
+    "patterns": []
+  },
+  "constraints": {
+    "must": [
+      "Preserve real API-backed workflows and synthetic-data disclosures",
+      "Keep portal information density usable on tablet and mobile",
+      "Respect prefers-reduced-motion and visible keyboard focus"
+    ],
+    "avoid": [
+      "Generic dashboard gradients and excessive glassmorphism",
+      "Decorative motion on frequently updated tables and forms",
+      "Claims of official APAAR, ABC, or government verification"
+    ]
+  },
+  "decisions": [
+    "Use warm cream and PRAVYA orange for public editorial surfaces; retain a quieter warm interface palette for the portal.",
+    "Use existing local Reveal, SpotlightCard, MagneticButton, particle, and chart primitives instead of adding an unverified UI dependency.",
+    "Use a clickable workflow stepper and role preview cards to explain the product without replacing functional screens."
+  ],
+  "evidence": [
+    {
+      "fact": "components.installed",
+      "source": "src/components/ui"
+    },
+    {
+      "fact": "design.colorMode:light",
+      "source": "src/app/globals.css"
+    },
+    {
+      "fact": "design.tokens",
+      "source": "src/app/globals.css"
+    },
+    {
+      "fact": "project.instructions",
+      "source": "AGENTS.md"
+    },
+    {
+      "fact": "project.stack:nextjs",
+      "source": "package.json"
+    },
+    {
+      "fact": "project.stack:react",
+      "source": "package.json"
+    },
+    {
+      "fact": "project.stack:shadcn",
+      "source": "components.json"
+    },
+    {
+      "fact": "project.stack:tailwind-v4",
+      "source": "package.json"
+    }
+  ],
+  "generatedAt": "2026-10-31T18:10:25.111Z"
+}

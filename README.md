@@ -1,5 +1,29 @@
 # SIH26263 — Codex Project Context
 
+## Institution student entry and sample files
+
+Sign in as an institution administrator and open **Upload candidate**
+(`/institution/upload`). Select an active programme and academic year. Choose
+**Upload CSV / Excel** or **Enter records in portal**. Direct entry supports
+adding/removing student rows and filling synthetic examples; the requirements
+panel offers a header-only template and two populated synthetic CSV examples
+for the selected scope. One example deliberately includes a malformed APAAR
+and a missing student name to demonstrate later validation findings.
+
+Confirm synthetic-only data, then select **Save candidate to database** (direct
+entry) or **Upload candidate** (file). Both use the same authenticated submission
+API and store immutable candidate rows in PostgreSQL. Direct entry encodes the
+existing v1 CSV schema in memory; it adds no API route or database schema.
+Drafts are not saved until submission and are cleared on successful saving or
+session change. Limits come from the API upload policy.
+
+Open the saved candidate, select **Validate**, then review and explicitly
+activate when appropriate. Saving alone does not change current enrolment
+totals. Include the complete programme/year declaration before activation;
+direct entry is not an append operation against an existing current snapshot.
+After an interrupted save, check history before preparing a new submission.
+This is the admissions schema, not a NAD/ABC marksheet importer.
+
 **Project:** APAAR ID-Based Student Data Management and Verification Platform for AICTE-Approved Institutions  
 **Status:** Implementation specification for a hackathon prototype; no production government integration is claimed.  
 **Stack:** Next.js + TypeScript + Tailwind CSS (web), FastAPI + Python (API), PostgreSQL (database).

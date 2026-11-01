@@ -17,6 +17,12 @@ from app.core.pagination import count_rows
 from app.core.query import latest_per_key, latest_row
 from app.modules.audit.services import record_action
 from app.modules.auth.models import Role, User
+from app.modules.institutions.categories import (
+    RESERVATION_CATEGORIES,
+    RESERVATION_GROUPS,
+    RESERVATION_POOLING_NOTE,
+    RESERVATION_RULE_VERSION,
+)
 from app.modules.institutions.models import IntakeRule, Programme
 from app.modules.institutions.services import scoped_institution
 from app.modules.submissions.models import (
@@ -29,6 +35,8 @@ from app.modules.submissions.services import batch_rows, row_response, scoped_ba
 from app.modules.validation.models import ValidationFinding, ValidationRun
 from app.modules.validation.rules import (
     CATEGORIES,
+    RESERVATION_RULESET_VERSION,
+    RESERVATION_STRUCTURAL_RULESET_VERSION,
     RULESET_VERSION,
     STATUSES,
     STRUCTURAL_RULESET_VERSION,
@@ -189,15 +197,31 @@ def ruleset_snapshot(
     batch: SubmissionBatch,
     intake: list[IntakeRule],
 ) -> dict[str, Any]:
+    reservation = batch.schema_version == "v2"
     return {
-        "ruleset_version": RULESET_VERSION,
-        "structural_ruleset_version": STRUCTURAL_RULESET_VERSION,
+        **(
+            {
+                "category_scheme": "RESERVATION",
+                "primary_categories": list(RESERVATION_CATEGORIES),
+                "category_overlap_note": RESERVATION_POOLING_NOTE,
+            }
+            if reservation
+            else {}
+        ),
+        "ruleset_version": RESERVATION_RULESET_VERSION
+        if reservation
+        else RULESET_VERSION,
+        "structural_ruleset_version": RESERVATION_STRUCTURAL_RULESET_VERSION
+        if reservation
+        else STRUCTURAL_RULESET_VERSION,
         "source_label": "DEMO",
         "apaar_ascii_digit_length": settings.apaar_format_length,
         "matching_algorithm": "HMAC-SHA256",
-        "categories": list(CATEGORIES),
+        "categories": list(RESERVATION_GROUPS if reservation else CATEGORIES),
         "enrollment_statuses": list(STATUSES),
-        "intake_rule_version": settings.validation_intake_rule_version,
+        "intake_rule_version": RESERVATION_RULE_VERSION
+        if reservation
+        else settings.validation_intake_rule_version,
         "programme_code": programme.code,
         "academic_year": batch.academic_year,
         "intake_rules": [
@@ -265,7 +289,12 @@ def validate_candidate(
                     IntakeRule.institution_id == batch.institution_id,
                     IntakeRule.programme_id == batch.programme_id,
                     IntakeRule.academic_year == batch.academic_year,
-                    IntakeRule.rule_version == settings.validation_intake_rule_version,
+                    IntakeRule.rule_version
+                    == (
+                        RESERVATION_RULE_VERSION
+                        if batch.schema_version == "v2"
+                        else settings.validation_intake_rule_version
+                    ),
                     IntakeRule.source_label == "DEMO",
                 )
                 .order_by(IntakeRule.category)
@@ -339,7 +368,9 @@ def validate_candidate(
             kind="REVALIDATION" if revalidate else "INITIAL",
             evaluated_at=evaluated_at,
             completed_at=datetime.now(UTC),
-            ruleset_version=RULESET_VERSION,
+            ruleset_version=RESERVATION_RULESET_VERSION
+            if batch.schema_version == "v2"
+            else RULESET_VERSION,
             ruleset_snapshot_json=ruleset_snapshot(settings, programme, batch, intake),
             compared_scope_revisions_json=compared,
             summary_json=summary,
@@ -415,9 +446,23 @@ def structurally_compatible(
     version = snapshot.get(
         "structural_ruleset_version", legacy.get(run.ruleset_version)
     )
+    reservation = batch.schema_version == "v2"
     return bool(
-        version == STRUCTURAL_RULESET_VERSION
-        and snapshot.get("categories") == list(CATEGORIES)
+        version
+        == (
+            RESERVATION_STRUCTURAL_RULESET_VERSION
+            if reservation
+            else STRUCTURAL_RULESET_VERSION
+        )
+        and snapshot.get("categories")
+        == list(RESERVATION_GROUPS if reservation else CATEGORIES)
+        and (
+            not reservation
+            or (
+                snapshot.get("category_scheme") == "RESERVATION"
+                and snapshot.get("primary_categories") == list(RESERVATION_CATEGORIES)
+            )
+        )
         and snapshot.get("enrollment_statuses") == list(STATUSES)
         and snapshot.get("programme_code") == programme.code
         and snapshot.get("academic_year") == batch.academic_year
@@ -470,6 +515,11 @@ def feedback_csv(
             "source_row_number",
             "college_student_id",
             "apaar_id_masked",
+            *(
+                ["reservation_category", "is_pwd"]
+                if batch.schema_version == "v2"
+                else []
+            ),
             "validation_status",
             "rule_code",
             "severity",
@@ -495,6 +545,16 @@ def feedback_csv(
                     record.source_row_number if record else None,
                     preview.college_student_id if preview else None,
                     preview.apaar_id_masked if preview else None,
+                    *(
+                        [
+                            record.normalized_json.get("reservation_category")
+                            if record
+                            else None,
+                            record.normalized_json.get("is_pwd") if record else None,
+                        ]
+                        if batch.schema_version == "v2"
+                        else []
+                    ),
                     statuses.get(record.id, "VALID") if record else None,
                     finding.rule_code if finding else None,
                     finding.severity if finding else None,

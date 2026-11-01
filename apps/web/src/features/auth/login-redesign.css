@@ -1,0 +1,174 @@
+.public-shell .login-page {
+  background: #f6f3ec;
+  align-items: start;
+  gap: clamp(32px, 6vw, 90px);
+  padding-top: 130px;
+  padding-bottom: 64px;
+}
+.login-page .login-aside {
+  padding: 60px 0 0;
+  max-width: 460px;
+}
+.login-aside > .eyebrow {
+  color: #a83f18;
+  font-size: 12px;
+  letter-spacing: 0;
+}
+.login-aside h2 {
+  color: var(--ui-text);
+  font-size: clamp(30px, 2.5vw, 36px);
+  line-height: 1.14;
+  letter-spacing: -0.045em;
+  margin: 20px 0;
+  text-wrap: balance;
+}
+.login-aside > p {
+  line-height: 1.75;
+  color: var(--ui-muted);
+}
+.login-aside ul {
+  margin-top: 32px;
+  padding: 24px 0;
+  border-block: 1px solid #deded7;
+}
+.login-aside li {
+  font-size: 13px;
+  padding-block: 7px;
+}
+.login-aside .login-aside-note {
+  margin-top: 28px;
+  font-size: 12px;
+}
+.login-page .login-main {
+  max-width: 560px;
+  padding: 0;
+  width: 100%;
+}
+.login-page .login-card {
+  border: 1px solid #e8e7e1;
+  border-radius: 24px;
+  background: #fff;
+  padding: clamp(24px, 3vw, 40px);
+  box-shadow: none;
+}
+.login-card h1 {
+  font-size: 28px;
+  letter-spacing: -0.035em;
+}
+.login-card .intro {
+  font-size: 13px;
+  line-height: 1.7;
+}
+.login-card .account-group {
+  margin-block: 24px;
+}
+.login-card .account-group legend {
+  font-size: 13px;
+  color: var(--ui-text);
+}
+.login-card .account-group > p {
+  font-size: 12px;
+  line-height: 1.6;
+}
+.login-card .account-option {
+  min-height: 76px;
+  margin-bottom: 8px;
+  padding: 14px;
+  border: 1px solid var(--ui-line);
+  border-radius: 16px;
+  background: #fff;
+  transform: none;
+  box-shadow: none;
+}
+.login-card .account-option.selected {
+  border-color: #d99876;
+  background: #fff3ea;
+}
+.login-card .account-monogram {
+  background: #f1f2ed;
+  color: #42464a;
+  border-radius: 12px;
+}
+.login-card .account-option.selected .account-monogram {
+  background: #ffe1ce;
+  color: #a4441d;
+}
+.login-card .account-copy strong {
+  font-size: 13px;
+}
+.login-card .account-copy small {
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--ui-muted);
+}
+.login-card .radio-indicator {
+  border-color: #a8aaa5;
+}
+.login-card .selected .radio-indicator {
+  border-color: #a83f18;
+  background: #a83f18;
+}
+.login-card .account-option:focus-within {
+  outline: 3px solid #a83f18;
+  outline-offset: 2px;
+}
+.login-card .session-hint {
+  padding-top: 20px;
+  border-top: 1px solid var(--ui-line);
+  font-size: 11px;
+  line-height: 1.7;
+}
+.login-card .login-submit {
+  min-height: 48px;
+  margin-top: 8px;
+  border-radius: 999px;
+  background: var(--ui-accent-action);
+  color: #fff;
+}
+.login-card .login-error,
+.login-card .session-notice {
+  border-radius: 10px;
+  font-size: 12px;
+  line-height: 1.6;
+}
+@media (hover: hover) and (pointer: fine) {
+  .login-card .account-option:hover {
+    border-color: #d99876;
+    background: #fff7f0;
+    transform: none;
+  }
+}
+@media (min-width: 1000px) {
+  .public-shell .login-page {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    padding-inline: max(calc((100vw - 1120px) / 2), 40px);
+  }
+}
+@media (max-width: 999px) {
+  .public-shell .login-page {
+    padding-inline: 24px;
+  }
+  .login-page .login-aside {
+    display: none;
+  }
+  .login-page .login-main {
+    margin-inline: auto;
+  }
+}
+@media (max-width: 480px) {
+  .public-shell .login-page {
+    padding: 104px 16px 36px;
+  }
+  .login-card .account-option {
+    padding: 12px;
+    gap: 10px;
+  }
+}
+
+.login-card > .eyebrow,
+.login-card .demo-banner,
+.login-card .demo-banner .banner-detail,
+.login-page .login-footnote {
+  font-size: 12px;
+  letter-spacing: 0;
+}

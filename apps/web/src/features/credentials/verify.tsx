@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { useSession } from "@/features/auth/session";
-import { errorMessage } from "@/lib/api/client";
+import { errorMessage, jsonInit } from "@/lib/api/client";
 import { DEMO_TAG } from "@/lib/format";
 import type { components } from "@/lib/api/generated";
 import { DEMO_LABEL, outcomeLabel, when } from "./shared";
@@ -80,11 +80,7 @@ export function VerifyCredential() {
       purpose: string;
       consent_ref: string;
     }) =>
-      request<VerifyResponse>("/credentials/verify", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      }),
+      request<VerifyResponse>("/credentials/verify", jsonInit("POST", body)),
     // The pasted token is cleared as soon as the server has answered.
     onSettled: () => setToken(""),
   });

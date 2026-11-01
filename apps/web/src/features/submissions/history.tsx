@@ -93,7 +93,7 @@ export function SubmissionHistory({
         </div>
         {admin && (
           <Link className="button primary" href="/institution/upload">
-            Upload candidate CSV
+            Submit student data
           </Link>
         )}
       </div>
@@ -355,8 +355,8 @@ export function SubmissionHistory({
               )}
             </section>
             <p className="data-note">
-              Processed means CSV parsing and storage completed. It does not
-              mean local validation passed, a snapshot was approved or APAAR was
+              Processed means parsing and storage completed. It does not mean
+              local validation passed, a snapshot was approved or APAAR was
               verified. Candidate uploads never become current automatically.
             </p>
           </>

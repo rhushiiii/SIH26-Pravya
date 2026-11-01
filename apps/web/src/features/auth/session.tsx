@@ -11,7 +11,13 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import { ApiError, apiDownload, apiFetch, isUUID } from "@/lib/api/client";
+import {
+  ApiError,
+  apiDownload,
+  apiFetch,
+  isUUID,
+  jsonInit,
+} from "@/lib/api/client";
 import type { components } from "@/lib/api/generated";
 
 export type Identity = components["schemas"]["CurrentUserResponse"];
@@ -126,12 +132,10 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       login.current = controller;
       setSigningIn(true);
       try {
-        const credentials = await apiFetch<LoginResponse>("/auth/demo-login", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ demo_alias: alias }),
-          signal: controller.signal,
-        });
+        const credentials = await apiFetch<LoginResponse>(
+          "/auth/demo-login",
+          { ...jsonInit("POST", { demo_alias: alias }), signal: controller.signal },
+        );
         if (
           !credentials ||
           typeof credentials.access_token !== "string" ||

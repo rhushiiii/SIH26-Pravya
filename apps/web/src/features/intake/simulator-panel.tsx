@@ -7,6 +7,7 @@ import {
   useSubmissionContext,
   validAcademicYear,
 } from "@/features/submissions/data";
+import { jsonInit } from "@/lib/api/client";
 import type { components } from "@/lib/api/generated";
 import {
   CATEGORIES,
@@ -39,8 +40,9 @@ export function SimulatorPanel({ institutionId }: { institutionId: string }) {
   const [programmeId, setProgrammeId] = useState("");
   const [year, setYear] = useState(DEFAULT_YEAR);
   const [rows, setRows] = useState<Row[]>([
-    { id: 1, category: "REGULAR", count: "" },
+    { id: 1, category: "GENERAL_OPEN", count: "" },
   ]);
+  const [pwdCount, setPwdCount] = useState("");
   const [nextId, setNextId] = useState(2);
   const [error, setError] = useState("");
   const run = useMutation({
@@ -48,12 +50,13 @@ export function SimulatorPanel({ institutionId }: { institutionId: string }) {
       programme_id: string;
       academic_year: string;
       additions: { category: Category; count: number }[];
+      category_scheme: "RESERVATION";
+      pwd_additions: number;
     }) =>
-      request<Simulation>(`/institutions/${institutionId}/intake/simulate`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      }),
+      request<Simulation>(
+        `/institutions/${institutionId}/intake/simulate`,
+        jsonInit("POST", body),
+      ),
     onError: (e) => setError(intakeMessage(e)),
   });
   const update = (id: number, change: Partial<Row>) =>
@@ -102,11 +105,18 @@ export function SimulatorPanel({ institutionId }: { institutionId: string }) {
               return setError(
                 "Each addition needs a whole number count of at least 1.",
               );
+            if (pwdCount !== "" && (!/^\\d+$/.test(pwdCount) || Number(pwdCount) > 1_000_000))
+              return setError("PwD additions must be a whole number from 0 to 1,000,000.");
+            const totalMain = additions.reduce((total, row) => total + row.count, 0);
+            if (Number(pwdCount || 0) > totalMain)
+              return setError("PwD additions cannot exceed the total main-category additions.");
             setError("");
             run.mutate({
               programme_id: programmeId,
               academic_year: year,
               additions,
+              category_scheme: "RESERVATION",
+              pwd_additions: Number(pwdCount || 0),
             });
           }}
         >
@@ -131,7 +141,7 @@ export function SimulatorPanel({ institutionId }: { institutionId: string }) {
             </label>
           </div>
           <fieldset className="intake-additions">
-            <legend>Hypothetical additions</legend>
+            <legend>Hypothetical main-category additions</legend>
             {rows.map((row, index) => (
               <div className="validation-filters" key={row.id}>
                 <label>
@@ -142,7 +152,7 @@ export function SimulatorPanel({ institutionId }: { institutionId: string }) {
                       update(row.id, { category: e.target.value as Category })
                     }
                   >
-                    {CATEGORIES.map((c) => (
+                    {CATEGORIES.filter((c) => c !== "PWD").map((c) => (
                       <option key={c} value={c}>
                         {categoryLabel(c)}
                       </option>
@@ -178,7 +188,7 @@ export function SimulatorPanel({ institutionId }: { institutionId: string }) {
                 onClick={() => {
                   setRows((c) => [
                     ...c,
-                    { id: nextId, category: "REGULAR", count: "" },
+                    { id: nextId, category: "GENERAL_OPEN", count: "" },
                   ]);
                   setNextId(nextId + 1);
                 }}
@@ -193,6 +203,11 @@ export function SimulatorPanel({ institutionId }: { institutionId: string }) {
                 {run.isPending ? "Simulating…" : "Run simulation"}
               </button>
             </div>
+            <label>
+              Additional PwD records (overlapping count)
+              <input inputMode="numeric" value={pwdCount} onChange={(e) => setPwdCount(e.target.value)} />
+            </label>
+            <p className="form-help">PwD is reported as an overlapping count and is not added as a separate reservation category. It cannot exceed the total main-category additions.</p>
           </fieldset>
         </form>
         {error && (
@@ -256,6 +271,7 @@ export function SimulatorPanel({ institutionId }: { institutionId: string }) {
             </tbody>
           </ScrollTable>
           <p className="data-note">{run.data.notice}</p>
+          <p className="form-help">The PwD reporting row overlaps the four main categories and is excluded from their sum.</p>
         </div>
       )}
     </section>

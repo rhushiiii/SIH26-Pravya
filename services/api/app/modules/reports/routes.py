@@ -8,6 +8,7 @@ from app.core.config import Settings
 from app.core.database import get_snapshot_session
 from app.core.http import Now, error_responses
 from app.core.rate_limit import rate_limit
+from app.modules.analytics.schemas import CategoryScheme
 from app.modules.analytics.services import Filters
 from app.modules.auth.dependencies import CurrentUser, DatabaseSession
 from app.modules.cases.models import CasePriority, CaseSeverity
@@ -50,12 +51,13 @@ def export_report(
     institution_id: UUID | None = None,
     region: Annotated[str | None, Query(max_length=64)] = None,
     programme_code: Annotated[str | None, Query(max_length=64)] = None,
+    category_scheme: CategoryScheme = "LEGACY",
     priority: CasePriority | None = None,
     severity: CaseSeverity | None = None,
 ) -> Response:
     settings = cast(Settings, request.app.state.settings)
     params = ReportParams(
-        Filters(academic_year, institution_id, region, programme_code),
+        Filters(academic_year, institution_id, region, programme_code, category_scheme),
         priority,
         severity,
     )

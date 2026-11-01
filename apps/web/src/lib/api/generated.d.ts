@@ -641,6 +641,75 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/api/v1/reconciliations": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** List */
+    get: operations["list__api_v1_reconciliations_get"];
+    put?: never;
+    /** Create */
+    post: operations["create_api_v1_reconciliations_post"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/reconciliations/{reconciliation_id}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Detail */
+    get: operations["detail_api_v1_reconciliations__reconciliation_id__get"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/reconciliations/{reconciliation_id}/actions": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Action */
+    post: operations["action_api_v1_reconciliations__reconciliation_id__actions_post"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/reconciliations/{reconciliation_id}/evidence": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Evidence */
+    post: operations["evidence_api_v1_reconciliations__reconciliation_id__evidence_post"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/api/v1/records": {
     parameters: {
       query?: never;
@@ -1063,7 +1132,16 @@ export interface components {
      * @enum {string}
      */
     AdmissionCategory:
-      "REGULAR" | "SUPERNUMERARY" | "NRI" | "OCI" | "FOREIGN_NATIONAL";
+      | "REGULAR"
+      | "SUPERNUMERARY"
+      | "NRI"
+      | "OCI"
+      | "FOREIGN_NATIONAL"
+      | "GENERAL_OPEN"
+      | "SC_ST"
+      | "NT"
+      | "OBC"
+      | "PWD";
     /** AgeBucket */
     AgeBucket: {
       /**
@@ -1086,6 +1164,12 @@ export interface components {
     AnalyticsFilters: {
       /** Academic Year */
       academic_year?: string | null;
+      /**
+       * Category Scheme
+       * @default LEGACY
+       * @enum {string}
+       */
+      category_scheme: "LEGACY" | "RESERVATION";
       /** Group By */
       group_by?:
         ("academic_year" | "institution" | "programme" | "region") | null;
@@ -1571,12 +1655,12 @@ export interface components {
        * Active Records
        * @default 0
        */
-      active_records: number;
+      active_records: number | null;
       /**
        * Declared Records
        * @default 0
        */
-      declared_records: number;
+      declared_records: number | null;
     };
     /** CompletenessResponse */
     CompletenessResponse: {
@@ -2325,6 +2409,12 @@ export interface components {
       data: components["schemas"]["ProgrammeResponse"][];
       pagination: components["schemas"]["Pagination"];
     };
+    /** Page[ReconciliationResponse] */
+    Page_ReconciliationResponse_: {
+      /** Data */
+      data: components["schemas"]["ReconciliationResponse"][];
+      pagination: components["schemas"]["Pagination"];
+    };
     /** Page[RecordRow] */
     Page_RecordRow_: {
       /** Data */
@@ -2478,6 +2568,184 @@ export interface components {
        */
       status: "ready" | "unavailable";
     };
+    /** ReconciliationActionRequest */
+    ReconciliationActionRequest: {
+      /**
+       * Action
+       * @enum {string}
+       */
+      action:
+        | "ASSIGN"
+        | "START_REVIEW"
+        | "REQUEST_EVIDENCE"
+        | "DECIDE_TRANSFER"
+        | "DECIDE_OVERLAP"
+        | "DISMISS";
+      /** Assigned To */
+      assigned_to?: string | null;
+      /** Institution Id */
+      institution_id?: string | null;
+      /** Reason */
+      reason?: string | null;
+    };
+    /** ReconciliationCreate */
+    ReconciliationCreate: {
+      /**
+       * Finding Id
+       * Format: uuid
+       */
+      finding_id: string;
+      /**
+       * Local Record Version Id
+       * Format: uuid
+       */
+      local_record_version_id: string;
+      /**
+       * Peer Record Version Id
+       * Format: uuid
+       */
+      peer_record_version_id: string;
+    };
+    /** ReconciliationEventResponse */
+    ReconciliationEventResponse: {
+      /**
+       * Action
+       * @enum {string}
+       */
+      action:
+        | "OPENED"
+        | "ASSIGN"
+        | "START_REVIEW"
+        | "REQUEST_EVIDENCE"
+        | "TRANSFER_EVIDENCE_SUBMITTED"
+        | "DECIDE_TRANSFER"
+        | "DECIDE_OVERLAP"
+        | "DISMISS";
+      /** Actor Id */
+      actor_id: string | null;
+      /** Comment */
+      comment: string | null;
+      /**
+       * Created At
+       * Format: date-time
+       */
+      created_at: string;
+      /** Evidence Reference */
+      evidence_reference: string | null;
+      /** Evidence Type */
+      evidence_type: ("TRANSFER_RECORD" | "WITHDRAWAL_RECORD" | "OTHER") | null;
+      /**
+       * Id
+       * Format: uuid
+       */
+      id: string;
+      /** Institution Id */
+      institution_id: string | null;
+      /**
+       * Status After
+       * @enum {string}
+       */
+      status_after:
+        | "OPEN"
+        | "UNDER_REVIEW"
+        | "AWAITING_INSTITUTION"
+        | "TRANSFER_SUPPORTED"
+        | "UNRESOLVED_OVERLAP"
+        | "DISMISSED";
+      /** Transfer Date */
+      transfer_date: string | null;
+      /** Withdrawal Date */
+      withdrawal_date: string | null;
+    };
+    /** ReconciliationEvidence */
+    ReconciliationEvidence: {
+      /** Comment */
+      comment: string;
+      /** Evidence Reference */
+      evidence_reference?: string | null;
+      /**
+       * Evidence Type
+       * @enum {string}
+       */
+      evidence_type: "TRANSFER_RECORD" | "WITHDRAWAL_RECORD" | "OTHER";
+      /** Transfer Date */
+      transfer_date?: string | null;
+      /** Withdrawal Date */
+      withdrawal_date?: string | null;
+    };
+    /** ReconciliationRecord */
+    ReconciliationRecord: {
+      /** Academic Year */
+      academic_year: string;
+      /** Apaar Id Masked */
+      apaar_id_masked: string;
+      /** College Student Id */
+      college_student_id: string;
+      /** Enrollment Date */
+      enrollment_date: string | null;
+      /** Enrollment Status */
+      enrollment_status: string;
+      /**
+       * Institution Id
+       * Format: uuid
+       */
+      institution_id: string;
+      /** Institution Name */
+      institution_name: string;
+      /**
+       * Record Version Id
+       * Format: uuid
+       */
+      record_version_id: string;
+    };
+    /** ReconciliationResponse */
+    ReconciliationResponse: {
+      /** Assigned To */
+      assigned_to: string | null;
+      /** Events */
+      events: components["schemas"]["ReconciliationEventResponse"][];
+      /** Evidence Requested For You */
+      evidence_requested_for_you: boolean;
+      /**
+       * Finding Id
+       * Format: uuid
+       */
+      finding_id: string;
+      /**
+       * Id
+       * Format: uuid
+       */
+      id: string;
+      /**
+       * Opened At
+       * Format: date-time
+       */
+      opened_at: string;
+      /** Records */
+      records: components["schemas"]["ReconciliationRecord"][];
+      /** Requested Institution Name */
+      requested_institution_name: string | null;
+      /** Resolution Reason */
+      resolution_reason: string | null;
+      /** Resolved At */
+      resolved_at: string | null;
+      /**
+       * Status
+       * @enum {string}
+       */
+      status:
+        | "OPEN"
+        | "UNDER_REVIEW"
+        | "AWAITING_INSTITUTION"
+        | "TRANSFER_SUPPORTED"
+        | "UNRESOLVED_OVERLAP"
+        | "DISMISSED";
+      /**
+       * Updated At
+       * Format: date-time
+       */
+      updated_at: string;
+    };
     /** RecordDetail */
     RecordDetail: {
       /** Academic Year */
@@ -2510,6 +2778,8 @@ export interface components {
       institution_name: string;
       /** Is Current */
       is_current: boolean;
+      /** Is Pwd */
+      is_pwd?: boolean | null;
       /** Masked Apaar */
       masked_apaar: string;
       /** Presence Note */
@@ -2529,6 +2799,8 @@ export interface components {
        * Format: uuid
        */
       record_version_id: string;
+      /** Reservation Category */
+      reservation_category?: string | null;
       /**
        * Snapshot Presence
        * @enum {string}
@@ -2578,6 +2850,8 @@ export interface components {
       institution_name: string;
       /** Is Current */
       is_current: boolean;
+      /** Is Pwd */
+      is_pwd?: boolean | null;
       /** Masked Apaar */
       masked_apaar: string;
       /** Programme Code */
@@ -2594,6 +2868,8 @@ export interface components {
        * Format: uuid
        */
       record_version_id: string;
+      /** Reservation Category */
+      reservation_category?: string | null;
       /**
        * Snapshot State
        * @enum {string}
@@ -2667,6 +2943,11 @@ export interface components {
         | "REJECTED"
         | "CLOSED";
     };
+    /**
+     * ReservationCategory
+     * @enum {string}
+     */
+    ReservationCategory: "GENERAL_OPEN" | "SC_ST" | "NT" | "OBC";
     /** ResolutionStats */
     ResolutionStats: {
       /** Mean Days */
@@ -2835,8 +3116,12 @@ export interface components {
        * Format: uuid
        */
       id: string;
+      /** Is Pwd */
+      is_pwd?: boolean | null;
       /** Programme Code */
       programme_code: string;
+      /** Reservation Category */
+      reservation_category?: string | null;
       /** Source Row Number */
       source_row_number: number;
       /** Student Name */
@@ -3061,10 +3346,21 @@ export interface components {
       /** Additions */
       additions: components["schemas"]["Addition"][];
       /**
+       * Category Scheme
+       * @default LEGACY
+       * @enum {string}
+       */
+      category_scheme: "LEGACY" | "RESERVATION";
+      /**
        * Programme Id
        * Format: uuid
        */
       programme_id: string;
+      /**
+       * Pwd Additions
+       * @default 0
+       */
+      pwd_additions: number;
     };
     /** SimulationResponse */
     SimulationResponse: {
@@ -3074,6 +3370,16 @@ export interface components {
       categories: {
         [key: string]: unknown;
       }[];
+      /**
+       * Category Scheme
+       * @default LEGACY
+       * @enum {string}
+       */
+      category_scheme: "LEGACY" | "RESERVATION";
+      /** Coverage */
+      coverage?: {
+        [key: string]: number;
+      } | null;
       /** Current Batch Id */
       current_batch_id: string | null;
       /** Has Current Snapshot */
@@ -3093,6 +3399,8 @@ export interface components {
        * @default false
        */
       persisted: boolean;
+      /** Pooling Note */
+      pooling_note?: string | null;
       /**
        * Programme Id
        * Format: uuid
@@ -3255,12 +3563,14 @@ export interface components {
       receive_timeout_seconds: number;
       /** Required Headers */
       required_headers: string[];
+      /** Reservation Categories */
+      reservation_categories?: components["schemas"]["ReservationCategory"][];
       /**
        * Schema Version
-       * @default v1
-       * @constant
+       * @default v2
+       * @enum {string}
        */
-      schema_version: "v1";
+      schema_version: "v1" | "v2";
     };
     /** UploadResponse */
     UploadResponse: {
@@ -3354,7 +3664,7 @@ export interface components {
        * Status
        * @enum {string}
        */
-      status: "OK" | "NO_CURRENT_SNAPSHOT" | "NO_RULE";
+      status: "OK" | "NO_CURRENT_SNAPSHOT" | "NO_RULE" | "UNKNOWN_CATEGORY";
       /** Utilisation Pct */
       utilisation_pct: number | null;
     };
@@ -3611,6 +3921,7 @@ export interface operations {
         institution_id?: string | null;
         region?: string | null;
         programme_code?: string | null;
+        category_scheme?: "LEGACY" | "RESERVATION";
       };
       header?: never;
       path?: never;
@@ -3674,6 +3985,7 @@ export interface operations {
         institution_id?: string | null;
         region?: string | null;
         programme_code?: string | null;
+        category_scheme?: "LEGACY" | "RESERVATION";
       };
       header?: never;
       path?: never;
@@ -3737,6 +4049,7 @@ export interface operations {
         institution_id?: string | null;
         region?: string | null;
         programme_code?: string | null;
+        category_scheme?: "LEGACY" | "RESERVATION";
       };
       header?: never;
       path?: never;
@@ -5345,6 +5658,7 @@ export interface operations {
         programme_id?: string | null;
         page?: number;
         page_size?: number;
+        category_scheme?: ("LEGACY" | "RESERVATION") | null;
       };
       header?: never;
       path: {
@@ -5728,6 +6042,7 @@ export interface operations {
         programme_id?: string | null;
         page?: number;
         page_size?: number;
+        category_scheme?: "LEGACY" | "RESERVATION";
       };
       header?: never;
       path: {
@@ -6462,6 +6777,442 @@ export interface operations {
       };
     };
   };
+  list__api_v1_reconciliations_get: {
+    parameters: {
+      query?: {
+        page?: number;
+        page_size?: number;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["Page_ReconciliationResponse_"];
+        };
+      };
+      /** @description Unauthorized */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+      /** @description Forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+      /** @description Not Found */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+      /** @description Conflict */
+      409: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+      /** @description Unprocessable Content */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+      /** @description Internal Server Error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+      /** @description Service Unavailable */
+      503: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+    };
+  };
+  create_api_v1_reconciliations_post: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["ReconciliationCreate"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ReconciliationResponse"];
+        };
+      };
+      /** @description Unauthorized */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+      /** @description Forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+      /** @description Not Found */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+      /** @description Conflict */
+      409: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+      /** @description Unprocessable Content */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+      /** @description Internal Server Error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+      /** @description Service Unavailable */
+      503: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+    };
+  };
+  detail_api_v1_reconciliations__reconciliation_id__get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        reconciliation_id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ReconciliationResponse"];
+        };
+      };
+      /** @description Unauthorized */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+      /** @description Forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+      /** @description Not Found */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+      /** @description Conflict */
+      409: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+      /** @description Unprocessable Content */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+      /** @description Internal Server Error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+      /** @description Service Unavailable */
+      503: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+    };
+  };
+  action_api_v1_reconciliations__reconciliation_id__actions_post: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        reconciliation_id: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["ReconciliationActionRequest"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ReconciliationResponse"];
+        };
+      };
+      /** @description Unauthorized */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+      /** @description Forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+      /** @description Not Found */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+      /** @description Conflict */
+      409: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+      /** @description Unprocessable Content */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+      /** @description Internal Server Error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+      /** @description Service Unavailable */
+      503: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+    };
+  };
+  evidence_api_v1_reconciliations__reconciliation_id__evidence_post: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        reconciliation_id: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["ReconciliationEvidence"];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ReconciliationResponse"];
+        };
+      };
+      /** @description Unauthorized */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+      /** @description Forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+      /** @description Not Found */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+      /** @description Conflict */
+      409: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+      /** @description Unprocessable Content */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+      /** @description Internal Server Error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+      /** @description Service Unavailable */
+      503: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+    };
+  };
   registry_api_v1_records_get: {
     parameters: {
       query?: {
@@ -6811,6 +7562,7 @@ export interface operations {
         institution_id?: string | null;
         region?: string | null;
         programme_code?: string | null;
+        category_scheme?: "LEGACY" | "RESERVATION";
         priority?: ("LOW" | "MEDIUM" | "HIGH" | "URGENT") | null;
         severity?: ("LOW" | "MEDIUM" | "HIGH" | "CRITICAL") | null;
       };
@@ -7034,9 +7786,9 @@ export interface operations {
           programme_id: string;
           /**
            * @default v1
-           * @constant
+           * @enum {string}
            */
-          schema_version?: "v1";
+          schema_version?: "v1" | "v2";
         };
       };
     };
@@ -7153,7 +7905,9 @@ export interface operations {
   };
   upload_policy_api_v1_submissions_upload_policy_get: {
     parameters: {
-      query?: never;
+      query?: {
+        schema_version?: "v1" | "v2";
+      };
       header?: never;
       path?: never;
       cookie?: never;

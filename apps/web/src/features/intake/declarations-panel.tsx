@@ -3,13 +3,14 @@
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
-import { ErrorPanel, Loading } from "@/components/ui/feedback";
+import { EmptyState, ErrorPanel, Loading } from "@/components/ui/feedback";
 import { Pagination } from "@/components/ui/pagination";
 import { useSession } from "@/features/auth/session";
 import {
   useSubmissionContext,
   validAcademicYear,
 } from "@/features/submissions/data";
+import { jsonInit } from "@/lib/api/client";
 import { useApiQuery, useScope } from "@/lib/api/hooks";
 import type { components } from "@/lib/api/generated";
 import { when } from "@/lib/format";
@@ -53,11 +54,10 @@ export function DeclaredTotalsPanel({
   );
   const create = useMutation({
     mutationFn: (body: Draft) =>
-      request<Declaration>(`/institutions/${institutionId}/declarations`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      }),
+      request<Declaration>(
+        `/institutions/${institutionId}/declarations`,
+        jsonInit("POST", body),
+      ),
     onSuccess: async (saved) => {
       setPending(null);
       setFormError("");
@@ -182,13 +182,10 @@ export function DeclaredTotalsPanel({
       ) : list.isError ? (
         <ErrorPanel error={list.error} retry={() => void list.refetch()} />
       ) : rows.length === 0 ? (
-        <div className="empty-state compact">
-          <h3>No declared totals</h3>
-          <p>
-            Without a declared total, assessments report “No reference total
-            declared” and draw no missing-population conclusion.
-          </p>
-        </div>
+        <EmptyState className="compact" title="No declared totals">
+          Without a declared total, assessments report “No reference total
+          declared” and draw no missing-population conclusion.
+        </EmptyState>
       ) : (
         <>
           <ScrollTable label="Declared totals, newest first">

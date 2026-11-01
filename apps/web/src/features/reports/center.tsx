@@ -29,6 +29,7 @@ type Kind =
   | "open-cases"
   | "verification-activity";
 type Filters = {
+  categoryScheme: "RESERVATION" | "LEGACY";
   year: string;
   institution: string;
   region: string;
@@ -102,6 +103,7 @@ const REPORTS: {
 ];
 
 const EMPTY: Filters = {
+  categoryScheme: "RESERVATION",
   year: "",
   institution: "",
   region: "",
@@ -134,7 +136,10 @@ function ReportCard({
 
   const exportReport = useMutation({
     mutationFn: () => {
-      const query = new URLSearchParams({ format });
+      const query = new URLSearchParams({
+        format,
+        category_scheme: filters.categoryScheme,
+      });
       if (filters.year) query.set("academic_year", filters.year);
       if (!fixedInstitution && filters.institution)
         query.set("institution_id", filters.institution);
@@ -168,9 +173,17 @@ function ReportCard({
   }
 
   return (
-    <section className="panel dashboard-panel" aria-labelledby={`${id}-title`}>
+    <section
+      className="panel dashboard-panel report-card"
+      aria-labelledby={`${id}-title`}
+    >
       <h2 id={`${id}-title`}>{report.title}</h2>
       <p>{report.description}</p>
+      <p className="data-note">
+        Reservation category exports show PwD overlapping primary categories; do
+        not sum groups as headcount. Unknown legacy classifications are
+        unavailable.
+      </p>
       <form
         className="dashboard-filters"
         onSubmit={(event) => {
@@ -178,6 +191,16 @@ function ReportCard({
           submit();
         }}
       >
+        <label>
+          Category scheme
+          <select
+            value={filters.categoryScheme}
+            onChange={(e) => set("categoryScheme", e.target.value)}
+          >
+            <option value="RESERVATION">Reservation categories</option>
+            <option value="LEGACY">Legacy admission categories</option>
+          </select>
+        </label>
         <label>
           Academic year
           <input
@@ -280,6 +303,8 @@ export function ReportCenter() {
   const institution = search.get("institution_id") ?? "";
   const initial: Filters = {
     ...EMPTY,
+    categoryScheme:
+      search.get("category_scheme") === "LEGACY" ? "LEGACY" : "RESERVATION",
     year: validAcademicYear(year) ? year : "",
     institution: list.some((i) => i.id === institution) ? institution : "",
     region: regions.includes(search.get("region") ?? "")
@@ -289,15 +314,14 @@ export function ReportCenter() {
   const available = REPORTS.filter((r) => r.roles.includes(role));
 
   return (
-    <div className="dashboard-page">
+    <div className="dashboard-page report-page">
       <header className="page-heading">
         <p className="eyebrow">REPORTS</p>
         <h1>Reports</h1>
         <p>
           Download aggregate reports as CSV, Excel or PDF. Report totals
           reconcile with the analytics views for the same filters. Every report
-          is labelled <strong>{DEMO_TAG}</strong>: all records are
-          synthetic.
+          is labelled <strong>{DEMO_TAG}</strong>: all records are synthetic.
           {fixedInstitution && " Reports are limited to your institution."}
         </p>
       </header>

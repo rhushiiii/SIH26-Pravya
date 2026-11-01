@@ -11,6 +11,10 @@ from app.core.database import Base, build_engine
 from app.modules.audit.models import AuditEvent
 from app.modules.audit.services import record_action
 from app.modules.auth.models import Role, User
+from app.modules.institutions.categories import (
+    LEGACY_CATEGORIES,
+    RESERVATION_RULE_VERSION,
+)
 from app.modules.institutions.models import (
     AdmissionCategory,
     Institution,
@@ -96,7 +100,8 @@ def seed_demo(session: Session, settings: Settings) -> dict[str, int]:
                 },
                 institution_id,
             )
-            for category in AdmissionCategory:
+            for category_value in LEGACY_CATEGORIES:
+                category = AdmissionCategory(category_value)
                 created += ensure_fixture(
                     session,
                     IntakeRule,
@@ -154,6 +159,37 @@ def seed_demo(session: Session, settings: Settings) -> dict[str, int]:
     return {"created": created, "expected_fixture_records": 46}
 
 
+def seed_reservation_rules(session: Session) -> int:
+    """Separate illustrative fixtures; never infer categories for old students."""
+    created = 0
+    # Small independent demonstration limits, not official quotas/percentages.
+    capacities = {"GENERAL_OPEN": 3, "SC_ST": 1, "NT": 1, "OBC": 2, "PWD": 1}
+    for slug in ("cedar", "maple", "willow"):
+        institution_id = seed_id("institutions", slug)
+        for code in ("DEMO-COMP", "DEMO-ELEC"):
+            programme_key = f"{slug}/{code}"
+            programme_id = seed_id("programmes", programme_key)
+            if session.get(Programme, programme_id) is None:
+                continue
+            for category, capacity in capacities.items():
+                created += ensure_fixture(
+                    session,
+                    IntakeRule,
+                    f"{programme_key}/2026-27/{category}/{RESERVATION_RULE_VERSION}",
+                    {
+                        "institution_id": institution_id,
+                        "programme_id": programme_id,
+                        "academic_year": "2026-27",
+                        "category": AdmissionCategory(category),
+                        "approved_seats": capacity,
+                        "rule_version": RESERVATION_RULE_VERSION,
+                        "source_label": "DEMO",
+                    },
+                    institution_id,
+                )
+    return created
+
+
 def main() -> int:
     try:
         settings = Settings()
@@ -164,6 +200,8 @@ def main() -> int:
         try:
             with Session(engine) as session, session.begin():
                 result = seed_demo(session, settings)
+                result["created"] += seed_reservation_rules(session)
+                result["expected_fixture_records"] += 30
         finally:
             engine.dispose()
     except (ValueError, SQLAlchemyError):

@@ -46,28 +46,36 @@ export function useApiQuery<T>(
 /**
  * Draft/Apply/Clear filter state shared by list pages: the draft edits freely,
  * validation errors block apply, and applied filters drive the queries.
+ * `prepare` (optional) converts the draft into the applied shape — trimming,
+ * date normalization — after validation passes.
  */
 export function useDraftFilters<F>(
   initial: F,
-  validate: (draft: F) => string | null,
+  validate: (prepared: F) => string | null,
   {
     onApplied,
     onCleared,
-  }: { onApplied?: (filters: F) => void; onCleared?: () => void } = {},
+    prepare,
+  }: {
+    onApplied?: (filters: F) => void;
+    onCleared?: () => void;
+    prepare?: (draft: F) => F;
+  } = {},
 ) {
   const [draft, setDraft] = useState(initial);
   const [filters, setFilters] = useState(initial);
   const [error, setError] = useState<string | null>(null);
   const apply = useCallback(() => {
-    const problem = validate(draft);
+    const prepared = prepare ? prepare(draft) : draft;
+    const problem = validate(prepared);
     if (problem) {
       setError(problem);
       return;
     }
     setError(null);
-    setFilters(draft);
-    onApplied?.(draft);
-  }, [draft, validate, onApplied]);
+    setFilters(prepared);
+    onApplied?.(prepared);
+  }, [draft, prepare, validate, onApplied]);
   const clear = useCallback(() => {
     setDraft(initial);
     setFilters(initial);

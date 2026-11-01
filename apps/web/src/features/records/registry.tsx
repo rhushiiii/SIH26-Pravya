@@ -1,5 +1,7 @@
 "use client";
 
+import { categoryLabel } from "@/features/intake/shared";
+
 import Link from "next/link";
 import { useState } from "react";
 import {
@@ -246,6 +248,8 @@ export function RecordRegistry() {
                       {officer && <th scope="col">Institution</th>}
                       <th scope="col">Programme</th>
                       <th scope="col">Year</th>
+                      <th scope="col">Reservation category</th>
+                      <th scope="col">PwD</th>
                       <th scope="col">Enrollment</th>
                       <th scope="col">Status</th>
                     </tr>
@@ -265,6 +269,18 @@ export function RecordRegistry() {
                         {officer && <td>{row.institution_name}</td>}
                         <td>{row.programme_name}</td>
                         <td>{row.academic_year}</td>
+                        <td>
+                          {row.reservation_category
+                            ? categoryLabel(row.reservation_category)
+                            : "Not provided (legacy)"}
+                        </td>
+                        <td>
+                          {row.is_pwd == null
+                            ? "Not provided (legacy)"
+                            : row.is_pwd
+                              ? "Yes"
+                              : "No"}
+                        </td>
                         <td>{row.enrollment_status}</td>
                         <td>
                           <StatusBadges

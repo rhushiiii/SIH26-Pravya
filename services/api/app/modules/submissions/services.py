@@ -14,6 +14,12 @@ from app.core.idempotency import find_replay
 from app.modules.audit.services import record_action
 from app.modules.auth.dependencies import require_roles
 from app.modules.auth.models import Role, User
+from app.modules.institutions.categories import (
+    RESERVATION_POOLING_NOTE,
+    CategoryScheme,
+    reservation_category_counts,
+    reservation_coverage,
+)
 from app.modules.institutions.models import Programme
 from app.modules.institutions.services import scoped_institution, scoped_programme
 from app.modules.submissions.models import (
@@ -53,7 +59,9 @@ def identifier_maps(
     return before, after
 
 
-def snapshot_counts(rows: list[StudentRecordVersion]) -> dict[str, Any]:
+def snapshot_counts(
+    rows: list[StudentRecordVersion], category_scheme: CategoryScheme | None = None
+) -> dict[str, Any]:
     """Declared rows, not deduplicated people or official accounting policy."""
     categories = {
         category: {"declared_records": 0, "demo_active_records": 0}
@@ -70,13 +78,30 @@ def snapshot_counts(rows: list[StudentRecordVersion]) -> dict[str, Any]:
             )
         else:
             unclassified += 1
-    return {
+    result: dict[str, Any] = {
         "declared_records": len(rows),
         "demo_active_records": statuses["ACTIVE"],
         "categories": categories,
         "statuses": {status: statuses[status] for status in (*STATUSES, "UNSUPPORTED")},
         "unclassified_category_records": unclassified,
     }
+    if category_scheme == "RESERVATION" or (
+        category_scheme is None
+        and any("reservation_category" in row.normalized_json for row in rows)
+    ):
+        coverage = reservation_coverage(rows)
+        result.update(
+            {
+                "categories": reservation_category_counts(rows),
+                "unclassified_category_records": coverage[
+                    "records_missing_main_category"
+                ],
+                "reservation_coverage": coverage,
+                "category_scheme": "RESERVATION",
+                "pooling_note": RESERVATION_POOLING_NOTE,
+            }
+        )
+    return result
 
 
 def batch_rows(session: Session, batch_id: UUID) -> list[StudentRecordVersion]:
@@ -221,6 +246,8 @@ def persist_candidate(
                     apaar_identifier_encrypted_or_demo_token=values["apaar_id"],
                     apaar_match_hash=None,
                     admission_category=values["admission_category"],
+                    reservation_category=values.get("reservation_category"),
+                    is_pwd={"YES": True, "NO": False}.get(values.get("is_pwd", "")),
                     enrollment_status=values["enrollment_status"],
                     enrollment_date=row.enrollment_date,
                     original_json=row.original,
@@ -355,6 +382,8 @@ def row_response(row: StudentRecordVersion) -> RowResponse:
         academic_year=row.normalized_json["academic_year"],
         programme_code=row.normalized_json["programme_code"],
         admission_category=row.admission_category,
+        reservation_category=row.reservation_category,
+        is_pwd=row.is_pwd,
         enrollment_status=row.enrollment_status,
         enrollment_date=row.enrollment_date,
         apaar_id_masked=masked,

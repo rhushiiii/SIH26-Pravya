@@ -9,12 +9,13 @@ import {
   Loading,
   DemoBanner,
   QueryBoundary,
+  EmptyState,
 } from "@/components/ui/feedback";
 import { Pagination } from "@/components/ui/pagination";
 import { useSession } from "@/features/auth/session";
 import { useApiQuery, useScope } from "@/lib/api/hooks";
 import { ScrollTable } from "@/features/intake/shared";
-import { ApiError, errorMessage } from "@/lib/api/client";
+import { ApiError, errorMessage, jsonInit } from "@/lib/api/client";
 import type { components } from "@/lib/api/generated";
 import { humanize, when } from "@/lib/format";
 
@@ -216,7 +217,7 @@ function SignalItem({
   onDecide?: (s: Signal) => void;
 }) {
   return (
-    <li className="panel-padding" style={{ borderTop: "1px solid #0001" }}>
+    <li className="panel-padding integrity-signal-item">
       <p>
         <span className={`status-badge ${severityTone(signal.severity)}`}>
           {title(signal.severity)}
@@ -261,51 +262,53 @@ function DecisionHistory({ institutionId }: { institutionId: string }) {
     `/integrity/institutions/${institutionId}/decisions?page=${page}&page_size=10`,
   );
   return (
-    <div className="panel-padding">
-      <h3>Decision history</h3>
-      <QueryBoundary query={list} loading="Loading decisions…">
-        {(data) =>
-          data.data.length === 0 ? (
-            <div className="empty-state compact">
-              <p>No decisions recorded yet.</p>
-            </div>
-          ) : (
-            <>
-              <ScrollTable label="Integrity signal decisions, newest first">
-                <thead>
-                  <tr>
-                    <th scope="col">Recorded</th>
-                    <th scope="col">Signal</th>
-                    <th scope="col">Decision</th>
-                    <th scope="col">Reason</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {data.data.map((d) => (
-                    <tr key={d.id}>
-                      <td>{when(d.created_at)}</td>
-                      <td>
-                        <span className="code-label">{d.signal_key}</span>
-                      </td>
-                      <td>{decisionLabel(d.decision)}</td>
-                      <td>{d.reason}</td>
+    <details className="integrity-decision-history">
+      <summary>Decision history</summary>
+      <div className="panel-padding">
+        <QueryBoundary query={list} loading="Loading decisions…">
+          {(data) =>
+            data.data.length === 0 ? (
+              <div className="empty-state compact">
+                <p>No decisions recorded yet.</p>
+              </div>
+            ) : (
+              <>
+                <ScrollTable label="Integrity signal decisions, newest first">
+                  <thead>
+                    <tr>
+                      <th scope="col">Recorded</th>
+                      <th scope="col">Signal</th>
+                      <th scope="col">Decision</th>
+                      <th scope="col">Reason</th>
                     </tr>
-                  ))}
-                </tbody>
-              </ScrollTable>
-              <Pagination
-                page={page}
-                pageSize={10}
-                total={data.pagination.total}
-                busy={list.isFetching}
-                change={setPage}
-                label="Decision history pagination"
-              />
-            </>
-          )
-        }
-      </QueryBoundary>
-    </div>
+                  </thead>
+                  <tbody>
+                    {data.data.map((d) => (
+                      <tr key={d.id}>
+                        <td>{when(d.created_at)}</td>
+                        <td>
+                          <span className="code-label">{d.signal_key}</span>
+                        </td>
+                        <td>{decisionLabel(d.decision)}</td>
+                        <td>{d.reason}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </ScrollTable>
+                <Pagination
+                  page={page}
+                  pageSize={10}
+                  total={data.pagination.total}
+                  busy={list.isFetching}
+                  change={setPage}
+                  label="Decision history pagination"
+                />
+              </>
+            )
+          }
+        </QueryBoundary>
+      </div>
+    </details>
   );
 }
 
@@ -336,11 +339,10 @@ export function IntegritySignalsPanel({
   };
   const record = useMutation({
     mutationFn: (body: components["schemas"]["DecisionRequest"]) =>
-      request(`/integrity/institutions/${institutionId}/decisions`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      }),
+      request(
+        `/integrity/institutions/${institutionId}/decisions`,
+        jsonInit("POST", body),
+      ),
     onSuccess: async (_saved, body) => {
       setNotice(`Decision recorded: ${decisionLabel(body.decision)}.`);
       close();
@@ -394,18 +396,17 @@ export function IntegritySignalsPanel({
               {notice && <p className="form-success">{notice}</p>}
             </div>
           </div>
-          <div className="panel-padding">
-            <h3>Score components</h3>
-            <ScoreTable score={signals.data.score} />
-          </div>
-          {signals.data.signals.length === 0 && (
-            <div className="empty-state compact">
-              <h3>No signals</h3>
-              <p>
-                No review prompts were raised from the stored data. This does
-                not confirm compliance.
-              </p>
+          <details className="integrity-score-details">
+            <summary>Score components and calculation</summary>
+            <div className="panel-padding">
+              <ScoreTable score={signals.data.score} />
             </div>
+          </details>
+          {signals.data.signals.length === 0 && (
+            <EmptyState className="compact" title="No signals">
+              No review prompts were raised from the stored data. This does not
+              confirm compliance.
+            </EmptyState>
           )}
           {FAMILIES.map((f) => {
             const items = signals.data.signals.filter((s) => s.family === f.id);
@@ -418,7 +419,7 @@ export function IntegritySignalsPanel({
                   </h3>
                   <p className="cell-note">{f.hint}</p>
                 </div>
-                <ul style={{ listStyle: "none", margin: 0, padding: 0 }}>
+                <ul className="integrity-signal-list">
                   {items.map((s) => (
                     <SignalItem
                       key={s.signal_key}

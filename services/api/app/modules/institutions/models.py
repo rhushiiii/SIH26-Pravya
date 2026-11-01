@@ -22,6 +22,11 @@ class AdmissionCategory(StrEnum):
     NRI = "NRI"
     OCI = "OCI"
     FOREIGN_NATIONAL = "FOREIGN_NATIONAL"
+    GENERAL_OPEN = "GENERAL_OPEN"
+    SC_ST = "SC_ST"
+    NT = "NT"
+    OBC = "OBC"
+    PWD = "PWD"
 
 
 class Institution(Timestamps, Base):

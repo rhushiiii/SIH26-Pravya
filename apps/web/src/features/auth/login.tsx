@@ -31,6 +31,22 @@ export function Login() {
   const [error, setError] = useState<unknown>(null);
   const router = useRouter();
   const enabled = process.env.NEXT_PUBLIC_DEMO_UI_ENABLED === "true";
+  const accountGroups = [
+    {
+      title: "Institution teams",
+      description: "Choose the institution workspace you are representing.",
+      accounts: accounts.filter(
+        (account) => account.role === "Institution administrator",
+      ),
+    },
+    {
+      title: "Admissions and verification",
+      description: "Choose the review or credential access for this session.",
+      accounts: accounts.filter(
+        (account) => account.role !== "Institution administrator",
+      ),
+    },
+  ];
   useEffect(() => {
     if (session) router.replace(homeFor(session.user.role));
   }, [session, router]);
@@ -49,13 +65,30 @@ export function Login() {
 
   return (
     <div className="login-page">
+      <aside className="login-aside" aria-label="About PRAVYA">
+        <p className="eyebrow">ADMISSIONS, WITH CLARITY</p>
+        <h2>One trusted view of every admission record.</h2>
+        <p>
+          PRAVYA helps institutional teams prepare and review admission data,
+          with validation findings and a clear history of each submission.
+        </p>
+        <ul>
+          <li>Review records with evidence-linked findings</li>
+          <li>Keep institution and officer workspaces distinct</li>
+          <li>Trace submissions through an audit history</li>
+        </ul>
+        <p className="login-aside-note">
+          Demo workspaces use synthetic data. Selecting a role opens only the
+          permissions assigned to that account.
+        </p>
+      </aside>
       <main className="login-main">
         <section className="login-card" aria-labelledby="login-title">
           <p className="eyebrow">A CLEAR START</p>
           <h1 id="login-title">Sign in to PRAVYA</h1>
           <p className="intro">
-            Choose an account to open its permitted workspace. Access is
-            resolved by the backend.
+            Select the account that matches the work you need to do. Each
+            account opens a separate, permission-scoped workspace.
           </p>
           <DataNotice />
           {reason && (
@@ -76,31 +109,47 @@ export function Login() {
             </section>
           ) : (
             <form onSubmit={submit} aria-busy={signingIn}>
-              <fieldset className="account-options" disabled={signingIn}>
-                <legend>Select an account</legend>
-                {accounts.map((account) => (
-                  <label
-                    key={account.alias}
-                    className={`account-option ${alias === account.alias ? "selected" : ""}`}
+              <div className="account-options">
+                <p className="account-guidance" id="account-guidance">
+                  Pick one account below. You can switch accounts at any time by
+                  returning to this page.
+                </p>
+                {accountGroups.map((group, index) => (
+                  <fieldset
+                    className="account-group"
+                    disabled={signingIn}
+                    key={group.title}
+                    aria-describedby={`account-group-${index}-description`}
                   >
-                    <input
-                      type="radio"
-                      name="demo-account"
-                      value={account.alias}
-                      checked={alias === account.alias}
-                      onChange={() => setAlias(account.alias)}
-                    />
-                    <span className="account-monogram" aria-hidden="true">
-                      {account.monogram}
-                    </span>
-                    <span className="account-copy">
-                      <strong>{account.label}</strong>
-                      <small>{account.role}</small>
-                    </span>
-                    <span className="radio-indicator" aria-hidden="true" />
-                  </label>
+                    <legend>{group.title}</legend>
+                    <p id={`account-group-${index}-description`}>
+                      {group.description}
+                    </p>
+                    {group.accounts.map((account) => (
+                      <label
+                        key={account.alias}
+                        className={`account-option ${alias === account.alias ? "selected" : ""}`}
+                      >
+                        <input
+                          type="radio"
+                          name="demo-account"
+                          value={account.alias}
+                          checked={alias === account.alias}
+                          onChange={() => setAlias(account.alias)}
+                        />
+                        <span className="account-monogram" aria-hidden="true">
+                          {account.monogram}
+                        </span>
+                        <span className="account-copy">
+                          <strong>{account.label}</strong>
+                          <small>{account.role}</small>
+                        </span>
+                        <span className="radio-indicator" aria-hidden="true" />
+                      </label>
+                    ))}
+                  </fieldset>
                 ))}
-              </fieldset>
+              </div>
               {error !== null && (
                 <div className="login-error" role="alert">
                   <p>
@@ -118,9 +167,23 @@ export function Login() {
                 disabled={signingIn}
                 type="submit"
               >
-                {signingIn ? "Opening your workspace…" : "Continue"}
-                <Icon name="arrow" />
+                {signingIn ? (
+                  <>
+                    <span className="login-spinner" aria-hidden="true" />
+                    Opening your workspace…
+                  </>
+                ) : (
+                  <>
+                    Continue
+                    <Icon name="arrow" />
+                  </>
+                )}
               </button>
+              {signingIn && (
+                <p className="login-pending" role="status" aria-live="polite">
+                  Signing you in securely. This can take a moment.
+                </p>
+              )}
             </form>
           )}
           <p className="session-hint">

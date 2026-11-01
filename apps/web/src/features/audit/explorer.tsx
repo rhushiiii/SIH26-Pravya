@@ -9,7 +9,7 @@ import {
 import { InstitutionSelect } from "@/components/ui/filters";
 import { Pagination } from "@/components/ui/pagination";
 import { useSession } from "@/features/auth/session";
-import { useApiQuery, useScope } from "@/lib/api/hooks";
+import { useApiQuery, useDraftFilters, useScope } from "@/lib/api/hooks";
 import { DashboardTable, prettyLabel } from "@/features/dashboards/components";
 import type { components } from "@/lib/api/generated";
 import { when } from "@/lib/format";
@@ -51,11 +51,39 @@ function show(value: unknown): string {
 
 export function AuditExplorer() {
   const { session } = useSession();
-  const [draft, setDraft] = useState<Filters>(EMPTY);
-  const [filters, setFilters] = useState<Filters>(EMPTY);
   const [page, setPage] = useState(1);
-  const [error, setError] = useState("");
   const [expanded, setExpanded] = useState<string | null>(null);
+  const restart = () => {
+    setPage(1);
+    setExpanded(null);
+  };
+  const { draft, setDraft, filters, error, apply, clear } = useDraftFilters<Filters>(
+    EMPTY,
+    (candidate) => {
+      const actor = candidate.actor.trim();
+      if (actor && !UUID.test(actor))
+        return "Actor id must be a user id in UUID format.";
+      const from = candidate.from ? toIso(candidate.from) : "";
+      const to = candidate.to ? toIso(candidate.to) : "";
+      if (from === null || to === null)
+        return "Enter valid from and to dates.";
+      if (from && to && from > to)
+        return "The from date must be before the to date.";
+      return null;
+    },
+    {
+      // Validation guarantees toIso succeeds here; the conversion is repeated,
+      // not duplicated logic.
+      prepare: (candidate) => ({
+        ...candidate,
+        actor: candidate.actor.trim(),
+        from: candidate.from ? (toIso(candidate.from) as string) : "",
+        to: candidate.to ? (toIso(candidate.to) as string) : "",
+      }),
+      onApplied: restart,
+      onCleared: restart,
+    },
+  );
 
   const actions = useApiQuery<Actions>(
     useScope("audit", "actions"),
@@ -84,28 +112,6 @@ export function AuditExplorer() {
     eventsPath,
     { placeholderData: (previous) => previous },
   );
-
-  function apply() {
-    const actor = draft.actor.trim();
-    if (actor && !UUID.test(actor)) {
-      setError("Actor id must be a user id in UUID format.");
-      return;
-    }
-    const from = draft.from ? toIso(draft.from) : "";
-    const to = draft.to ? toIso(draft.to) : "";
-    if (from === null || to === null) {
-      setError("Enter valid from and to dates.");
-      return;
-    }
-    if (from && to && from > to) {
-      setError("The from date must be before the to date.");
-      return;
-    }
-    setError("");
-    setFilters({ ...draft, actor, from, to });
-    setPage(1);
-    setExpanded(null);
-  }
 
   return (
     <div className="dashboard-page">
@@ -187,13 +193,7 @@ export function AuditExplorer() {
           <button
             className="button secondary"
             type="button"
-            onClick={() => {
-              setDraft(EMPTY);
-              setFilters(EMPTY);
-              setPage(1);
-              setError("");
-              setExpanded(null);
-            }}
+            onClick={clear}
           >
             Clear
           </button>

@@ -1,21 +1,22 @@
 "use client";
 
 import Link from "next/link";
+import { categoryLabel } from "@/features/intake/shared";
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ErrorPanel, Loading } from "@/components/ui/feedback";
 import { Pagination } from "@/components/ui/pagination";
 import { useSession } from "@/features/auth/session";
-import { useApiQuery, useScope } from "@/lib/api/hooks";
-import { ApiError, errorMessage, isUUID } from "@/lib/api/client";
-import type { components } from "@/lib/api/generated";
+import { useApiQuery, useCopy, useScope } from "@/lib/api/hooks";
 import {
-  displayCount,
-  humanize,
-  valueObject,
-  countValue,
-  when,
-} from "@/lib/format";
+  ApiError,
+  classifyMutationError,
+  errorMessage,
+  isUUID,
+  jsonInit,
+} from "@/lib/api/client";
+import type { components } from "@/lib/api/generated";
+import { displayCount, valueObject, countValue, when } from "@/lib/format";
 
 type Batch = components["schemas"]["BatchResponse"];
 type Run = components["schemas"]["RunResponse"];
@@ -24,8 +25,6 @@ type Activation = components["schemas"]["ActivationResponse"];
 type ObjectValue = Record<string, unknown>;
 
 const omissionPageSize = 20;
-
-const label = humanize;
 
 function nestedCount(value: unknown, key: string): unknown {
   return valueObject(value)?.[key];
@@ -54,10 +53,12 @@ function activationError(error: unknown): string {
       return "This candidate was already activated. Refresh its provenance to confirm the current state.";
     case "OMISSIONS_ACKNOWLEDGMENT_REQUIRED":
       return "This replacement omits earlier records. Check the omission acknowledgment and try again.";
-    default:
-      return error.status >= 500 || error.status === 0
+    default: {
+      const outcome = classifyMutationError(error);
+      return outcome.kind === "uncertain"
         ? "The activation result is uncertain. We are checking the candidate and review status before allowing another attempt."
-        : errorMessage(error);
+        : outcome.message;
+    }
   }
 }
 
@@ -107,7 +108,9 @@ function CountComparison({
         >
           <table className="review-table">
             <caption>
-              Candidate and current category counts · local accounting
+              Candidate and current category counts · local accounting. PwD
+              overlaps primary categories when provided; do not sum groups into
+              headcount.
             </caption>
             <thead>
               <tr>
@@ -127,7 +130,7 @@ function CountComparison({
                 const change = valueObject(categoryDeltas?.[key]);
                 return (
                   <tr key={key}>
-                    <th scope="row">{label(key)}</th>
+                    <th scope="row">{categoryLabel(key)}</th>
                     <td>
                       {current
                         ? displayCount(before?.declared_records)
@@ -172,7 +175,7 @@ function CountComparison({
             <tbody>
               {statuses.map((key) => (
                 <tr key={key}>
-                  <th scope="row">{label(key)}</th>
+                  <th scope="row">{categoryLabel(key)}</th>
                   <td>
                     {current
                       ? displayCount(statusesCurrent?.[key])
@@ -225,6 +228,7 @@ export function ReviewActivation({
     null,
   );
   const [copyMessage, setCopyMessage] = useState("");
+  const { copy } = useCopy();
   const page = Math.max(1, omissionPage);
   const baseKey = useScope("validation", batch.id);
   const receiptPath = `/submissions/${batch.id}/reviews/${reviewId}?page=${page}&page_size=${omissionPageSize}`;
@@ -246,11 +250,10 @@ export function ReviewActivation({
 
   const createReview = useMutation({
     mutationFn: () =>
-      request<Review>(`/submissions/${batch.id}/reviews`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ validation_run_id: run.id }),
-      }),
+      request<Review>(
+        `/submissions/${batch.id}/reviews`,
+        jsonInit("POST", { validation_run_id: run.id }),
+      ),
     retry: false,
     networkMode: "always",
     onSuccess: (created) => {
@@ -266,9 +269,10 @@ export function ReviewActivation({
       onReviewChange(created.id, 1);
     },
     onError: (error) => {
+      const outcome = classifyMutationError(error);
       setStatus(
-        error instanceof ApiError && error.status >= 400 && error.status < 500
-          ? `Review was not accepted. ${errorMessage(error)}`
+        outcome.kind === "conflict" || outcome.kind === "client"
+          ? `Review was not accepted. ${outcome.message}`
           : "Review creation outcome is unknown. No activation occurred and the request was not retried. Refresh candidate history before deliberately creating another review.",
       );
     },
@@ -284,10 +288,9 @@ export function ReviewActivation({
     mutationFn: () => {
       if (!receipt.data)
         throw new Error("A selected review receipt is required");
-      return request<Activation>(`/submissions/${batch.id}/activate`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
+      return request<Activation>(
+        `/submissions/${batch.id}/activate`,
+        jsonInit("POST", {
           review_id: receipt.data.id,
           expected_scope_revision: receipt.data.expected_scope_revision,
           confirm_complete_replacement: true,
@@ -297,7 +300,7 @@ export function ReviewActivation({
               ? omissionsAcknowledged
               : false,
         }),
-      });
+      );
     },
     retry: false,
     networkMode: "always",
@@ -315,11 +318,13 @@ export function ReviewActivation({
     },
     onError: async (error) => {
       clearAcknowledgments();
-      if (error instanceof ApiError && error.status === 409) {
+      const outcome = classifyMutationError(error);
+      if (outcome.kind === "conflict") {
         setRequiresFreshReview(
-          error.code === "SCOPE_REVISION_CONFLICT" ||
-            error.code === "ACTIVATION_CONFLICT" ||
-            error.code === "REVIEW_POLICY_CHANGED",
+          error instanceof ApiError &&
+            (error.code === "SCOPE_REVISION_CONFLICT" ||
+              error.code === "ACTIVATION_CONFLICT" ||
+              error.code === "REVIEW_POLICY_CHANGED"),
         );
         setUncertain(false);
         setRetryAllowed(false);
@@ -332,11 +337,7 @@ export function ReviewActivation({
         });
         return;
       }
-      if (
-        error instanceof ApiError &&
-        error.status >= 400 &&
-        error.status < 500
-      ) {
+      if (outcome.kind === "client") {
         setStatus(activationError(error));
         return;
       }
@@ -424,11 +425,10 @@ export function ReviewActivation({
     admin && !batch.activated_at && batch.status === "COMPLETED";
   const freshReview = useMutation({
     mutationFn: () =>
-      request<Review>(`/submissions/${batch.id}/reviews`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ validation_run_id: run.id }),
-      }),
+      request<Review>(
+        `/submissions/${batch.id}/reviews`,
+        jsonInit("POST", { validation_run_id: run.id }),
+      ),
     retry: false,
     networkMode: "always",
     onSuccess: (created) => {
@@ -1109,15 +1109,12 @@ export function ReviewActivation({
           className="button secondary small"
           type="button"
           onClick={() => {
-            void navigator.clipboard.writeText(window.location.href).then(
-              () =>
-                setCopyMessage(
-                  "Review link copied; the receiving user must sign in with an authorized account.",
-                ),
-              () =>
-                setCopyMessage(
-                  "Could not access clipboard. Share the review ID with an authorized officer.",
-                ),
+            void copy(window.location.href).then((ok) =>
+              setCopyMessage(
+                ok
+                  ? "Review link copied; the receiving user must sign in with an authorized account."
+                  : "Could not access clipboard. Share the review ID with an authorized officer.",
+              ),
             );
           }}
         >

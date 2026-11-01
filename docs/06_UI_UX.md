@@ -1,5 +1,30 @@
 # UI / UX Blueprint
 
+## Institution direct entry and synthetic examples
+
+The institution upload page now offers file upload and direct entry of student
+rows. This extends the earlier file-only Step 5B interface. Institution,
+programme and academic-year scoping, server authorization and complete-candidate
+semantics are shared by both modes. Direct entry serializes the current eight
+v1 columns into a quoted UTF-8 CSV and uses the existing submission endpoint.
+No header mapping or preview of uploaded file contents is introduced.
+
+Offer add/remove rows, masked synthetic APAAR entry, admission-category/status
+choices and an enrolment date input. Apply selected programme/year to every
+entered row. Provide synthetic sample autofill plus populated CSV downloads
+with and without deliberate field issues. Explain before autofill that it
+replaces the entered rows. Samples are examples, not a guarantee of passing
+configured intake/duplicate rules. Downloads use the selected scope.
+
+Fetch file/row limits and exact headers from the upload policy. Reject empty
+direct-entry rows and schema incompatibility locally; preserve partially filled
+student values for explicit server validation afterward. Lock edits while a save
+is pending or its outcome is unknown. Keep drafts in memory only and clear them
+on success, a deliberate new submission or session change. Require synthetic-only
+acknowledgment. On success link directly to the stored candidate for validation,
+review and explicit activation. Never imply saving activates or officially
+verifies a record. This does not implement NAD/ABC marksheet ingestion.
+
 ## Step 5B institution upload and submission history
 
 /institution/upload is institution-administrator-only. Set the institution from

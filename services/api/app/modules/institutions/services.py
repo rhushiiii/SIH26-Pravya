@@ -11,6 +11,7 @@ from app.core.pagination import paginate as paginate
 from app.core.pagination import paginate_list
 from app.modules.auth.dependencies import require_metadata_role
 from app.modules.auth.models import Role, User
+from app.modules.institutions.categories import CategoryScheme
 from app.modules.institutions.models import Institution, Programme
 
 if TYPE_CHECKING:
@@ -79,6 +80,7 @@ def current_summary(
     programme_id: UUID | None,
     page: int,
     page_size: int,
+    category_scheme: CategoryScheme = "LEGACY",
 ) -> "InstitutionSummary":
     # Counts belong to submissions; institution API owns only the scoped view.
     from app.modules.institutions.schemas import InstitutionSummary, ProgrammeSummary
@@ -119,14 +121,14 @@ def current_summary(
                 programme_id=programme.id,
                 programme_code=programme.code,
                 has_current_snapshot=current is not None,
-                counts=snapshot_counts(records) if current else None,
+                counts=snapshot_counts(records, category_scheme) if current else None,
             )
         )
     window = paginate_list(items, page, page_size)
     return InstitutionSummary(
         institution_id=institution_id,
         academic_year=year,
-        totals=snapshot_counts(all_rows),
+        totals=snapshot_counts(all_rows, category_scheme),
         coverage={
             "programmes": len(programmes),
             "with_current_snapshot": available,

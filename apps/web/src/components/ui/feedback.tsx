@@ -9,8 +9,10 @@ export function Loading({
 }) {
   return (
     <div className="feedback loading-state" role="status">
-      <span className="spinner" aria-hidden="true" />
-      <span>{label}</span>
+      <span className="feedback-mark loading-mark" aria-hidden="true">
+        <span className="spinner" />
+      </span>
+      <span className="feedback-copy">{label}</span>
     </div>
   );
 }
@@ -24,7 +26,12 @@ export function ErrorPanel({
 }) {
   return (
     <section className="feedback error-state" role="alert">
-      <div>
+      <span className="feedback-mark error-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M12 8v5m0 3h.01M10.3 3.9 2.8 17a2 2 0 0 0 1.7 3h15a2 2 0 0 0 1.7-3l-7.5-13.1a2 2 0 0 0-3.4 0Z" />
+        </svg>
+      </span>
+      <div className="feedback-copy">
         <h2>Unable to load this information</h2>
         <p>{errorMessage(error)}</p>
         {error instanceof ApiError && error.requestId && (
@@ -99,15 +106,28 @@ export function EmptyState({
   title,
   children,
   role,
+  className,
 }: {
   title: string;
   children?: ReactNode;
   role?: string;
+  className?: string;
 }) {
   return (
-    <div className="empty-state" role={role}>
-      <h3>{title}</h3>
-      {children ? <p>{children}</p> : null}
+    <div
+      className={className ? `empty-state ${className}` : "empty-state"}
+      role={role}
+    >
+      <span className="feedback-mark empty-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M4 5.5h16v13H4zM8 9h8m-8 4h5" />
+          <path d="m16.5 15.5 1.5 1.5 3-3" />
+        </svg>
+      </span>
+      <div className="feedback-copy">
+        <h3>{title}</h3>
+        {children ? <p>{children}</p> : null}
+      </div>
     </div>
   );
 }

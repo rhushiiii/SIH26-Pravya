@@ -7,7 +7,7 @@ import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { ErrorPanel, Loading } from "@/components/ui/feedback";
 import { useSession } from "@/features/auth/session";
 import { useApiQuery, useScope } from "@/lib/api/hooks";
-import { errorMessage, isUUID } from "@/lib/api/client";
+import { errorMessage, isUUID, jsonInit } from "@/lib/api/client";
 import type { components } from "@/lib/api/generated";
 import { plain, when } from "@/lib/format";
 import { RecordVerification } from "./record-verification";
@@ -286,11 +286,7 @@ function CaseActions({
 
   const act = useMutation({
     mutationFn: (body: ActionBody) =>
-      request<Case>(`/cases/${item.id}/actions`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      }),
+      request<Case>(`/cases/${item.id}/actions`, jsonInit("POST", body)),
     onSuccess: async (_data, body) => {
       setConfirming(null);
       setError("");

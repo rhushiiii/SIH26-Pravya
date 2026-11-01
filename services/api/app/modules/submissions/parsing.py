@@ -34,6 +34,23 @@ HEADERS = (
     "enrollment_status",
     "enrollment_date",
 )
+HEADERS_V2 = (
+    "college_student_id",
+    "student_name",
+    "apaar_id",
+    "academic_year",
+    "programme_code",
+    "reservation_category",
+    "is_pwd",
+    "enrollment_status",
+    "enrollment_date",
+)
+
+
+def headers_for(schema_version: str) -> tuple[str, ...]:
+    return HEADERS_V2 if schema_version == "v2" else HEADERS
+
+
 FORM_FIELDS = {
     "institution_id",
     "programme_id",
@@ -71,26 +88,41 @@ def collect_rows(
     *,
     label: str,
     error_code: str,
+    schema_version: str = "v1",
 ) -> list[ParsedRow]:
     """Shared header check, limits and normalization for every upload format."""
     iterator = iter(records)
-    if tuple(next(iterator, ())) != HEADERS:
-        raise APIError(422, "SCHEMA_MISMATCH", f"{label} headers must match v1")
+    headers = headers_for(schema_version)
+    if tuple(next(iterator, ())) != headers:
+        raise APIError(
+            422, "SCHEMA_MISMATCH", f"{label} headers must match {schema_version}"
+        )
     rows: list[ParsedRow] = []
     for number, values in enumerate(iterator, start=2):
         check_budget(deadline)
-        if len(values) != len(HEADERS):
+        if len(values) != len(headers):
             raise APIError(
-                400, error_code, f"{label} record column count differs from v1"
+                400,
+                error_code,
+                f"{label} record column count differs from {schema_version}",
             )
         if len(rows) >= settings.upload_max_rows:
             raise APIError(
                 422, "ROW_LIMIT_EXCEEDED", f"{label} exceeds configured record limit"
             )
-        original = dict(zip(HEADERS, values, strict=True))
+        original = dict(zip(headers, values, strict=True))
         normalized = {key: value.strip() for key, value in original.items()}
-        for key in ("programme_code", "admission_category", "enrollment_status"):
-            normalized[key] = normalized[key].upper()
+        for key in (
+            "programme_code",
+            "admission_category",
+            "reservation_category",
+            "is_pwd",
+            "enrollment_status",
+        ):
+            if key in normalized:
+                normalized[key] = normalized[key].upper()
+        if schema_version == "v2":
+            normalized["admission_category"] = ""
         parsed_date = None
         if re.fullmatch(r"[0-9]{4}-[0-9]{2}-[0-9]{2}", normalized["enrollment_date"]):
             try:
@@ -104,7 +136,9 @@ def collect_rows(
     return rows
 
 
-def parse_csv(data: bytes, settings: Settings, deadline: float) -> list[ParsedRow]:
+def parse_csv(
+    data: bytes, settings: Settings, deadline: float, schema_version: str = "v1"
+) -> list[ParsedRow]:
     if not data:
         raise APIError(400, "INVALID_CSV", "CSV has no data records")
     if len(data) > settings.upload_max_bytes:
@@ -118,7 +152,12 @@ def parse_csv(data: bytes, settings: Settings, deadline: float) -> list[ParsedRo
     reader = csv.reader(io.StringIO(text, newline=""), strict=True)
     try:
         return collect_rows(
-            reader, settings, deadline, label="CSV", error_code="INVALID_CSV"
+            reader,
+            settings,
+            deadline,
+            label="CSV",
+            error_code="INVALID_CSV",
+            schema_version=schema_version,
         )
     except csv.Error:
         raise APIError(400, "INVALID_CSV", "Malformed CSV") from None
@@ -189,7 +228,7 @@ def cell_text(value: object) -> str:
 
 
 def xlsx_records(
-    sheet: Any, settings: Settings, deadline: float
+    sheet: Any, settings: Settings, deadline: float, schema_version: str = "v1"
 ) -> Iterator[list[str]]:
     # Declared dimensions are untrusted metadata; the scan below is bounded too.
     scan_limit = settings.upload_max_rows + 1 + XLSX_BLANK_ROW_ALLOWANCE
@@ -197,7 +236,7 @@ def xlsx_records(
         raise APIError(
             422, "ROW_LIMIT_EXCEEDED", "Workbook exceeds configured record limit"
         )
-    width = len(HEADERS)
+    width = len(headers_for(schema_version))
     blanks = 0
     for scanned, cells in enumerate(
         sheet.iter_rows(max_col=width + 1, values_only=True), start=1
@@ -219,7 +258,9 @@ def xlsx_records(
         yield values + [""] * (width - len(values))
 
 
-def parse_xlsx(data: bytes, settings: Settings, deadline: float) -> list[ParsedRow]:
+def parse_xlsx(
+    data: bytes, settings: Settings, deadline: float, schema_version: str = "v1"
+) -> list[ParsedRow]:
     if len(data) > settings.upload_max_bytes:
         raise APIError(413, "FILE_TOO_LARGE", "File exceeds configured limit")
     check_xlsx_package(data)
@@ -232,11 +273,12 @@ def parse_xlsx(data: bytes, settings: Settings, deadline: float) -> list[ParsedR
         if not workbook.worksheets:
             raise APIError(400, "INVALID_XLSX", "Workbook has no worksheet")
         return collect_rows(
-            xlsx_records(workbook.worksheets[0], settings, deadline),
+            xlsx_records(workbook.worksheets[0], settings, deadline, schema_version),
             settings,
             deadline,
             label="Workbook",
             error_code="INVALID_XLSX",
+            schema_version=schema_version,
         )
     except APIError:
         raise

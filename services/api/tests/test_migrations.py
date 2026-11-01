@@ -56,6 +56,8 @@ def test_migration_roundtrip_and_metadata(
         "admission_credentials",
         "credential_revocations",
         "credential_verifications",
+        "cross_institution_reconciliations",
+        "reconciliation_events",
     }
     with db_engine.connect() as connection:
         assert (
@@ -259,5 +261,5 @@ def test_verification_credentials_migration_roundtrip(
             heads = connection.execute(
                 text("SELECT version_num FROM alembic_version")
             ).scalars()
-            assert list(heads) == ["0012_verification_credentials"]
+            assert list(heads) == ["0014_reservation_categories"]
         command.check(migration_config)

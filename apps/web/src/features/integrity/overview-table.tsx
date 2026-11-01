@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { DemoBanner, QueryBoundary } from "@/components/ui/feedback";
+import { DemoBanner, EmptyState, QueryBoundary } from "@/components/ui/feedback";
 import { Pagination } from "@/components/ui/pagination";
 import { useApiQuery, useScope } from "@/lib/api/hooks";
 import { validAcademicYear } from "@/lib/academic-year";
@@ -109,10 +109,9 @@ export function InstitutionsRequiringReview({
       <QueryBoundary query={overview} loading="Loading review overview…">
         {(data) =>
           data.data.length === 0 ? (
-            <div className="empty-state compact">
-              <h3>No institutions to show</h3>
-              <p>No institutions match these filters.</p>
-            </div>
+            <EmptyState className="compact" title="No institutions to show">
+              No institutions match these filters.
+            </EmptyState>
           ) : (
             <>
               <ScrollTable label="Institutions by review priority">

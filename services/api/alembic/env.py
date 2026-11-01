@@ -9,6 +9,7 @@ from app.modules.institutions import models as institution_models  # noqa: F401
 from app.modules.intake import models as intake_models  # noqa: F401
 from app.modules.integrity import models as integrity_models  # noqa: F401
 from app.modules.notifications import models as notification_models  # noqa: F401
+from app.modules.reconciliations import models as reconciliation_models  # noqa: F401
 from app.modules.submissions import models as submission_models  # noqa: F401
 from app.modules.validation import models as validation_models  # noqa: F401
 from app.modules.verification import models as verification_models  # noqa: F401

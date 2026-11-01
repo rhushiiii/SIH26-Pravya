@@ -86,6 +86,11 @@ ROLE_TABLE: dict[Route, tuple[str, str]] = {
     ("GET", "/api/v1/cases/assignees"): (DENY, DENY),
     ("GET", "/api/v1/cases/{case_id}"): (DENY, DENY),
     ("POST", "/api/v1/cases/{case_id}/actions"): (DENY, DENY),
+    ("GET", "/api/v1/reconciliations"): (DENY, DENY),
+    ("GET", "/api/v1/reconciliations/{reconciliation_id}"): (DENY, DENY),
+    ("POST", "/api/v1/reconciliations"): (DENY, DENY),
+    ("POST", "/api/v1/reconciliations/{reconciliation_id}/actions"): (DENY, DENY),
+    ("POST", "/api/v1/reconciliations/{reconciliation_id}/evidence"): (DENY, DENY),
     ("GET", "/api/v1/notifications"): (DENY, DENY),
     ("GET", "/api/v1/notifications/unread-count"): (DENY, DENY),
     ("POST", "/api/v1/notifications/read-all"): (DENY, DENY),
@@ -136,6 +141,20 @@ BODIES: dict[Route, dict[str, Any]] = {
         "record_version_ids": [PLACEHOLDER],
     },
     ("POST", "/api/v1/cases/{case_id}/actions"): {"action": "COMMENT"},
+    ("POST", "/api/v1/reconciliations"): {
+        "finding_id": PLACEHOLDER,
+        "local_record_version_id": PLACEHOLDER,
+        "peer_record_version_id": PLACEHOLDER,
+    },
+    ("POST", "/api/v1/reconciliations/{reconciliation_id}/actions"): {
+        "action": "ASSIGN",
+        "assigned_to": PLACEHOLDER,
+    },
+    ("POST", "/api/v1/reconciliations/{reconciliation_id}/evidence"): {
+        "evidence_type": "TRANSFER_RECORD",
+        "comment": "Synthetic evidence note",
+        "transfer_date": "2026-01-01",
+    },
     ("POST", "/api/v1/credentials"): {"record_version_id": PLACEHOLDER},
     ("POST", "/api/v1/credentials/verify"): {
         "token": "synthetic",
@@ -195,6 +214,7 @@ def url_for(path: str) -> str:
         .replace("{case_id}", PLACEHOLDER)
         .replace("{notification_id}", PLACEHOLDER)
         .replace("{credential_id}", PLACEHOLDER)
+        .replace("{reconciliation_id}", PLACEHOLDER)
         .replace("{event_id}", PLACEHOLDER)
     )
 

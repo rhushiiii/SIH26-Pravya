@@ -7,16 +7,14 @@ import type { components } from "@/lib/api/generated";
 import { humanize } from "@/lib/format";
 
 export type Category = components["schemas"]["AdmissionCategory"];
-export const CATEGORIES: Category[] = [
-  "REGULAR",
-  "SUPERNUMERARY",
-  "NRI",
-  "OCI",
-  "FOREIGN_NATIONAL",
-];
+export const PRIMARY_CATEGORIES = ["GENERAL_OPEN", "SC_ST", "NT", "OBC"] as const;
+export const CATEGORIES: Category[] = [...PRIMARY_CATEGORIES, "PWD"] as Category[];
 export const DEFAULT_YEAR = "2026-27";
 
-export const categoryLabel = humanize;
+const reservationLabels: Record<string, string> = {
+  GENERAL_OPEN: "General/Open", SC_ST: "SC/ST", NT: "NT", OBC: "OBC", PWD: "PwD",
+};
+export const categoryLabel = (value: string): string => reservationLabels[value] ?? humanize(value);
 
 /** Plain-language message for intake mutations; never exposes raw server text. */
 export function intakeMessage(error: unknown): string {

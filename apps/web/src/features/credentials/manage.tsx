@@ -7,8 +7,8 @@ import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { EmptyState, QueryBoundary } from "@/components/ui/feedback";
 import { QueryPagination } from "@/components/ui/pagination";
 import { useSession } from "@/features/auth/session";
-import { useApiQuery, useScope } from "@/lib/api/hooks";
-import { errorMessage } from "@/lib/api/client";
+import { useApiQuery, useCopy, useScope } from "@/lib/api/hooks";
+import { errorMessage, jsonInit } from "@/lib/api/client";
 import { DEMO_TAG } from "@/lib/format";
 import type { components } from "@/lib/api/generated";
 import {
@@ -165,7 +165,8 @@ export function RecordCredentialCard({
     token: string;
     expires: string;
   } | null>(null);
-  const [copied, setCopied] = useState<"" | "yes" | "no">("");
+  const [copyFailed, setCopyFailed] = useState(false);
+  const { copied, copy } = useCopy();
   const [message, setMessage] = useState("");
 
   const list = useQuery({
@@ -187,16 +188,15 @@ export function RecordCredentialCard({
 
   const issue = useMutation({
     mutationFn: () =>
-      request<IssueResponse>("/credentials", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ record_version_id: recordVersionId }),
-      }),
+      request<IssueResponse>(
+        "/credentials",
+        jsonInit("POST", { record_version_id: recordVersionId }),
+      ),
     onSuccess: async (data) => {
       setPending(null);
       setDialogError("");
       setMessage("");
-      setCopied("");
+      setCopyFailed(false);
       setIssued({
         token: data.token,
         expires: data.credential.expires_at,
@@ -207,11 +207,10 @@ export function RecordCredentialCard({
   });
   const revoke = useMutation({
     mutationFn: (v: { id: string; reason: string }) =>
-      request<unknown>(`/credentials/${v.id}/revoke`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ reason: v.reason }),
-      }),
+      request<unknown>(
+        `/credentials/${v.id}/revoke`,
+        jsonInit("POST", { reason: v.reason }),
+      ),
     onSuccess: async () => {
       setPending(null);
       setReason("");
@@ -236,14 +235,9 @@ export function RecordCredentialCard({
     }
     revoke.mutate({ id: pending.id, reason: reason.trim() });
   };
-  async function copy() {
+  function copyToken() {
     if (!issued) return;
-    try {
-      await navigator.clipboard.writeText(issued.token);
-      setCopied("yes");
-    } catch {
-      setCopied("no");
-    }
+    void copy(issued.token).then((ok) => setCopyFailed(!ok));
   }
 
   return (
@@ -279,22 +273,22 @@ export function RecordCredentialCard({
             onFocus={(e) => e.currentTarget.select()}
           />
           <div className="button-row">
-            <button className="button primary small" onClick={copy}>
+            <button className="button primary small" onClick={copyToken}>
               Copy token
             </button>
             <button
               className="button secondary small"
               onClick={() => {
                 setIssued(null);
-                setCopied("");
+                setCopyFailed(false);
               }}
             >
               Dismiss
             </button>
             <span role="status" className="cell-note">
-              {copied === "yes"
+              {copied
                 ? "Copied."
-                : copied === "no"
+                : copyFailed
                   ? "Copy failed — select the text and copy manually."
                   : ""}
             </span>

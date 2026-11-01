@@ -79,6 +79,8 @@ def to_row(
         # The shared masking helper is the only APAAR representation exposed.
         masked_apaar=row_response(record).apaar_id_masked,
         category=record.admission_category,
+        reservation_category=record.reservation_category,
+        is_pwd=record.is_pwd,
         enrollment_status=record.enrollment_status,
         enrollment_date=record.enrollment_date,
         validation_status=status,
@@ -234,6 +236,16 @@ def record_history(
                     "category",
                     previous.admission_category,
                     version.admission_category,
+                ),
+                (
+                    "reservation_category",
+                    previous.reservation_category,
+                    version.reservation_category,
+                ),
+                (
+                    "is_pwd",
+                    str(previous.is_pwd) if previous.is_pwd is not None else None,
+                    str(version.is_pwd) if version.is_pwd is not None else None,
                 ),
                 (
                     "enrollment_status",

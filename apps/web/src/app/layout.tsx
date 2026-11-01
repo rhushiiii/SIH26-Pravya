@@ -1,19 +1,38 @@
 import type { Metadata } from "next";
-import { Manrope, Inter } from "next/font/google";
+import { Inter, Literata, DM_Mono } from "next/font/google";
 import type { ReactNode } from "react";
 
 import { SessionProvider } from "@/features/auth/session";
 
 import "./globals.css";
+import "./interaction-polish.css";
+import "./design-system.css";
+import "@/components/shell-redesign.css";
+import "@/features/workspace-redesign.css";
+import "@/components/ui/feedback-redesign.css";
+import "@/components/ui/attachment.css";
+import "@/features/landing/landing-redesign.css";
+import "@/features/auth/login-redesign.css";
 
-const heading = Manrope({
+// Interface Mode body font (SF Pro Text substitute). Inter is a variable
+// font, so the 400/500/600 weights used by the design system are covered
+// without pinning static instances.
+const interfaceFont = Inter({
   subsets: ["latin"],
-  variable: "--next-font-heading",
+  variable: "--next-font-interface",
   display: "swap",
 });
-const body = Inter({
+// Editorial Mode accent serif (pull-quotes, mission statements only).
+const editorialSerif = Literata({
   subsets: ["latin"],
-  variable: "--next-font-body",
+  variable: "--next-font-literata",
+  display: "swap",
+});
+// Shared technical register (rule IDs, masked APAAR fragments, timestamps).
+const technicalMono = DM_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  variable: "--next-font-dm-mono",
   display: "swap",
 });
 
@@ -25,7 +44,11 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className={`${heading.variable} ${body.variable}`}>
+    <html
+      lang="en"
+      data-scroll-behavior="smooth"
+      className={`${interfaceFont.variable} ${editorialSerif.variable} ${technicalMono.variable}`}
+    >
       <body>
         <SessionProvider>{children}</SessionProvider>
       </body>

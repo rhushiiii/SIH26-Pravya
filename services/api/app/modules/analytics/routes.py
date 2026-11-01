@@ -10,6 +10,7 @@ from app.core.pagination import PageNumber, PageSize, paginate_list
 from app.modules.analytics import services
 from app.modules.analytics.schemas import (
     CasePerformanceResponse,
+    CategoryScheme,
     CompletenessResponse,
     GroupBy,
     TrendsResponse,
@@ -41,8 +42,11 @@ def common_filters(
     institution_id: UUID | None = None,
     region: Region = None,
     programme_code: ProgrammeCode = None,
+    category_scheme: CategoryScheme = "LEGACY",
 ) -> services.Filters:
-    return services.Filters(academic_year, institution_id, region, programme_code)
+    return services.Filters(
+        academic_year, institution_id, region, programme_code, category_scheme
+    )
 
 
 Authorized = Annotated[User, Depends(analytics_user)]
@@ -113,8 +117,12 @@ def intake_utilisation(
     no_store(response)
     return UtilisationResponse(
         **meta.model_dump(),
-        rule_version_in_use=settings.validation_intake_rule_version,
-        pooling_note=POOLING_NOTE,
+        rule_version_in_use=services.rule_version(filters, settings),
+        pooling_note=(
+            services.RESERVATION_NOTE
+            if filters.category_scheme == "RESERVATION"
+            else POOLING_NOTE
+        ),
         data=window.data,
         pagination=window.pagination,
     )

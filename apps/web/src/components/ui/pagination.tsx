@@ -18,10 +18,10 @@ export function Pagination({
   const pages = Math.max(1, Math.ceil(total / pageSize));
   return (
     <nav className="pagination" aria-label={label}>
-      <span aria-live="polite">
+      <span className="pagination-status" aria-live="polite">
         Page {page} of {pages}
       </span>
-      <div>
+      <div className="pagination-actions">
         <button
           className="button secondary small"
           disabled={page <= 1 || busy}

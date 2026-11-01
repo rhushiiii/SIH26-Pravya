@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { BrandMark } from "@/components/brand-mark";
+import JellyRadio from "@/components/ui/jelly-radio";
 import { demoAccounts } from "@/features/auth/accounts";
 
 const sections = [
@@ -11,6 +12,7 @@ const sections = [
   { id: "how-it-works", label: "How It Works" },
   { id: "features", label: "Features" },
   { id: "preview", label: "Platform Preview" },
+  { id: "roles", label: "For Every Role" },
   { id: "security", label: "Security & Trust" },
 ];
 
@@ -39,6 +41,7 @@ const groups = [
 
 function SignInMenu({ onNavigate }: { onNavigate?: () => void }) {
   const [open, setOpen] = useState(false);
+  const id = `sign-in-accounts-${useId()}`;
   const containerRef = useRef<HTMLDivElement>(null);
   const reduceMotion = useReducedMotion();
 
@@ -60,20 +63,29 @@ function SignInMenu({ onNavigate }: { onNavigate?: () => void }) {
 
   return (
     <div className="sign-in-menu" ref={containerRef}>
-      <button
+      <motion.button
         type="button"
         className="button primary small"
-        aria-haspopup="menu"
         aria-expanded={open}
+        aria-controls={id}
         onClick={() => setOpen((value) => !value)}
+        initial={false}
+        animate={{
+          scaleX: reduceMotion ? 1 : open ? 1.06 : 1,
+          scaleY: reduceMotion ? 1 : open ? 1.03 : 1,
+        }}
+        whileTap={reduceMotion ? undefined : { scaleX: 0.94, scaleY: 0.98 }}
+        transition={{ type: "spring", stiffness: 580, damping: 24, mass: 0.9 }}
       >
         Sign In
-      </button>
+      </motion.button>
       <AnimatePresence>
         {open && (
           <motion.div
-            role="menu"
+            id={id}
             className="sign-in-dropdown"
+            role="group"
+            aria-label="Demo accounts by role"
             initial={reduceMotion ? false : { opacity: 0, y: -6, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -6, scale: 0.98 }}
@@ -86,7 +98,6 @@ function SignInMenu({ onNavigate }: { onNavigate?: () => void }) {
                 {group.accounts.map((account) => (
                   <Link
                     key={account.alias}
-                    role="menuitem"
                     href={`/login?alias=${account.alias}`}
                     className="sign-in-option"
                     onClick={() => {
@@ -113,6 +124,7 @@ function SignInMenu({ onNavigate }: { onNavigate?: () => void }) {
 }
 
 export function PublicNav() {
+  const reduceMotion = useReducedMotion();
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [active, setActive] = useState("overview");
@@ -147,36 +159,38 @@ export function PublicNav() {
   }, [onLanding]);
 
   return (
-    <motion.header
+    <header
       className={`public-nav ${scrolled ? "scrolled" : ""}`}
-      initial={false}
-      animate={{
-        backgroundColor: scrolled
-          ? "rgba(252, 250, 244, 0.86)"
-          : "rgba(252, 250, 244, 0)",
+      style={{
+        // Keep both declarations intact through the CSS prefix optimizer.
+        backdropFilter: "var(--public-nav-backdrop)",
+        WebkitBackdropFilter: "var(--public-nav-backdrop)",
       }}
-      transition={{ duration: 0.25 }}
     >
       <Link href="/">
-        <BrandMark tagline="Admissions workspace" />
+        <BrandMark tagline="Admissions workspace" mark="lightning" />
       </Link>
       <nav aria-label="Primary" className="public-nav-links">
-        {sections.map((section) => (
-          <a
-            key={section.id}
-            href={`/#${section.id}`}
-            className={`nav-anchor ${active === section.id ? "active" : ""}`}
-          >
-            {section.label}
-            {active === section.id && (
-              <motion.span
-                className="nav-anchor-pill"
-                layoutId="nav-active-pill"
-                transition={{ duration: 0.25 }}
-              />
-            )}
-          </a>
-        ))}
+        <JellyRadio
+          items={sections.map((section) => ({
+            value: section.id,
+            label: section.label,
+            href: `/#${section.id}`,
+          }))}
+          value={active}
+          onChange={(section) => setActive(section)}
+          chipColor="transparent"
+          activeColor="var(--ui-accent-action)"
+          textColor="var(--ui-text)"
+          activeTextColor="#ffffff"
+          size="lg"
+          gap={6}
+          radius={999}
+          swell={0.12}
+          barge={3}
+          shrink={0.025}
+          className="nav-jelly"
+        />
         <SignInMenu />
       </nav>
       <button
@@ -199,19 +213,23 @@ export function PublicNav() {
             transition={{ duration: 0.22 }}
           >
             {sections.map((section) => (
-              <a
+              <motion.a
                 key={section.id}
                 href={`/#${section.id}`}
                 onClick={() => setMenuOpen(false)}
                 className={active === section.id ? "active" : ""}
+                whileTap={
+                  reduceMotion ? undefined : { scaleX: 0.97, scaleY: 1.03 }
+                }
+                transition={{ type: "spring", stiffness: 580, damping: 24 }}
               >
                 {section.label}
-              </a>
+              </motion.a>
             ))}
             <SignInMenu onNavigate={() => setMenuOpen(false)} />
           </motion.nav>
         )}
       </AnimatePresence>
-    </motion.header>
+    </header>
   );
 }

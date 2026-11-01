@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { categoryLabel } from "@/features/intake/shared";
 import { EmptyState, ErrorPanel, Loading } from "@/components/ui/feedback";
 import { useSession } from "@/features/auth/session";
 import { useApiQuery, useScope } from "@/lib/api/hooks";
@@ -76,8 +77,22 @@ export function RecordDetailView({
             <dd>{r.masked_apaar}</dd>
           </div>
           <div>
-            <dt>Category</dt>
-            <dd>{r.category}</dd>
+            <dt>Reservation category</dt>
+            <dd>
+              {r.reservation_category
+                ? categoryLabel(r.reservation_category)
+                : "Not provided (legacy)"}
+            </dd>
+          </div>
+          <div>
+            <dt>PwD</dt>
+            <dd>
+              {r.is_pwd == null
+                ? "Not provided (legacy)"
+                : r.is_pwd
+                  ? "Yes"
+                  : "No"}
+            </dd>
           </div>
           <div>
             <dt>Enrollment status</dt>

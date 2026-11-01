@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { ErrorPanel, Loading } from "@/components/ui/feedback";
+import { EmptyState, ErrorPanel, Loading } from "@/components/ui/feedback";
 import { Pagination } from "@/components/ui/pagination";
 import { useSession } from "@/features/auth/session";
 import { useApiQuery, useScope } from "@/lib/api/hooks";
@@ -131,7 +131,10 @@ function AssessmentDetail({ assessment }: { assessment: Assessment }) {
         </tbody>
       </ScrollTable>
       <p className="form-help">
-        Categories are compared separately and never pooled into one cap.
+        The four main categories are compared separately. The PwD row overlaps
+        those categories and is reported independently; it is not added to the
+        main-category total. Historical assessments retain the category scheme
+        and counts captured when each assessment was created.
       </p>
 
       <h4>Snapshot difference</h4>
@@ -320,13 +323,10 @@ export function IntakeAssessmentPanel({
             retry={() => void history.refetch()}
           />
         ) : history.data.data.length === 0 ? (
-          <div className="empty-state compact">
-            <h3>No assessments yet</h3>
-            <p>
-              Run an intake assessment to compare this batch with DEMO intake
-              rules.
-            </p>
-          </div>
+          <EmptyState className="compact" title="No assessments yet">
+            Run an intake assessment to compare this batch with DEMO intake
+            rules.
+          </EmptyState>
         ) : (
           <>
             <ul className="intake-history">

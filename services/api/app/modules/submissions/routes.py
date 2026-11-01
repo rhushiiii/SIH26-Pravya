@@ -1,4 +1,4 @@
-from typing import Annotated, cast
+from typing import Annotated, Literal, cast
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, Header, Query, Request, Response
@@ -14,6 +14,7 @@ from app.core.idempotency import IDEMPOTENCY_KEY_PATTERN
 from app.core.pagination import Page, PageNumber, PageSize, paginate, paginate_list
 from app.core.rate_limit import rate_limit
 from app.modules.auth.dependencies import CurrentUser, DatabaseSession
+from app.modules.institutions.categories import ReservationCategory
 from app.modules.institutions.models import Programme
 from app.modules.institutions.schemas import AcademicYear
 from app.modules.institutions.services import (
@@ -30,8 +31,8 @@ from app.modules.submissions.activation import (
 )
 from app.modules.submissions.models import StudentRecordVersion, SubmissionBatch
 from app.modules.submissions.parsing import (
-    HEADERS,
     detect_format,
+    headers_for,
     parse_csv,
     parse_xlsx,
     read_multipart,
@@ -102,7 +103,7 @@ MULTIPART_SCHEMA = {
                         },
                         "schema_version": {
                             "type": "string",
-                            "const": "v1",
+                            "enum": ["v1", "v2"],
                             "default": "v1",
                         },
                     },
@@ -115,13 +116,20 @@ MULTIPART_SCHEMA = {
 
 @router.get("/upload-policy", response_model=UploadPolicyResponse)
 def upload_policy(
-    request: Request, response: Response, user: CurrentUser
+    request: Request,
+    response: Response,
+    user: CurrentUser,
+    schema_version: Literal["v1", "v2"] = "v2",
 ) -> UploadPolicyResponse:
     require_submission_role(user)
     settings = cast(Settings, request.app.state.settings)
     no_store(response)
     return UploadPolicyResponse(
-        required_headers=list(HEADERS),
+        schema_version=schema_version,
+        required_headers=list(headers_for(schema_version)),
+        reservation_categories=list(ReservationCategory)
+        if schema_version == "v2"
+        else [],
         max_file_bytes=settings.upload_max_bytes,
         max_rows=settings.upload_max_rows,
         receive_timeout_seconds=settings.upload_receive_timeout_seconds,
@@ -219,9 +227,9 @@ async def upload(
                 return replay, True
         source_format = detect_format(data, filename)
         rows = (
-            parse_xlsx(data, settings, deadline)
+            parse_xlsx(data, settings, deadline, context.schema_version)
             if source_format == "xlsx"
-            else parse_csv(data, settings, deadline)
+            else parse_csv(data, settings, deadline, context.schema_version)
         )
         try:
             return (

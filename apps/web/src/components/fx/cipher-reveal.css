@@ -1,0 +1,34 @@
+.cipher-reveal {
+  display: inline-block;
+  white-space: pre;
+}
+
+.cipher-letter {
+  position: relative;
+  display: inline-grid;
+  vertical-align: baseline;
+}
+
+.cipher-measure {
+  visibility: hidden;
+  grid-area: 1 / 1;
+}
+
+.cipher-glyph {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  transform-origin: center;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cipher-measure {
+    visibility: visible;
+  }
+
+  .cipher-glyph {
+    display: none;
+  }
+}

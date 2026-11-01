@@ -26,6 +26,7 @@ from app.modules.institutions.routes import router as institution_router
 from app.modules.intake.routes import router as intake_router
 from app.modules.integrity.routes import router as integrity_router
 from app.modules.notifications.routes import router as notifications_router
+from app.modules.reconciliations.routes import router as reconciliations_router
 from app.modules.records.routes import router as records_router
 from app.modules.reports.routes import router as reports_router
 from app.modules.submissions.routes import router as submission_router
@@ -81,6 +82,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     application.include_router(cases_router)
     application.include_router(notifications_router)
     application.include_router(records_router)
+    application.include_router(reconciliations_router)
     application.include_router(integrity_router)
     application.include_router(credentials_router)
     application.include_router(analytics_router)

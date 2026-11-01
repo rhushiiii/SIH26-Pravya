@@ -1,0 +1,1473 @@
+{
+ "url": "http://127.0.0.1:3002/login",
+ "at": "2026-11-01T05:07:03.487Z",
+ "allow": [
+  "eyebrow",
+  "palette-cream",
+  "small-text",
+  "size-count",
+  "grey-body",
+  "pill-nav"
+ ],
+ "viewports": [
+  {
+   "width": 1440,
+   "height": 900,
+   "load": "load",
+   "screens": 2,
+   "filled": [
+    0.83,
+    0.83
+   ],
+   "motion": {
+    "elements": 2,
+    "css": 0,
+    "transitions": 1,
+    "scripted": 1,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "page": {
+     "height": 1556,
+     "screens": 1.7,
+     "words": 238,
+     "img": 0,
+     "video": 0,
+     "canvas": 0,
+     "svg": 1,
+     "sections": 1,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 0,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Sign in to PRAVYA",
+     "words": 4,
+     "chars": 17,
+     "lines": 1,
+     "size": 28,
+     "vw": 1.9,
+     "font": "Inter",
+     "weight": 600,
+     "tracking": -0.03,
+     "leading": 1.22,
+     "top": 196,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "h1": {
+     "text": "Sign in to PRAVYA",
+     "words": 4,
+     "lines": 1,
+     "size": 28,
+     "font": "Inter"
+    },
+    "headings": [
+     {
+      "text": "Sign in to PRAVYA",
+      "words": 4,
+      "chars": 17,
+      "lines": 1,
+      "size": 28,
+      "vw": 1.9,
+      "font": "Inter",
+      "weight": 600,
+      "tracking": -0.035,
+      "leading": 1.22,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "right",
+      "widthRatio": 0.3,
+      "top": 196,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "One trusted view of every admission record.",
+      "words": 7,
+      "chars": 43,
+      "lines": 3,
+      "size": 48,
+      "vw": 3.3,
+      "font": "Inter",
+      "weight": 600,
+      "tracking": -0.045,
+      "leading": 1.14,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.32,
+      "top": 228,
+      "tag": "h2",
+      "kind": "heading"
+     }
+    ],
+    "headingSummary": {
+     "count": 2,
+     "maxLines": 3,
+     "over2Lines": 1,
+     "statements": 0,
+     "centered": 0,
+     "medianWords": 4,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Inter",
+       "share": 1,
+       "mono": false
+      }
+     ],
+     "familyCount": 1,
+     "sizes": [
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      19,
+      28,
+      48
+     ],
+     "sizeCount": 9,
+     "notLoaded": [],
+     "body": {
+      "font": "Inter",
+      "size": 11,
+      "leading": 1.7,
+      "weight": 400,
+      "tracking": 0,
+      "contrast": 5.8
+     },
+     "measureChars": 79,
+     "max": {
+      "size": 48,
+      "vw": 3.3,
+      "font": "Inter",
+      "text": "One trusted view of every admission reco"
+     },
+     "monoShare": 0,
+     "monoProseShare": 0,
+     "monoFamilies": [],
+     "monoSamples": [],
+     "microLabels": 3,
+     "microLabelShare": 0.035,
+     "microSamples": [
+      "ADMISSIONS, WITH CLARITY",
+      "A CLEAR START",
+      "Synthetic data only"
+     ],
+     "upperShare": 0.04,
+     "centerShare": 0.19,
+     "smallText": 21
+    },
+    "eyebrows": [
+     {
+      "text": "A CLEAR START",
+      "above": "Sign in to PRAVYA",
+      "upper": true,
+      "tracked": true,
+      "mono": false,
+      "pill": false,
+      "size": 10,
+      "top": 171
+     }
+    ],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#ffffff",
+     "bodyBgHsl": {
+      "h": 0,
+      "s": 0,
+      "l": 1
+     },
+     "dark": false,
+     "sectionBgs": [
+      {
+       "color": "#f6f3ec",
+       "top": 0,
+       "hsl": {
+        "h": 42,
+        "s": 0.36,
+        "l": 0.95
+       }
+      },
+      {
+       "color": "#ffffff",
+       "top": 130,
+       "hsl": {
+        "h": 0,
+        "s": 0,
+        "l": 1
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#63666b",
+       "share": 0.55
+      },
+      {
+       "color": "#6d675e",
+       "share": 0.21
+      },
+      {
+       "color": "#2d2d2f",
+       "share": 0.14
+      },
+      {
+       "color": "#d0d0d0",
+       "share": 0.04
+      },
+      {
+       "color": "#477f70",
+       "share": 0.01
+      }
+     ],
+     "button": {
+      "bg": "#ffffff",
+      "hsl": {
+       "h": 0,
+       "s": 0,
+       "l": 1
+      },
+      "fg": "#2d2d2f"
+     },
+     "lowContrast": [
+      {
+       "text": "ADMISSIONS, WITH CLARITY",
+       "ratio": 4.2,
+       "need": 4.5,
+       "size": 10,
+       "fg": "#477f70",
+       "bg": "#f6f3ec"
+      }
+     ]
+    },
+    "buttons": {
+     "count": 2,
+     "inHero": 1,
+     "radius": "pill",
+     "height": 34,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Sign In"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 2,
+     "shadowOverlay": 1,
+     "shadowSamples": [
+      "section.login-card → rgba(45, 45, 47, 0.22) 0px 24px 64px -40px",
+      "label.account-option.selected → rgba(217, 87, 32, 0.1) 0px 0px 0px 3px"
+     ],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 3,
+     "hairlineSamples": [
+      "ul 460px",
+      "p.login-aside-note 460px",
+      "p.session-hint 435px"
+     ],
+     "outlinedBoxes": 1,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 1,
+     "boxRadius": 24,
+     "squareMedia": 0,
+     "roundedMedia": 0,
+     "mediaRadius": 0,
+     "textShadow": 0,
+     "cardRows": []
+    },
+    "heroMedia": [],
+    "nav": {
+     "links": 7,
+     "fixed": true,
+     "height": 56,
+     "floatingPill": true,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "inter"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "pageH": 1556,
+    "margins": {
+     "left": 160,
+     "right": 201
+    },
+    "sections": [],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Sign in to PRAVYA",
+      "size": 28,
+      "top": 196,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 160,
+      "n": 2
+     },
+     {
+      "x": 804,
+      "n": 1
+     }
+    ],
+    "leftBlocks": 3,
+    "bodySize": 12,
+    "stage": false,
+    "explains": true,
+    "slivers": [],
+    "voidShare": 0.11,
+    "voidBox": {
+     "x": 1260,
+     "y": 120,
+     "w": 180,
+     "h": 780
+    }
+   },
+   "app": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "dark": false,
+    "ground": "#ffffff",
+    "sidebar": null,
+    "topbar": null,
+    "canvas": {
+     "left": 160,
+     "right": 201
+    },
+    "hero": {
+     "text": "Sign in to PRAVYA",
+     "words": 4,
+     "chars": 17,
+     "lines": 1,
+     "size": 28,
+     "vw": 1.9,
+     "font": "Inter",
+     "weight": 600,
+     "tracking": -0.03,
+     "leading": 1.22,
+     "top": 196,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "charts": 0,
+    "layout": {
+     "panels": 2,
+     "firstScreen": 2,
+     "ragged": [],
+     "voids": []
+    },
+    "tiles": 0,
+    "panels": {
+     "count": 10,
+     "radii": [
+      [
+       16,
+       7
+      ],
+      [
+       0,
+       2
+      ],
+      [
+       24,
+       1
+      ]
+     ],
+     "heavyBorders": 1,
+     "borderSamples": [
+      "#71bfa9 on #f2faf7 (2.03:1)"
+     ],
+     "heavyShadows": 1,
+     "softShadows": 1,
+     "shadowSamples": [
+      "rgba(45, 45, 47, 0.22) 0px 24px 64px -40px"
+     ],
+     "glass": 0
+    },
+    "chips": {
+     "count": 0,
+     "hues": 0,
+     "samples": []
+    },
+    "numbers": {
+     "cells": 0,
+     "leftAligned": 0,
+     "figures": 0,
+     "tabularShare": null,
+     "kpiMax": null
+    },
+    "rows": null,
+    "chartHues": 0,
+    "placeholders": [],
+    "type": {
+     "under13": 0.61,
+     "tiny": 4,
+     "tinySamples": [
+      "ADMISSIONS, WITH CLARITY 10px",
+      "A CLEAR START 10px",
+      "Local validation is not  10px",
+      "Synthetic data only. No  10px"
+     ],
+     "sizes": [
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      28,
+      48
+     ]
+    },
+    "title": {
+     "text": "Sign in to PRAVYA",
+     "size": 28,
+     "top": 196
+    },
+    "colourShare": 0
+   },
+   "consoleErrors": []
+  },
+  {
+   "width": 768,
+   "height": 1024,
+   "load": "load",
+   "screens": 2,
+   "filled": [
+    0.57,
+    0.56
+   ],
+   "motion": {
+    "elements": 2,
+    "css": 0,
+    "transitions": 1,
+    "scripted": 1,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "page": {
+     "height": 1505,
+     "screens": 1.5,
+     "words": 161,
+     "img": 0,
+     "video": 0,
+     "canvas": 0,
+     "svg": 1,
+     "sections": 1,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 0,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Sign in to PRAVYA",
+     "words": 4,
+     "chars": 17,
+     "lines": 1,
+     "size": 28,
+     "vw": 3.6,
+     "font": "Inter",
+     "weight": 600,
+     "tracking": -0.03,
+     "leading": 1.22,
+     "top": 180,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "h1": {
+     "text": "Sign in to PRAVYA",
+     "words": 4,
+     "lines": 1,
+     "size": 28,
+     "font": "Inter"
+    },
+    "headings": [
+     {
+      "text": "Sign in to PRAVYA",
+      "words": 4,
+      "chars": 17,
+      "lines": 1,
+      "size": 28,
+      "vw": 3.6,
+      "font": "Inter",
+      "weight": 600,
+      "tracking": -0.035,
+      "leading": 1.22,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.66,
+      "top": 180,
+      "tag": "h1",
+      "kind": "heading"
+     }
+    ],
+    "headingSummary": {
+     "count": 1,
+     "maxLines": 1,
+     "over2Lines": 0,
+     "statements": 0,
+     "centered": 0,
+     "medianWords": null,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Inter",
+       "share": 1,
+       "mono": false
+      }
+     ],
+     "familyCount": 1,
+     "sizes": [
+      10,
+      11,
+      12,
+      13,
+      15,
+      19,
+      28
+     ],
+     "sizeCount": 7,
+     "notLoaded": [],
+     "body": {
+      "font": "Inter",
+      "size": 11,
+      "leading": 1.7,
+      "weight": 400,
+      "tracking": 0,
+      "contrast": 5.8
+     },
+     "measureChars": 93,
+     "max": {
+      "size": 28,
+      "vw": 3.6,
+      "font": "Inter",
+      "text": "Sign in to PRAVYA"
+     },
+     "monoShare": 0,
+     "monoProseShare": 0,
+     "monoFamilies": [],
+     "monoSamples": [],
+     "microLabels": 2,
+     "microLabelShare": 0.029,
+     "microSamples": [
+      "A CLEAR START",
+      "Synthetic data only"
+     ],
+     "upperShare": 0.03,
+     "centerShare": 0.28,
+     "smallText": 15
+    },
+    "eyebrows": [
+     {
+      "text": "A CLEAR START",
+      "above": "Sign in to PRAVYA",
+      "upper": true,
+      "tracked": true,
+      "mono": false,
+      "pill": false,
+      "size": 10,
+      "top": 155
+     }
+    ],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#ffffff",
+     "bodyBgHsl": {
+      "h": 0,
+      "s": 0,
+      "l": 1
+     },
+     "dark": false,
+     "sectionBgs": [
+      {
+       "color": "#f6f3ec",
+       "top": 0,
+       "hsl": {
+        "h": 42,
+        "s": 0.36,
+        "l": 0.95
+       }
+      },
+      {
+       "color": "#ffffff",
+       "top": 130,
+       "hsl": {
+        "h": 0,
+        "s": 0,
+        "l": 1
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#63666b",
+       "share": 0.6
+      },
+      {
+       "color": "#6d675e",
+       "share": 0.18
+      },
+      {
+       "color": "#2d2d2f",
+       "share": 0.17
+      },
+      {
+       "color": "#445231",
+       "share": 0.02
+      },
+      {
+       "color": "#ffffff",
+       "share": 0.01
+      }
+     ],
+     "button": {
+      "bg": "#2d2d2f",
+      "hsl": {
+       "h": 240,
+       "s": 0.02,
+       "l": 0.18
+      },
+      "fg": "#ffffff"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 1,
+     "inHero": 0,
+     "radius": "pill",
+     "height": 48,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": []
+    },
+    "surfaces": {
+     "shadowStatic": 2,
+     "shadowOverlay": 1,
+     "shadowSamples": [
+      "section.login-card → rgba(45, 45, 47, 0.22) 0px 24px 64px -40px",
+      "label.account-option.selected → rgba(217, 87, 32, 0.1) 0px 0px 0px 3px"
+     ],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 1,
+     "hairlineSamples": [
+      "p.session-hint 510px"
+     ],
+     "outlinedBoxes": 1,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 1,
+     "boxRadius": 24,
+     "squareMedia": 0,
+     "roundedMedia": 0,
+     "mediaRadius": 0,
+     "textShadow": 0,
+     "cardRows": []
+    },
+    "heroMedia": [],
+    "nav": {
+     "links": 1,
+     "fixed": true,
+     "height": 58,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "inter"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "pageH": 1505,
+    "margins": {
+     "left": 129,
+     "right": 129
+    },
+    "sections": [
+     {
+      "sel": "fieldset.account-group",
+      "tag": "fieldset",
+      "top": 446,
+      "height": 316,
+      "words": 25,
+      "media": 0,
+      "middle": 0,
+      "heading": null,
+      "left": 129,
+      "right": 325,
+      "textLeft": 129,
+      "textRight": 325,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "fieldset.account-group",
+      "tag": "fieldset",
+      "top": 786,
+      "height": 400,
+      "words": 38,
+      "media": 0,
+      "middle": 0,
+      "heading": null,
+      "left": 129,
+      "right": 322,
+      "textLeft": 129,
+      "textRight": 322,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Sign in to PRAVYA",
+      "size": 28,
+      "top": 180,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 129,
+      "n": 1
+     }
+    ],
+    "leftBlocks": 1,
+    "bodySize": 11,
+    "stage": false,
+    "explains": false,
+    "slivers": [],
+    "voidShare": 0,
+    "voidBox": null
+   },
+   "app": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "dark": false,
+    "ground": "#ffffff",
+    "sidebar": null,
+    "topbar": null,
+    "canvas": {
+     "left": 86,
+     "right": 39
+    },
+    "hero": {
+     "text": "Sign in to PRAVYA",
+     "words": 4,
+     "chars": 17,
+     "lines": 1,
+     "size": 28,
+     "vw": 3.6,
+     "font": "Inter",
+     "weight": 600,
+     "tracking": -0.03,
+     "leading": 1.22,
+     "top": 180,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "charts": 0,
+    "layout": {
+     "panels": 1,
+     "firstScreen": 1,
+     "ragged": [],
+     "voids": []
+    },
+    "tiles": 0,
+    "panels": {
+     "count": 9,
+     "radii": [
+      [
+       16,
+       7
+      ],
+      [
+       24,
+       1
+      ],
+      [
+       0,
+       1
+      ]
+     ],
+     "heavyBorders": 1,
+     "borderSamples": [
+      "#71bfa9 on #f2faf7 (2.03:1)"
+     ],
+     "heavyShadows": 1,
+     "softShadows": 1,
+     "shadowSamples": [
+      "rgba(45, 45, 47, 0.22) 0px 24px 64px -40px"
+     ],
+     "glass": 0
+    },
+    "chips": {
+     "count": 0,
+     "hues": 0,
+     "samples": []
+    },
+    "numbers": {
+     "cells": 0,
+     "leftAligned": 0,
+     "figures": 0,
+     "tabularShare": null,
+     "kpiMax": null
+    },
+    "rows": null,
+    "chartHues": 0,
+    "placeholders": [],
+    "type": {
+     "under13": 0.54,
+     "tiny": 4,
+     "tinySamples": [
+      "ADMISSIONS, WITH CLARITY 10px",
+      "A CLEAR START 10px",
+      "Local validation is not  10px",
+      "Synthetic data only. No  10px"
+     ],
+     "sizes": [
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      28,
+      32
+     ]
+    },
+    "title": {
+     "text": "Sign in to PRAVYA",
+     "size": 28,
+     "top": 180
+    },
+    "colourShare": 0
+   },
+   "consoleErrors": []
+  },
+  {
+   "width": 390,
+   "height": 844,
+   "load": "load",
+   "screens": 2,
+   "filled": [
+    0.52,
+    0.52
+   ],
+   "motion": {
+    "elements": 2,
+    "css": 0,
+    "transitions": 1,
+    "scripted": 1,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "page": {
+     "height": 1544,
+     "screens": 1.8,
+     "words": 161,
+     "img": 0,
+     "video": 0,
+     "canvas": 0,
+     "svg": 1,
+     "sections": 1,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 0,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Sign in to PRAVYA",
+     "words": 4,
+     "chars": 17,
+     "lines": 1,
+     "size": 28,
+     "vw": 7.2,
+     "font": "Inter",
+     "weight": 600,
+     "tracking": -0.03,
+     "leading": 1.22,
+     "top": 154,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "h1": {
+     "text": "Sign in to PRAVYA",
+     "words": 4,
+     "lines": 1,
+     "size": 28,
+     "font": "Inter"
+    },
+    "headings": [
+     {
+      "text": "Sign in to PRAVYA",
+      "words": 4,
+      "chars": 17,
+      "lines": 1,
+      "size": 28,
+      "vw": 7.2,
+      "font": "Inter",
+      "weight": 600,
+      "tracking": -0.035,
+      "leading": 1.22,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.79,
+      "top": 154,
+      "tag": "h1",
+      "kind": "heading"
+     }
+    ],
+    "headingSummary": {
+     "count": 1,
+     "maxLines": 1,
+     "over2Lines": 0,
+     "statements": 0,
+     "centered": 0,
+     "medianWords": null,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Inter",
+       "share": 1,
+       "mono": false
+      }
+     ],
+     "familyCount": 1,
+     "sizes": [
+      10,
+      11,
+      12,
+      13,
+      15,
+      19,
+      28
+     ],
+     "sizeCount": 7,
+     "notLoaded": [],
+     "body": {
+      "font": "Inter",
+      "size": 11,
+      "leading": 1.7,
+      "weight": 400,
+      "tracking": 0,
+      "contrast": 5.8
+     },
+     "measureChars": 56,
+     "max": {
+      "size": 28,
+      "vw": 7.2,
+      "font": "Inter",
+      "text": "Sign in to PRAVYA"
+     },
+     "monoShare": 0,
+     "monoProseShare": 0,
+     "monoFamilies": [],
+     "monoSamples": [],
+     "microLabels": 2,
+     "microLabelShare": 0.029,
+     "microSamples": [
+      "A CLEAR START",
+      "Synthetic data only"
+     ],
+     "upperShare": 0.03,
+     "centerShare": 0.28,
+     "smallText": 15
+    },
+    "eyebrows": [
+     {
+      "text": "A CLEAR START",
+      "above": "Sign in to PRAVYA",
+      "upper": true,
+      "tracked": true,
+      "mono": false,
+      "pill": false,
+      "size": 10,
+      "top": 129
+     }
+    ],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#ffffff",
+     "bodyBgHsl": {
+      "h": 0,
+      "s": 0,
+      "l": 1
+     },
+     "dark": false,
+     "sectionBgs": [
+      {
+       "color": "#f6f3ec",
+       "top": 0,
+       "hsl": {
+        "h": 42,
+        "s": 0.36,
+        "l": 0.95
+       }
+      },
+      {
+       "color": "#ffffff",
+       "top": 104,
+       "hsl": {
+        "h": 0,
+        "s": 0,
+        "l": 1
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#63666b",
+       "share": 0.6
+      },
+      {
+       "color": "#6d675e",
+       "share": 0.18
+      },
+      {
+       "color": "#2d2d2f",
+       "share": 0.17
+      },
+      {
+       "color": "#445231",
+       "share": 0.02
+      },
+      {
+       "color": "#ffffff",
+       "share": 0.01
+      }
+     ],
+     "button": {
+      "bg": "#2d2d2f",
+      "hsl": {
+       "h": 240,
+       "s": 0.02,
+       "l": 0.18
+      },
+      "fg": "#ffffff"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 1,
+     "inHero": 0,
+     "radius": "pill",
+     "height": 48,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": []
+    },
+    "surfaces": {
+     "shadowStatic": 2,
+     "shadowOverlay": 1,
+     "shadowSamples": [
+      "section.login-card → rgba(45, 45, 47, 0.22) 0px 24px 64px -40px",
+      "label.account-option.selected → rgba(217, 87, 32, 0.1) 0px 0px 0px 3px"
+     ],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 1,
+     "hairlineSamples": [
+      "p.session-hint 308px"
+     ],
+     "outlinedBoxes": 1,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 1,
+     "boxRadius": 24,
+     "squareMedia": 0,
+     "roundedMedia": 0,
+     "mediaRadius": 0,
+     "textShadow": 0,
+     "cardRows": []
+    },
+    "heroMedia": [],
+    "nav": {
+     "links": 1,
+     "fixed": true,
+     "height": 58,
+     "floatingPill": true,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "inter"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "pageH": 1544,
+    "margins": {
+     "left": 41,
+     "right": 41
+    },
+    "sections": [
+     {
+      "sel": "fieldset.account-group",
+      "tag": "fieldset",
+      "top": 439,
+      "height": 335,
+      "words": 25,
+      "media": 0,
+      "middle": 0,
+      "heading": null,
+      "left": 41,
+      "right": 114,
+      "textLeft": 41,
+      "textRight": 114,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "fieldset.account-group",
+      "tag": "fieldset",
+      "top": 799,
+      "height": 419,
+      "words": 38,
+      "media": 0,
+      "middle": 0,
+      "heading": null,
+      "left": 41,
+      "right": 82,
+      "textLeft": 41,
+      "textRight": 82,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Sign in to PRAVYA",
+      "size": 28,
+      "top": 154,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 41,
+      "n": 1
+     }
+    ],
+    "leftBlocks": 1,
+    "bodySize": 11,
+    "stage": false,
+    "explains": false,
+    "slivers": [],
+    "voidShare": 0,
+    "voidBox": null
+   },
+   "app": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "dark": false,
+    "ground": "#ffffff",
+    "sidebar": null,
+    "topbar": null,
+    "canvas": {
+     "left": 34,
+     "right": 25
+    },
+    "hero": {
+     "text": "Sign in to PRAVYA",
+     "words": 4,
+     "chars": 17,
+     "lines": 1,
+     "size": 28,
+     "vw": 7.2,
+     "font": "Inter",
+     "weight": 600,
+     "tracking": -0.03,
+     "leading": 1.22,
+     "top": 154,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "charts": 0,
+    "layout": {
+     "panels": 1,
+     "firstScreen": 1,
+     "ragged": [],
+     "voids": []
+    },
+    "tiles": 0,
+    "panels": {
+     "count": 9,
+     "radii": [
+      [
+       16,
+       7
+      ],
+      [
+       24,
+       1
+      ],
+      [
+       0,
+       1
+      ]
+     ],
+     "heavyBorders": 1,
+     "borderSamples": [
+      "#71bfa9 on #f2faf7 (2.03:1)"
+     ],
+     "heavyShadows": 1,
+     "softShadows": 1,
+     "shadowSamples": [
+      "rgba(45, 45, 47, 0.22) 0px 24px 64px -40px"
+     ],
+     "glass": 0
+    },
+    "chips": {
+     "count": 0,
+     "hues": 0,
+     "samples": []
+    },
+    "numbers": {
+     "cells": 0,
+     "leftAligned": 0,
+     "figures": 0,
+     "tabularShare": null,
+     "kpiMax": null
+    },
+    "rows": null,
+    "chartHues": 0,
+    "placeholders": [],
+    "type": {
+     "under13": 0.54,
+     "tiny": 4,
+     "tinySamples": [
+      "ADMISSIONS, WITH CLARITY 10px",
+      "A CLEAR START 10px",
+      "Local validation is not  10px",
+      "Synthetic data only. No  10px"
+     ],
+     "sizes": [
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      28,
+      32
+     ]
+    },
+    "title": {
+     "text": "Sign in to PRAVYA",
+     "size": 28,
+     "top": 154
+    },
+    "colourShare": 0
+   },
+   "consoleErrors": []
+  }
+ ],
+ "findings": [
+  {
+   "level": "FAIL",
+   "id": "headline-lines",
+   "width": 1440,
+   "message": "1 headline(s) wrap past two lines at 1440px: \"One trusted view of every admission record.\" → 3 lines (7 words, 48px)",
+   "fix": "Cut words first (a headline is a title, not a sentence). Then give it a wider measure. Lower the size only as a last resort and never below the scale you chose. A real statement paragraph belongs in a <p> or <blockquote> at 36px or less."
+  },
+  {
+   "level": "FAIL",
+   "id": "micro-label",
+   "width": 1440,
+   "message": "3 tiny uppercase letter-spaced labels (e.g. \"ADMISSIONS, WITH CLARITY\", \"A CLEAR START\", \"Synthetic data only\").",
+   "fix": "Use sentence-case text at a readable size, or delete the label."
+  },
+  {
+   "level": "WARN",
+   "id": "contrast",
+   "width": 1440,
+   "message": "Low-contrast text: \"ADMISSIONS, WITH CLARITY\" 4.2:1 needs 4.5:1",
+   "fix": "Darken or lighten the text colour."
+  },
+  {
+   "level": "FAIL",
+   "id": "heavy-shadow",
+   "width": 1440,
+   "message": "1 panel shadow(s) heavy enough to read as floating: rgba(45, 45, 47, 0.22) 0px 24px 64px -40px",
+   "fix": "Panels sit on the ground: separate them with a fill one step from the ground or a quiet 1px border. A shadow, if any, is under 8% black with a small blur. Real overlays (menus, dialogs, popovers) may float.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "FAIL",
+   "id": "tiny-text",
+   "width": 1440,
+   "message": "4 text blocks under 11px: ADMISSIONS, WITH CLARITY 10px, A CLEAR START 10px, Local validation is not  10px, Synthetic data only. No  10px.",
+   "fix": "Nothing below 11px; secondary text 12px, data 13–14px.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "WARN",
+   "id": "micro-label",
+   "width": 768,
+   "message": "2 tiny uppercase letter-spaced label(s): \"A CLEAR START\", \"Synthetic data only\"",
+   "fix": "Prefer sentence case at body size.",
+   "alsoAt": [
+    390
+   ]
+  }
+ ],
+ "images": [
+  {
+   "viewport": "desktop",
+   "width": 1440,
+   "fold": "C:\\Users\\Rhushikesh\\OneDrive\\Desktop\\New folder (10)\\PS-3\\.taste-skill\\login\\desktop-fold.jpg",
+   "pages": [
+    "C:\\Users\\Rhushikesh\\OneDrive\\Desktop\\New folder (10)\\PS-3\\.taste-skill\\login\\desktop-page-01.jpg"
+   ],
+   "film": []
+  },
+  {
+   "viewport": "tablet",
+   "width": 768,
+   "fold": "C:\\Users\\Rhushikesh\\OneDrive\\Desktop\\New folder (10)\\PS-3\\.taste-skill\\login\\tablet-fold.jpg",
+   "pages": [
+    "C:\\Users\\Rhushikesh\\OneDrive\\Desktop\\New folder (10)\\PS-3\\.taste-skill\\login\\tablet-page-01.jpg"
+   ],
+   "film": []
+  },
+  {
+   "viewport": "mobile",
+   "width": 390,
+   "fold": "C:\\Users\\Rhushikesh\\OneDrive\\Desktop\\New folder (10)\\PS-3\\.taste-skill\\login\\mobile-fold.jpg",
+   "pages": [
+    "C:\\Users\\Rhushikesh\\OneDrive\\Desktop\\New folder (10)\\PS-3\\.taste-skill\\login\\mobile-page-01.jpg"
+   ],
+   "film": []
+  }
+ ]
+}

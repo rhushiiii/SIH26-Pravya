@@ -17,6 +17,15 @@ from app.core.query import latest_per_key, latest_row
 from app.modules.audit.services import record_action
 from app.modules.auth.dependencies import require_roles
 from app.modules.auth.models import Role, User
+from app.modules.institutions.categories import (
+    LEGACY_CATEGORIES,
+    RESERVATION_GROUPS,
+    RESERVATION_POOLING_NOTE,
+    RESERVATION_RULE_VERSION,
+    CategoryScheme,
+    reservation_category_counts,
+    reservation_coverage,
+)
 from app.modules.institutions.models import Institution, IntakeRule
 from app.modules.institutions.services import scoped_institution, scoped_programme
 from app.modules.intake.models import (
@@ -70,6 +79,7 @@ def configured_rules(
     programme_id: UUID,
     academic_year: str,
     rule_version: str,
+    category_scheme: CategoryScheme = "LEGACY",
 ) -> dict[str, IntakeRule]:
     # Same selection as validation: the configured version, DEMO rules only.
     return {
@@ -81,29 +91,42 @@ def configured_rules(
                 IntakeRule.academic_year == academic_year,
                 IntakeRule.rule_version == rule_version,
                 IntakeRule.source_label == "DEMO",
+                IntakeRule.category.in_(
+                    RESERVATION_GROUPS
+                    if category_scheme == "RESERVATION"
+                    else LEGACY_CATEGORIES
+                ),
             )
         )
     }
 
 
-def active_by_category(rows: list[StudentRecordVersion]) -> dict[str, int]:
-    categories = snapshot_counts(rows)["categories"]
+def active_by_category(
+    rows: list[StudentRecordVersion], category_scheme: CategoryScheme = "LEGACY"
+) -> dict[str, int | None]:
+    if category_scheme == "RESERVATION":
+        return {
+            category: counts["demo_active_records"]
+            for category, counts in reservation_category_counts(rows).items()
+        }
+    categories = snapshot_counts(rows, "LEGACY")["categories"]
     return {c: int(categories[c]["demo_active_records"]) for c in CATEGORIES}
 
 
 def capacity_line(
-    category: str, rule: IntakeRule | None, active: int, label: str
+    category: str, rule: IntakeRule | None, active: int | None, label: str
 ) -> dict[str, Any]:
-    if rule is None:
+    if rule is None or active is None:
         return {
             "category": category,
-            "approved_seats": None,
-            "rule_version": None,
+            "approved_seats": rule.approved_seats if rule else None,
+            "rule_version": rule.rule_version if rule else None,
             "remaining_capacity": None,
             "exceeded": False,
             "excess": 0,
+            "comparison_status": "UNKNOWN_COUNT" if active is None else "NO_RULE",
             "calculation": (
-                f"no DEMO rule configured for {category}; "
+                f"unknown active count or no DEMO rule configured for {category}; "
                 "no capacity comparison or exceedance claim made"
             ),
         }
@@ -215,6 +238,7 @@ def change_rule(
         )
         return change
 
+
 def declare(
     session: Session, user: User, institution_id: UUID, request: DeclarationRequest
 ) -> IntakeDeclaration:
@@ -259,6 +283,7 @@ def snapshot_diff(
         return {"status": "UNAVAILABLE_AMBIGUOUS_IDENTIFIERS"}
     before, after = maps
     fields = [name for name in HEADERS if name != "college_student_id"]
+    fields.extend(["reservation_category", "is_pwd"])
     changes: list[dict[str, Any]] = []
     removed_active = 0
     counts: Counter[str] = Counter()
@@ -308,6 +333,12 @@ def create_assessment(
         batch = scoped_batch(session, user, batch_id)
         if batch.status != ProcessingStatus.COMPLETED:
             raise APIError(409, "SUBMISSION_NOT_PROCESSED", "Batch is not processed")
+        category_scheme: CategoryScheme = (
+            "RESERVATION" if batch.schema_version == "v2" else "LEGACY"
+        )
+        if category_scheme == "RESERVATION":
+            rule_version = RESERVATION_RULE_VERSION
+        groups = RESERVATION_GROUPS if category_scheme == "RESERVATION" else CATEGORIES
         rows = batch_rows(session, batch.id)
         if len(rows) != batch.row_count:
             raise APIError(409, "SUBMISSION_NOT_PROCESSED", "Record count inconsistent")
@@ -324,12 +355,17 @@ def create_assessment(
             batch.programme_id,
             batch.academic_year,
             rule_version,
+            category_scheme,
         )
-        candidate_active = active_by_category(rows)
-        current_active = active_by_category(current) if current is not None else None
+        candidate_active = active_by_category(rows, category_scheme)
+        current_active = (
+            active_by_category(current, category_scheme)
+            if current is not None
+            else None
+        )
         categories: list[dict[str, Any]] = []
         findings: list[dict[str, Any]] = []
-        for category in CATEGORIES:
+        for category in groups:
             line = capacity_line(
                 category,
                 rules.get(category),
@@ -417,19 +453,31 @@ def create_assessment(
             "categories": categories,
             "totals": {
                 "candidate_record_count": candidate_count,
-                "candidate_active_count": sum(candidate_active.values()),
-                "current_active_count": sum(current_active.values())
-                if current_active is not None
+                "candidate_active_count": sum(
+                    row.enrollment_status == "ACTIVE" for row in rows
+                ),
+                "current_active_count": sum(
+                    row.enrollment_status == "ACTIVE" for row in current
+                )
+                if current is not None
                 else None,
                 "approved_seats_configured_sum": sum(
-                    r.approved_seats for r in rules.values()
+                    r.approved_seats
+                    for category, r in rules.items()
+                    if category != "PWD"
                 ),
-                "note": POOLING_NOTE,
+                "note": RESERVATION_POOLING_NOTE
+                if category_scheme == "RESERVATION"
+                else POOLING_NOTE,
             },
             "snapshot_diff": diff,
             "missing_population": population,
             "findings": findings,
         }
+        if category_scheme == "RESERVATION":
+            result["category_scheme"] = category_scheme
+            result["coverage"] = reservation_coverage(rows)
+            result["pooling_note"] = RESERVATION_POOLING_NOTE
         assessment = IntakeAssessment(
             batch_id=batch.id,
             institution_id=batch.institution_id,
@@ -488,25 +536,33 @@ def simulate(
                 SubmissionScope.academic_year == request.academic_year,
             )
         )
+        category_scheme = request.category_scheme
+        groups = RESERVATION_GROUPS if category_scheme == "RESERVATION" else CATEGORIES
+        if category_scheme == "RESERVATION":
+            rule_version = RESERVATION_RULE_VERSION
         current_id = scope.current_batch_id if scope else None
+        current_rows = batch_rows(session, current_id) if current_id else []
         before = (
-            active_by_category(batch_rows(session, current_id))
+            active_by_category(current_rows, category_scheme)
             if current_id
-            else dict.fromkeys(CATEGORIES, 0)
+            else dict.fromkeys(groups, 0)
         )
         added: Counter[str] = Counter()
         for addition in request.additions:
             added[addition.category.value] += addition.count
+        added["PWD"] = request.pwd_additions
         rules = configured_rules(
             session,
             institution_id,
             request.programme_id,
             request.academic_year,
             rule_version,
+            category_scheme,
         )
         categories = []
-        for category in CATEGORIES:
-            after = before[category] + added[category]
+        for category in groups:
+            initial = before[category]
+            after = initial + added[category] if initial is not None else None
             line = capacity_line(category, rules.get(category), after, "after ACTIVE")
             exceeded = line.pop("exceeded")
             categories.append(
@@ -538,4 +594,11 @@ def simulate(
             current_batch_id=current_id,
             rule_version=rule_version,
             categories=categories,
+            category_scheme=category_scheme,
+            coverage=reservation_coverage(current_rows)
+            if category_scheme == "RESERVATION"
+            else None,
+            pooling_note=RESERVATION_POOLING_NOTE
+            if category_scheme == "RESERVATION"
+            else None,
         )

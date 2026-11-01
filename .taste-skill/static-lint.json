@@ -1,0 +1,621 @@
+{
+ "files": 6,
+ "findings": [
+  {
+   "level": "FAIL",
+   "id": "eyebrow",
+   "file": "apps/web/src/features/landing/home.tsx",
+   "line": 178,
+   "match": "className=\"eyebrow",
+   "message": "Eyebrow / kicker label above a heading."
+  },
+  {
+   "level": "FAIL",
+   "id": "eyebrow",
+   "file": "apps/web/src/features/landing/home.tsx",
+   "line": 260,
+   "match": "className=\"eyebrow hero-eyebrow",
+   "message": "Eyebrow / kicker label above a heading."
+  },
+  {
+   "level": "FAIL",
+   "id": "eyebrow",
+   "file": "apps/web/src/features/landing/home.tsx",
+   "line": 331,
+   "match": "className=\"eyebrow",
+   "message": "Eyebrow / kicker label above a heading."
+  },
+  {
+   "level": "FAIL",
+   "id": "eyebrow",
+   "file": "apps/web/src/features/landing/home.tsx",
+   "line": 354,
+   "match": "className=\"eyebrow",
+   "message": "Eyebrow / kicker label above a heading."
+  },
+  {
+   "level": "FAIL",
+   "id": "eyebrow",
+   "file": "apps/web/src/features/landing/home.tsx",
+   "line": 400,
+   "match": "className=\"eyebrow",
+   "message": "Eyebrow / kicker label above a heading."
+  },
+  {
+   "level": "FAIL",
+   "id": "eyebrow",
+   "file": "apps/web/src/features/landing/home.tsx",
+   "line": 461,
+   "match": "className=\"eyebrow",
+   "message": "Eyebrow / kicker label above a heading."
+  },
+  {
+   "level": "FAIL",
+   "id": "eyebrow",
+   "file": "apps/web/src/features/landing/home.tsx",
+   "line": 505,
+   "match": "className=\"eyebrow",
+   "message": "Eyebrow / kicker label above a heading."
+  },
+  {
+   "level": "FAIL",
+   "id": "gradient",
+   "file": "apps/web/src/features/landing/landing-redesign.css",
+   "line": 35,
+   "match": "linear-gradient(",
+   "message": "Gradient fill. Use a flat colour or a real image (a neutral scrim over a photo is the one exception)."
+  },
+  {
+   "level": "FAIL",
+   "id": "gradient",
+   "file": "apps/web/src/features/landing/landing-redesign.css",
+   "line": 47,
+   "match": "linear-gradient(",
+   "message": "Gradient fill. Use a flat colour or a real image (a neutral scrim over a photo is the one exception)."
+  },
+  {
+   "level": "WARN",
+   "id": "outlined-box",
+   "file": "apps/web/src/features/landing/landing-redesign.css",
+   "line": 65,
+   "match": "border: 1px solid",
+   "message": "A 1px outlined box. Prefer a filled surface or no box."
+  },
+  {
+   "level": "FAIL",
+   "id": "shadow",
+   "file": "apps/web/src/features/landing/landing-redesign.css",
+   "line": 99,
+   "match": "box-shadow:",
+   "message": "Shadow. Elements at rest carry none; only real overlays (menu, dialog, sticky bar) may."
+  },
+  {
+   "level": "FAIL",
+   "id": "shadow",
+   "file": "apps/web/src/features/landing/landing-redesign.css",
+   "line": 109,
+   "match": "box-shadow:",
+   "message": "Shadow. Elements at rest carry none; only real overlays (menu, dialog, sticky bar) may."
+  },
+  {
+   "level": "FAIL",
+   "id": "shadow",
+   "file": "apps/web/src/features/landing/landing-redesign.css",
+   "line": 115,
+   "match": "box-shadow:",
+   "message": "Shadow. Elements at rest carry none; only real overlays (menu, dialog, sticky bar) may."
+  },
+  {
+   "level": "FAIL",
+   "id": "shadow",
+   "file": "apps/web/src/features/landing/landing-redesign.css",
+   "line": 147,
+   "match": "box-shadow:",
+   "message": "Shadow. Elements at rest carry none; only real overlays (menu, dialog, sticky bar) may."
+  },
+  {
+   "level": "WARN",
+   "id": "outlined-box",
+   "file": "apps/web/src/features/landing/landing-redesign.css",
+   "line": 162,
+   "match": "border: 1px solid",
+   "message": "A 1px outlined box. Prefer a filled surface or no box."
+  },
+  {
+   "level": "FAIL",
+   "id": "shadow",
+   "file": "apps/web/src/features/landing/landing-redesign.css",
+   "line": 165,
+   "match": "box-shadow:",
+   "message": "Shadow. Elements at rest carry none; only real overlays (menu, dialog, sticky bar) may."
+  },
+  {
+   "level": "FAIL",
+   "id": "hairline",
+   "file": "apps/web/src/features/landing/landing-redesign.css",
+   "line": 175,
+   "match": "border-bottom: 1px",
+   "message": "Thin rule / divider line. Separate with space, tone or scale; lines belong to real tables and form fields."
+  },
+  {
+   "level": "FAIL",
+   "id": "eyebrow",
+   "file": "apps/web/src/features/landing/landing-redesign.css",
+   "line": 195,
+   "match": ".eyebrow {",
+   "message": "Eyebrow / kicker label above a heading."
+  },
+  {
+   "level": "FAIL",
+   "id": "hairline",
+   "file": "apps/web/src/features/landing/landing-redesign.css",
+   "line": 223,
+   "match": "border-right: 1px",
+   "message": "Thin rule / divider line. Separate with space, tone or scale; lines belong to real tables and form fields."
+  },
+  {
+   "level": "WARN",
+   "id": "outlined-box",
+   "file": "apps/web/src/features/landing/landing-redesign.css",
+   "line": 234,
+   "match": "border: 1px solid",
+   "message": "A 1px outlined box. Prefer a filled surface or no box."
+  },
+  {
+   "level": "FAIL",
+   "id": "shadow",
+   "file": "apps/web/src/features/landing/landing-redesign.css",
+   "line": 248,
+   "match": "box-shadow:",
+   "message": "Shadow. Elements at rest carry none; only real overlays (menu, dialog, sticky bar) may."
+  },
+  {
+   "level": "WARN",
+   "id": "outlined-box",
+   "file": "apps/web/src/features/landing/landing-redesign.css",
+   "line": 309,
+   "match": "border: 1px solid",
+   "message": "A 1px outlined box. Prefer a filled surface or no box."
+  },
+  {
+   "level": "FAIL",
+   "id": "hairline",
+   "file": "apps/web/src/features/landing/landing-redesign.css",
+   "line": 347,
+   "match": "border-top: 1px",
+   "message": "Thin rule / divider line. Separate with space, tone or scale; lines belong to real tables and form fields."
+  },
+  {
+   "level": "FAIL",
+   "id": "shadow",
+   "file": "apps/web/src/features/landing/landing-redesign.css",
+   "line": 373,
+   "match": "box-shadow:",
+   "message": "Shadow. Elements at rest carry none; only real overlays (menu, dialog, sticky bar) may."
+  },
+  {
+   "level": "FAIL",
+   "id": "eyebrow",
+   "file": "apps/web/src/features/landing/landing-redesign.css",
+   "line": 395,
+   "match": ".eyebrow {",
+   "message": "Eyebrow / kicker label above a heading."
+  },
+  {
+   "level": "WARN",
+   "id": "outlined-box",
+   "file": "apps/web/src/features/landing/landing-redesign.css",
+   "line": 440,
+   "match": "border: 1px solid",
+   "message": "A 1px outlined box. Prefer a filled surface or no box."
+  },
+  {
+   "level": "FAIL",
+   "id": "shadow",
+   "file": "apps/web/src/features/landing/landing-redesign.css",
+   "line": 443,
+   "match": "box-shadow:",
+   "message": "Shadow. Elements at rest carry none; only real overlays (menu, dialog, sticky bar) may."
+  },
+  {
+   "level": "FAIL",
+   "id": "eyebrow",
+   "file": "apps/web/src/features/landing/landing-redesign.css",
+   "line": 479,
+   "match": ".eyebrow {",
+   "message": "Eyebrow / kicker label above a heading."
+  },
+  {
+   "level": "FAIL",
+   "id": "shadow",
+   "file": "apps/web/src/features/landing/landing-redesign.css",
+   "line": 516,
+   "match": "box-shadow:",
+   "message": "Shadow. Elements at rest carry none; only real overlays (menu, dialog, sticky bar) may."
+  },
+  {
+   "level": "FAIL",
+   "id": "shadow",
+   "file": "apps/web/src/features/landing/landing-redesign.css",
+   "line": 536,
+   "match": "box-shadow:",
+   "message": "Shadow. Elements at rest carry none; only real overlays (menu, dialog, sticky bar) may."
+  },
+  {
+   "level": "FAIL",
+   "id": "shadow",
+   "file": "apps/web/src/features/landing/landing-redesign.css",
+   "line": 691,
+   "match": "box-shadow:",
+   "message": "Shadow. Elements at rest carry none; only real overlays (menu, dialog, sticky bar) may."
+  },
+  {
+   "level": "FAIL",
+   "id": "shadow",
+   "file": "apps/web/src/features/landing/landing-redesign.css",
+   "line": 696,
+   "match": "box-shadow:",
+   "message": "Shadow. Elements at rest carry none; only real overlays (menu, dialog, sticky bar) may."
+  },
+  {
+   "level": "WARN",
+   "id": "outlined-box",
+   "file": "apps/web/src/components/shell-redesign.css",
+   "line": 43,
+   "match": "border: 1px solid",
+   "message": "A 1px outlined box. Prefer a filled surface or no box."
+  },
+  {
+   "level": "WARN",
+   "id": "outlined-box",
+   "file": "apps/web/src/components/shell-redesign.css",
+   "line": 91,
+   "match": "border: 1px solid",
+   "message": "A 1px outlined box. Prefer a filled surface or no box."
+  },
+  {
+   "level": "FAIL",
+   "id": "shadow",
+   "file": "apps/web/src/components/shell-redesign.css",
+   "line": 106,
+   "match": "box-shadow:",
+   "message": "Shadow. Elements at rest carry none; only real overlays (menu, dialog, sticky bar) may."
+  },
+  {
+   "level": "WARN",
+   "id": "outlined-box",
+   "file": "apps/web/src/components/shell-redesign.css",
+   "line": 169,
+   "match": "border: 1px solid",
+   "message": "A 1px outlined box. Prefer a filled surface or no box."
+  },
+  {
+   "level": "FAIL",
+   "id": "shadow",
+   "file": "apps/web/src/components/shell-redesign.css",
+   "line": 173,
+   "match": "box-shadow:",
+   "message": "Shadow. Elements at rest carry none; only real overlays (menu, dialog, sticky bar) may."
+  },
+  {
+   "level": "WARN",
+   "id": "glass",
+   "file": "apps/web/src/components/shell-redesign.css",
+   "line": 174,
+   "match": "backdrop-filter:",
+   "message": "Backdrop blur. One sticky bar at most; glass cards are a tell."
+  },
+  {
+   "level": "FAIL",
+   "id": "shadow",
+   "file": "apps/web/src/components/shell-redesign.css",
+   "line": 197,
+   "match": "box-shadow:",
+   "message": "Shadow. Elements at rest carry none; only real overlays (menu, dialog, sticky bar) may."
+  },
+  {
+   "level": "WARN",
+   "id": "outlined-box",
+   "file": "apps/web/src/components/shell-redesign.css",
+   "line": 234,
+   "match": "border: 1px solid",
+   "message": "A 1px outlined box. Prefer a filled surface or no box."
+  },
+  {
+   "level": "WARN",
+   "id": "outlined-box",
+   "file": "apps/web/src/components/shell-redesign.css",
+   "line": 252,
+   "match": "border: 1px solid",
+   "message": "A 1px outlined box. Prefer a filled surface or no box."
+  },
+  {
+   "level": "FAIL",
+   "id": "shadow",
+   "file": "apps/web/src/components/shell-redesign.css",
+   "line": 255,
+   "match": "box-shadow:",
+   "message": "Shadow. Elements at rest carry none; only real overlays (menu, dialog, sticky bar) may."
+  },
+  {
+   "level": "WARN",
+   "id": "outlined-box",
+   "file": "apps/web/src/components/shell-redesign.css",
+   "line": 271,
+   "match": "border: 1px solid",
+   "message": "A 1px outlined box. Prefer a filled surface or no box."
+  },
+  {
+   "level": "FAIL",
+   "id": "shadow",
+   "file": "apps/web/src/components/shell-redesign.css",
+   "line": 277,
+   "match": "box-shadow:",
+   "message": "Shadow. Elements at rest carry none; only real overlays (menu, dialog, sticky bar) may."
+  },
+  {
+   "level": "FAIL",
+   "id": "shadow",
+   "file": "apps/web/src/components/shell-redesign.css",
+   "line": 331,
+   "match": "box-shadow:",
+   "message": "Shadow. Elements at rest carry none; only real overlays (menu, dialog, sticky bar) may."
+  },
+  {
+   "level": "FAIL",
+   "id": "hairline",
+   "file": "apps/web/src/components/shell-redesign.css",
+   "line": 351,
+   "match": "border-left: 1px",
+   "message": "Thin rule / divider line. Separate with space, tone or scale; lines belong to real tables and form fields."
+  },
+  {
+   "level": "FAIL",
+   "id": "shadow",
+   "file": "apps/web/src/components/shell-redesign.css",
+   "line": 354,
+   "match": "box-shadow:",
+   "message": "Shadow. Elements at rest carry none; only real overlays (menu, dialog, sticky bar) may."
+  },
+  {
+   "level": "WARN",
+   "id": "glass",
+   "file": "apps/web/src/components/shell-redesign.css",
+   "line": 364,
+   "match": "backdrop-filter:",
+   "message": "Backdrop blur. One sticky bar at most; glass cards are a tell."
+  },
+  {
+   "level": "FAIL",
+   "id": "hairline",
+   "file": "apps/web/src/components/shell-redesign.css",
+   "line": 443,
+   "match": "height: 1px",
+   "message": "Thin rule / divider line. Separate with space, tone or scale; lines belong to real tables and form fields."
+  },
+  {
+   "level": "FAIL",
+   "id": "hairline",
+   "file": "apps/web/src/components/shell-redesign.css",
+   "line": 460,
+   "match": "height: 1px",
+   "message": "Thin rule / divider line. Separate with space, tone or scale; lines belong to real tables and form fields."
+  },
+  {
+   "level": "FAIL",
+   "id": "hairline",
+   "file": "apps/web/src/components/shell-redesign.css",
+   "line": 483,
+   "match": "height: 1px",
+   "message": "Thin rule / divider line. Separate with space, tone or scale; lines belong to real tables and form fields."
+  },
+  {
+   "level": "WARN",
+   "id": "outlined-box",
+   "file": "apps/web/src/app/design-system.css",
+   "line": 64,
+   "match": "border: 1px solid",
+   "message": "A 1px outlined box. Prefer a filled surface or no box."
+  },
+  {
+   "level": "FAIL",
+   "id": "shadow",
+   "file": "apps/web/src/app/design-system.css",
+   "line": 65,
+   "match": "box-shadow:",
+   "message": "Shadow. Elements at rest carry none; only real overlays (menu, dialog, sticky bar) may."
+  },
+  {
+   "level": "WARN",
+   "id": "outlined-box",
+   "file": "apps/web/src/app/design-system.css",
+   "line": 70,
+   "match": "border: 1px solid",
+   "message": "A 1px outlined box. Prefer a filled surface or no box."
+  },
+  {
+   "level": "FAIL",
+   "id": "shadow",
+   "file": "apps/web/src/app/design-system.css",
+   "line": 71,
+   "match": "box-shadow:",
+   "message": "Shadow. Elements at rest carry none; only real overlays (menu, dialog, sticky bar) may."
+  },
+  {
+   "level": "FAIL",
+   "id": "eyebrow",
+   "file": "apps/web/src/app/design-system.css",
+   "line": 125,
+   "match": ".eyebrow {",
+   "message": "Eyebrow / kicker label above a heading."
+  },
+  {
+   "level": "FAIL",
+   "id": "shadow",
+   "file": "apps/web/src/app/design-system.css",
+   "line": 189,
+   "match": "box-shadow:",
+   "message": "Shadow. Elements at rest carry none; only real overlays (menu, dialog, sticky bar) may."
+  },
+  {
+   "level": "FAIL",
+   "id": "shadow",
+   "file": "apps/web/src/app/design-system.css",
+   "line": 203,
+   "match": "box-shadow:",
+   "message": "Shadow. Elements at rest carry none; only real overlays (menu, dialog, sticky bar) may."
+  },
+  {
+   "level": "FAIL",
+   "id": "eyebrow",
+   "file": "apps/web/src/app/design-system.css",
+   "line": 216,
+   "match": ".eyebrow {",
+   "message": "Eyebrow / kicker label above a heading."
+  },
+  {
+   "level": "WARN",
+   "id": "outlined-box",
+   "file": "apps/web/src/features/workspace-redesign.css",
+   "line": 112,
+   "match": "border: 1px solid",
+   "message": "A 1px outlined box. Prefer a filled surface or no box."
+  },
+  {
+   "level": "FAIL",
+   "id": "shadow",
+   "file": "apps/web/src/features/workspace-redesign.css",
+   "line": 115,
+   "match": "box-shadow:",
+   "message": "Shadow. Elements at rest carry none; only real overlays (menu, dialog, sticky bar) may."
+  },
+  {
+   "level": "WARN",
+   "id": "outlined-box",
+   "file": "apps/web/src/features/workspace-redesign.css",
+   "line": 167,
+   "match": "border: 1px solid",
+   "message": "A 1px outlined box. Prefer a filled surface or no box."
+  },
+  {
+   "level": "FAIL",
+   "id": "shadow",
+   "file": "apps/web/src/features/workspace-redesign.css",
+   "line": 170,
+   "match": "box-shadow:",
+   "message": "Shadow. Elements at rest carry none; only real overlays (menu, dialog, sticky bar) may."
+  },
+  {
+   "level": "WARN",
+   "id": "outlined-box",
+   "file": "apps/web/src/features/workspace-redesign.css",
+   "line": 216,
+   "match": "border: 1px solid",
+   "message": "A 1px outlined box. Prefer a filled surface or no box."
+  },
+  {
+   "level": "WARN",
+   "id": "outlined-box",
+   "file": "apps/web/src/features/workspace-redesign.css",
+   "line": 288,
+   "match": "border: 1px solid",
+   "message": "A 1px outlined box. Prefer a filled surface or no box."
+  },
+  {
+   "level": "WARN",
+   "id": "outlined-box",
+   "file": "apps/web/src/features/workspace-redesign.css",
+   "line": 301,
+   "match": "border: 1px solid",
+   "message": "A 1px outlined box. Prefer a filled surface or no box."
+  },
+  {
+   "level": "WARN",
+   "id": "outlined-box",
+   "file": "apps/web/src/features/workspace-redesign.css",
+   "line": 357,
+   "match": "border: 1px solid",
+   "message": "A 1px outlined box. Prefer a filled surface or no box."
+  },
+  {
+   "level": "WARN",
+   "id": "outlined-box",
+   "file": "apps/web/src/features/workspace-redesign.css",
+   "line": 386,
+   "match": "border: 1px solid",
+   "message": "A 1px outlined box. Prefer a filled surface or no box."
+  },
+  {
+   "level": "WARN",
+   "id": "outlined-box",
+   "file": "apps/web/src/features/workspace-redesign.css",
+   "line": 416,
+   "match": "border: 1px solid",
+   "message": "A 1px outlined box. Prefer a filled surface or no box."
+  },
+  {
+   "level": "FAIL",
+   "id": "eyebrow",
+   "file": "apps/web/src/features/auth/login-redesign.css",
+   "line": 12,
+   "match": ".eyebrow {",
+   "message": "Eyebrow / kicker label above a heading."
+  },
+  {
+   "level": "WARN",
+   "id": "outlined-box",
+   "file": "apps/web/src/features/auth/login-redesign.css",
+   "line": 48,
+   "match": "border: 1px solid",
+   "message": "A 1px outlined box. Prefer a filled surface or no box."
+  },
+  {
+   "level": "FAIL",
+   "id": "shadow",
+   "file": "apps/web/src/features/auth/login-redesign.css",
+   "line": 52,
+   "match": "box-shadow:",
+   "message": "Shadow. Elements at rest carry none; only real overlays (menu, dialog, sticky bar) may."
+  },
+  {
+   "level": "WARN",
+   "id": "outlined-box",
+   "file": "apps/web/src/features/auth/login-redesign.css",
+   "line": 77,
+   "match": "border: 1px solid",
+   "message": "A 1px outlined box. Prefer a filled surface or no box."
+  },
+  {
+   "level": "FAIL",
+   "id": "shadow",
+   "file": "apps/web/src/features/auth/login-redesign.css",
+   "line": 81,
+   "match": "box-shadow:",
+   "message": "Shadow. Elements at rest carry none; only real overlays (menu, dialog, sticky bar) may."
+  },
+  {
+   "level": "FAIL",
+   "id": "hairline",
+   "file": "apps/web/src/features/auth/login-redesign.css",
+   "line": 117,
+   "match": "border-top: 1px",
+   "message": "Thin rule / divider line. Separate with space, tone or scale; lines belong to real tables and form fields."
+  },
+  {
+   "level": "FAIL",
+   "id": "eyebrow",
+   "file": "apps/web/src/features/auth/login-redesign.css",
+   "line": 168,
+   "match": ".eyebrow,",
+   "message": "Eyebrow / kicker label above a heading."
+  },
+  {
+   "level": "WARN",
+   "id": "em-dash",
+   "file": "(all files)",
+   "line": 0,
+   "match": "8 em dashes",
+   "message": "Em-dash habit. Use a full stop or a comma; keep at most one or two on a page."
+  }
+ ]
+}

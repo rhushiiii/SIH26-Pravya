@@ -1,0 +1,117 @@
+/* Composition adapted from crysta1221's 21st.dev Attachment component:
+   https://21st.dev/@crysta1221/components/attachment */
+.attachment {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  min-width: 0;
+  padding: 0.875rem 1rem;
+  border: 1px solid var(--ui-line, #e9e5df);
+  border-radius: var(--ui-radius, 16px);
+  background: var(--ui-surface, #fff);
+  color: var(--ui-text, #201b17);
+}
+
+.upload-attachment {
+  grid-column: 1 / -1;
+  width: 100%;
+}
+
+.attachment[data-state="idle"] {
+  background: var(--ui-bg, #f7f7f5);
+}
+
+.attachment[data-state="uploading"],
+.attachment[data-state="processing"] {
+  border-color: color-mix(
+    in srgb,
+    var(--ui-accent, #d95720) 40%,
+    var(--ui-line, #e9e5df)
+  );
+  background: var(--ui-accent-soft, #fff1e7);
+}
+
+.attachment[data-state="error"] {
+  border-color: color-mix(in srgb, #b42318 30%, var(--ui-line, #e9e5df));
+  background: #fff5f3;
+}
+
+.attachment[data-state="done"] {
+  border-color: color-mix(in srgb, #16804a 28%, var(--ui-line, #e9e5df));
+  background: #f2faf5;
+}
+
+.attachment-media {
+  display: grid;
+  width: 2.5rem;
+  height: 2.5rem;
+  flex: 0 0 2.5rem;
+  place-items: center;
+  border-radius: 0.8rem;
+  background: var(--ui-accent-soft, #fff1e7);
+  color: var(--ui-accent, #d95720);
+}
+
+.attachment[data-state="error"] .attachment-media {
+  background: #fee9e5;
+  color: #b42318;
+}
+.attachment[data-state="done"] .attachment-media {
+  background: #e2f4e9;
+  color: #167344;
+}
+
+.attachment-media svg {
+  width: 1.25rem;
+  height: 1.25rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.7;
+}
+
+.attachment-content {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.attachment-title {
+  overflow: hidden;
+  color: var(--ui-text, #201b17);
+  font-size: 0.9rem;
+  font-weight: 650;
+  line-height: 1.35;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.attachment-description {
+  color: var(--ui-muted, #716b63);
+  font-size: 0.8rem;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.attachment[data-state="error"] .attachment-description {
+  color: #9a2118;
+}
+.attachment[data-state="done"] .attachment-description {
+  color: #17643d;
+}
+
+@media (max-width: 520px) {
+  .attachment {
+    align-items: flex-start;
+    gap: 0.7rem;
+    padding: 0.75rem;
+  }
+  .attachment-media {
+    width: 2.25rem;
+    height: 2.25rem;
+    flex-basis: 2.25rem;
+  }
+}

@@ -19,7 +19,7 @@ export function uploadError(error: unknown): {
     INVALID_CSV:
       "The API rejected this file. Use UTF-8 CSV with the required columns, standard quoting, no blank records and at least one student record.",
     SCHEMA_MISMATCH:
-      "The API rejected the headers. Use the strict-v1 template with all eight headers in the exact order shown.",
+      "The API rejected the headers. Use the strict-v2 template with all nine headers in the exact order shown.",
     FILE_TOO_LARGE:
       "The file or multipart request exceeds the configured size limit. Select a smaller complete snapshot within the limit.",
     ROW_LIMIT_EXCEEDED:

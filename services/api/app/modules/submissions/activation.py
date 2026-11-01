@@ -125,8 +125,11 @@ def eligibility(
 def comparison(
     current: list[StudentRecordVersion], candidate: list[StudentRecordVersion]
 ) -> dict[str, Any]:
-    before = snapshot_counts(current)
-    after = snapshot_counts(candidate)
+    reservation = any(
+        "reservation_category" in row.normalized_json for row in candidate
+    )
+    before = snapshot_counts(current, "RESERVATION" if reservation else "LEGACY")
+    after = snapshot_counts(candidate, "RESERVATION" if reservation else "LEGACY")
     result: dict[str, Any] = {
         "current_counts": before if current else None,
         "candidate_counts": after,
@@ -138,11 +141,16 @@ def comparison(
             - before["demo_active_records"],
             "categories": {
                 category: {
-                    key: after["categories"][category][key]
-                    - before["categories"][category][key]
+                    key: (
+                        after["categories"][category][key]
+                        - before["categories"][category][key]
+                    )
+                    if after["categories"][category][key] is not None
+                    and before["categories"][category][key] is not None
+                    else None
                     for key in ("declared_records", "demo_active_records")
                 }
-                for category in CATEGORIES
+                for category in after["categories"]
             },
             "statuses": {
                 status: after["statuses"][status] - before["statuses"][status]
@@ -182,15 +190,29 @@ def comparison(
                     normalized_status(new.enrollment_status),
                 )
             ] += 1
-        if old.admission_category != new.admission_category:
+        old_category = (
+            old.reservation_category
+            if reservation
+            else (
+                old.admission_category
+                if old.admission_category in CATEGORIES
+                else "UNSUPPORTED"
+            )
+        )
+        new_category = (
+            new.reservation_category
+            if reservation
+            else (
+                new.admission_category
+                if new.admission_category in CATEGORIES
+                else "UNSUPPORTED"
+            )
+        )
+        if old_category != new_category:
             category_transitions[
                 (
-                    old.admission_category
-                    if old.admission_category in CATEGORIES
-                    else "UNSUPPORTED",
-                    new.admission_category
-                    if new.admission_category in CATEGORIES
-                    else "UNSUPPORTED",
+                    old_category or "NOT_PROVIDED",
+                    new_category or "NOT_PROVIDED",
                 )
             ] += 1
     result.update(
@@ -213,6 +235,16 @@ def comparison(
             "_omitted_record_ids": [str(row.id) for row in omitted],
         }
     )
+    if reservation:
+        pwd_changes: Counter[tuple[str, str]] = Counter(
+            (str(before_ids[key].is_pwd), str(after_ids[key].is_pwd))
+            for key in retained
+            if before_ids[key].is_pwd != after_ids[key].is_pwd
+        )
+        result["pwd_transitions"] = [
+            {"from": old, "to": new, "records": count}
+            for (old, new), count in sorted(pwd_changes.items())
+        ]
     return result
 
 

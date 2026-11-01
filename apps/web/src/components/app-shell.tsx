@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useRef, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { homeFor, useSession, type Role } from "@/features/auth/session";
 import { BrandMark } from "@/components/brand-mark";
 import { DataNotice, Loading } from "@/components/ui/feedback";
@@ -43,6 +43,7 @@ export function AppShell({ children }: { children: ReactNode }) {
   const { session, signOut } = useSession();
   const pathname = usePathname();
   const menu = useRef<HTMLDialogElement>(null);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   useEffect(() => {
     menu.current?.close();
   }, [pathname]);
@@ -148,6 +149,11 @@ export function AppShell({ children }: { children: ReactNode }) {
                 icon: "flag" as const,
               },
               {
+                href: "/reconciliations",
+                label: "Reconciliations",
+                icon: "flag" as const,
+              },
+              {
                 href: "/notifications",
                 label: "Notifications",
                 icon: "bell" as const,
@@ -155,47 +161,123 @@ export function AppShell({ children }: { children: ReactNode }) {
             ]
           : []),
       ];
-  const currentLabel =
-    links.find((link) => link.href === pathname)?.label ?? label;
+  const currentLink = [...links]
+    .filter(
+      (link) =>
+        link.href === pathname ||
+        (link.href !== destination && pathname.startsWith(`${link.href}/`)),
+    )
+    .sort((a, b) => b.href.length - a.href.length)[0];
+  const currentLabel = currentLink?.label ?? label;
+
+  const navigationGroups = [
+    {
+      heading: "Workspace",
+      links: links.filter((link) =>
+        [
+          destination,
+          "/institution/upload",
+          "/aicte/institutions",
+          "/analytics",
+        ].includes(link.href),
+      ),
+    },
+    {
+      heading: "Review & records",
+      links: links.filter(
+        (link) =>
+          [
+            "/submissions",
+            "/records",
+            "/credentials",
+            "/verification",
+            "/verify",
+            "/verify/log",
+            "/cases",
+          ].includes(link.href) && link.href !== destination,
+      ),
+    },
+    {
+      heading: "Governance",
+      links: links.filter((link) =>
+        ["/reports", "/audit", "/reconciliations", "/notifications"].includes(
+          link.href,
+        ),
+      ),
+    },
+  ].filter((group) => group.links.length > 0);
 
   const navigation = (
     <>
-      <Link href={destination} onClick={() => menu.current?.close()}>
-        <BrandMark tagline="Admissions workspace" />
-      </Link>
-      <p className="nav-caption">WORKSPACE</p>
-      <nav aria-label="Main navigation">
-        {links.map((link) => (
-          <Link
-            key={link.href}
-            className={`nav-link ${pathname === link.href ? "active" : ""}`}
-            href={link.href}
-            aria-current={pathname === link.href ? "page" : undefined}
-            onClick={() => menu.current?.close()}
-          >
-            <Icon name={link.icon} />
-            {link.label}
-          </Link>
+      <nav aria-label="Main navigation" className="app-navigation">
+        {navigationGroups.map((group) => (
+          <section className="app-navigation-group" key={group.heading}>
+            <h2>{group.heading}</h2>
+            {group.links.map((link) => {
+              const isCurrent = currentLink?.href === link.href;
+              return (
+                <Link
+                  key={link.href}
+                  className={`nav-link ${isCurrent ? "active" : ""}`}
+                  href={link.href}
+                  aria-label={link.label}
+                  title={link.label}
+                  aria-current={isCurrent ? "page" : undefined}
+                  onClick={() => menu.current?.close()}
+                >
+                  <Icon name={link.icon} />
+                  <span className="sidebar-link-label">{link.label}</span>
+                </Link>
+              );
+            })}
+          </section>
         ))}
       </nav>
       <div className="sidebar-footer">
         <span className="tiny-label">SECURE WORKSPACE</span>
         <strong>{roleNames[session.user.role]}</strong>
         <p>Synthetic accounts. Backend permissions apply to every request.</p>
-        <button className="sign-out" onClick={signOut}>
+        <button
+          className="sign-out"
+          aria-label="Sign out"
+          title="Sign out"
+          onClick={signOut}
+        >
           <Icon name="exit" />
-          Sign out
+          <span className="sidebar-link-label">Sign out</span>
         </button>
       </div>
     </>
   );
 
   return (
-    <div className="portal-layout">
+    <div className="portal-layout" data-sidebar-collapsed={sidebarCollapsed}>
       <a className="skip-link" href="#main-content">
         Skip to content
       </a>
-      <aside className="sidebar">{navigation}</aside>
+      <aside className="sidebar">
+        <div className="sidebar-header">
+          <Link
+            href={destination}
+            className="sidebar-brand"
+            aria-label="PRAVYA admissions workspace"
+            title="PRAVYA admissions workspace"
+          >
+            <BrandMark tagline="Admissions workspace" />
+          </Link>
+          <button
+            type="button"
+            className="sidebar-collapse"
+            aria-label={`${sidebarCollapsed ? "Expand" : "Collapse"} sidebar`}
+            aria-expanded={!sidebarCollapsed}
+            title={`${sidebarCollapsed ? "Expand" : "Collapse"} sidebar`}
+            onClick={() => setSidebarCollapsed((collapsed) => !collapsed)}
+          >
+            <span aria-hidden="true">{sidebarCollapsed ? "›" : "‹"}</span>
+          </button>
+        </div>
+        {navigation}
+      </aside>
       <div className="portal-main">
         <header className="topbar">
           <div className="topbar-title">
@@ -212,14 +294,22 @@ export function AppShell({ children }: { children: ReactNode }) {
             </span>
           </div>
           <div className="topbar-actions">
+            <div className="workspace-health" aria-label="Workspace status">
+              <span className="workspace-health-dot" aria-hidden="true" />
+              <span>Local demo environment</span>
+            </div>
             <NotificationBell />
             <div className="account-label">
               <span className="account-dot" aria-hidden="true">
-                {institution ? "IN" : "AI"}
+                {roleNames[role]
+                  .split(/\s+/)
+                  .slice(0, 2)
+                  .map((word) => word[0])
+                  .join("")}
               </span>
               <span>
-                {roleNames[session.user.role]}
-                <small>Direct local access</small>
+                <strong>{roleNames[role]}</strong>
+                <small>Signed in · Demo account</small>
               </span>
             </div>
           </div>
@@ -247,6 +337,14 @@ export function AppShell({ children }: { children: ReactNode }) {
         >
           <Icon name="close" />
         </button>
+        <Link
+          href={destination}
+          className="sidebar-brand mobile-dialog-brand"
+          aria-label="PRAVYA admissions workspace"
+          onClick={() => menu.current?.close()}
+        >
+          <BrandMark tagline="Admissions workspace" />
+        </Link>
         {navigation}
       </dialog>
     </div>

@@ -134,7 +134,7 @@ export function AicteDashboard() {
       enabled: !!session && validYear,
       queryFn: ({ signal }: { signal: AbortSignal }) =>
         request<Summary>(
-          `/institutions/${item.id}/summary?academic_year=${encodeURIComponent(year)}&page=1&page_size=100`,
+          `/institutions/${item.id}/summary?academic_year=${encodeURIComponent(year)}&category_scheme=RESERVATION&page=1&page_size=100`,
           { signal },
         ),
       staleTime: 0,
@@ -190,14 +190,16 @@ export function AicteDashboard() {
         }))
       : [],
   });
-  const categoryTotals: Record<string, number> = {};
+  const categoryTotals: Record<string, number | null> = {};
   const statusTotals: Record<string, number> = {};
   for (const query of summaries) {
     const categories = valueObject(valueObject(query.data?.totals)?.categories);
     for (const [key, raw] of Object.entries(categories ?? {})) {
       const count = countValue(valueObject(raw)?.declared_records);
-      if (count !== null)
-        categoryTotals[key] = (categoryTotals[key] ?? 0) + count;
+      categoryTotals[key] =
+        count === null || categoryTotals[key] === null
+          ? null
+          : (categoryTotals[key] ?? 0) + count;
     }
     const statuses = valueObject(valueObject(query.data?.totals)?.statuses);
     for (const [key, raw] of Object.entries(statuses ?? {})) {
@@ -510,167 +512,225 @@ export function AicteDashboard() {
                   emptyLabel="No current declarations are available across this selection."
                 />
               )}
-              {!pendingSummaries && statusTotal > 0 && (
-                <>
-                  <h3 className="chart-subheading">Status breakdown</h3>
-                  <StatusDonut statuses={statusData} total={statusTotal} />
-                </>
-              )}
               {failedSummaries.length > 0 && successfulSummaries.length > 0 && (
                 <p className="partial-note">
-                  Category totals include successful institution summaries only.
+                  PwD overlaps primary categories; do not sum groups into
+                  headcount. Category totals include successful institution
+                  summaries only.
                 </p>
               )}
             </section>
-            <section className="panel" aria-labelledby="aicte-coverage-title">
+            <section className="panel" aria-labelledby="aicte-status-title">
               <header className="panel-heading">
                 <div>
-                  <p className="eyebrow">DECLARATION COVERAGE</p>
-                  <h2 id="aicte-coverage-title">
-                    Institution/programme comparison
-                  </h2>
+                  <p className="eyebrow">CURRENT SNAPSHOTS</p>
+                  <h2 id="aicte-status-title">Status breakdown</h2>
                 </div>
-                <span className="quiet-label">Current snapshots only</span>
+                <span className="quiet-label">
+                  {statusTotal.toLocaleString()} records
+                </span>
               </header>
               {pendingSummaries ? (
-                <Loading label="Loading institution summaries…" />
+                <Loading label="Loading status totals…" />
+              ) : statusTotal > 0 ? (
+                <StatusDonut statuses={statusData} total={statusTotal} />
               ) : (
-                <DashboardTable label="Institution declaration and category comparison">
-                  <thead>
-                    <tr>
-                      <th scope="col">Institution</th>
-                      <th scope="col">Region</th>
-                      <th scope="col">Coverage</th>
-                      <th scope="col">Declared</th>
-                      <th scope="col">Active</th>
-                      <th scope="col">Categories</th>
-                      {isOfficer && <th scope="col">Assessment</th>}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {visibleInstitutions.map((item, index) => {
-                      const result = summaries[index];
-                      const data = result?.data;
-                      const coverage = valueObject(data?.coverage);
-                      const institutionCategories: Record<
-                        string,
-                        { declared: number; active: number }
-                      > = {};
-                      for (const program of data?.data ?? [])
-                        for (const [key, raw] of Object.entries(
-                          valueObject(
-                            valueObject(program.counts)?.categories,
-                          ) ?? {},
-                        )) {
-                          institutionCategories[key] ??= {
-                            declared: 0,
-                            active: 0,
-                          };
-                          institutionCategories[key].declared +=
-                            countValue(valueObject(raw)?.declared_records) ?? 0;
-                          institutionCategories[key].active +=
-                            countValue(valueObject(raw)?.demo_active_records) ??
-                            0;
-                        }
-                      const current = coverage?.status !== "NONE" && !!data;
-                      const historyIndex = visibleInstitutions.findIndex(
-                        (candidate) => candidate.id === item.id,
-                      );
-                      const history = historyQueries[historyIndex];
-                      const currentForInstitution = (
-                        history?.data ?? []
-                      ).filter((batch) => batch.snapshot_state === "CURRENT");
-                      const assessmentRows = currentForInstitution.map(
-                        (batch) => {
-                          const position = currentBatches.findIndex(
-                            (candidate) => candidate.id === batch.id,
-                          );
-                          return assessments[position];
-                        },
-                      );
-                      const freshness = !isOfficer
-                        ? null
-                        : freshnessSummary(history, assessmentRows, current);
-                      return (
-                        <tr key={item.id}>
-                          <th scope="row">
-                            <Link
-                              href={`/aicte/institutions/${item.id}`}
-                              aria-label={`View ${item.name}`}
-                            >
-                              {item.name}
-                            </Link>
-                          </th>
-                          <td>{prettyLabel(item.region)}</td>
-                          <td>
-                            {result?.isError ? (
-                              <span className="status-badge warning">
-                                Unavailable
-                              </span>
-                            ) : data ? (
-                              <CoverageBadge
-                                status={String(coverage?.status ?? "NONE")}
-                              />
-                            ) : (
-                              <span>Loading</span>
-                            )}
-                            <small>
-                              {data
-                                ? `${displayCount(coverage?.with_current_snapshot)} / ${displayCount(coverage?.programmes)} programmes`
-                                : result?.isError
-                                  ? "Summary failed"
-                                  : ""}
-                            </small>
-                          </td>
-                          <td>
-                            {result?.isError
-                              ? "Unavailable"
-                              : data && coverage?.status === "NONE"
-                                ? "No declaration"
-                                : displayCount(
-                                    valueObject(data?.totals)?.declared_records,
-                                  )}
-                          </td>
-                          <td>
-                            {result?.isError
-                              ? "Unavailable"
-                              : data && coverage?.status === "NONE"
-                                ? "No declaration"
-                                : displayCount(
-                                    valueObject(data?.totals)
-                                      ?.demo_active_records,
-                                  )}
-                          </td>
-                          <td>
-                            {Object.keys(institutionCategories).length
-                              ? Object.entries(institutionCategories)
-                                  .map(
-                                    ([key, value]) =>
-                                      `${prettyLabel(key)} ${value.declared.toLocaleString()} declared · ${value.active.toLocaleString()} active`,
-                                  )
-                                  .join(" · ")
-                              : data && coverage?.status === "NONE"
-                                ? "No declaration"
-                                : "Unavailable"}
-                          </td>
-                          {isOfficer && (
-                            <td>
-                              <span
-                                className={`status-badge ${freshness?.tone ?? "neutral"}`}
-                              >
-                                {freshness?.label ?? "Unavailable"}
-                              </span>
-                              <small>{freshness?.note}</small>
-                            </td>
-                          )}
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </DashboardTable>
+                <p className="chart-empty">
+                  Status totals are unavailable because no current records were
+                  returned.
+                </p>
               )}
             </section>
           </div>
+          <section
+            className="panel dashboard-coverage-panel"
+            aria-labelledby="aicte-coverage-title"
+          >
+            <header className="panel-heading">
+              <div>
+                <p className="eyebrow">DECLARATION COVERAGE</p>
+                <h2 id="aicte-coverage-title">
+                  Institution/programme comparison
+                </h2>
+              </div>
+              <span className="quiet-label">Current snapshots only</span>
+            </header>
+            {pendingSummaries ? (
+              <Loading label="Loading institution summaries…" />
+            ) : (
+              <DashboardTable
+                label="Institution declaration and category comparison"
+                className="dashboard-coverage-table"
+              >
+                <colgroup>
+                  <col className="coverage-col-institution" />
+                  <col className="coverage-col-region" />
+                  <col className="coverage-col-status" />
+                  <col className="coverage-col-count" />
+                  <col className="coverage-col-count" />
+                  <col className="coverage-col-categories" />
+                  {isOfficer && <col className="coverage-col-assessment" />}
+                </colgroup>
+                <thead>
+                  <tr>
+                    <th scope="col">Institution</th>
+                    <th scope="col">Region</th>
+                    <th scope="col">Coverage</th>
+                    <th scope="col">Declared</th>
+                    <th scope="col">Active</th>
+                    <th scope="col">
+                      Categories
+                      <small>Declared / active</small>
+                    </th>
+                    {isOfficer && <th scope="col">Assessment</th>}
+                  </tr>
+                </thead>
+                <tbody>
+                  {visibleInstitutions.map((item, index) => {
+                    const result = summaries[index];
+                    const data = result?.data;
+                    const coverage = valueObject(data?.coverage);
+                    const institutionCategories: Record<
+                      string,
+                      { declared: number | null; active: number | null }
+                    > = {};
+                    for (const program of data?.data ?? [])
+                      for (const [key, raw] of Object.entries(
+                        valueObject(valueObject(program.counts)?.categories) ??
+                          {},
+                      )) {
+                        institutionCategories[key] ??= {
+                          declared: 0,
+                          active: 0,
+                        };
+                        const declared = countValue(
+                          valueObject(raw)?.declared_records,
+                        );
+                        const active = countValue(
+                          valueObject(raw)?.demo_active_records,
+                        );
+                        const previous = institutionCategories[key];
+                        previous.declared =
+                          declared === null || previous.declared === null
+                            ? null
+                            : previous.declared + declared;
+                        previous.active =
+                          active === null || previous.active === null
+                            ? null
+                            : previous.active + active;
+                      }
+                    const current = coverage?.status !== "NONE" && !!data;
+                    const historyIndex = visibleInstitutions.findIndex(
+                      (candidate) => candidate.id === item.id,
+                    );
+                    const history = historyQueries[historyIndex];
+                    const currentForInstitution = (history?.data ?? []).filter(
+                      (batch) => batch.snapshot_state === "CURRENT",
+                    );
+                    const assessmentRows = currentForInstitution.map(
+                      (batch) => {
+                        const position = currentBatches.findIndex(
+                          (candidate) => candidate.id === batch.id,
+                        );
+                        return assessments[position];
+                      },
+                    );
+                    const freshness = !isOfficer
+                      ? null
+                      : freshnessSummary(history, assessmentRows, current);
+                    return (
+                      <tr key={item.id}>
+                        <th scope="row">
+                          <Link
+                            href={`/aicte/institutions/${item.id}`}
+                            aria-label={`View ${item.name}`}
+                          >
+                            {item.name}
+                          </Link>
+                        </th>
+                        <td>{prettyLabel(item.region)}</td>
+                        <td>
+                          {result?.isError ? (
+                            <span className="status-badge warning">
+                              Unavailable
+                            </span>
+                          ) : data ? (
+                            <CoverageBadge
+                              status={String(coverage?.status ?? "NONE")}
+                            />
+                          ) : (
+                            <span>Loading</span>
+                          )}
+                          <small>
+                            {data
+                              ? `${displayCount(coverage?.with_current_snapshot)} / ${displayCount(coverage?.programmes)} programmes`
+                              : result?.isError
+                                ? "Summary failed"
+                                : ""}
+                          </small>
+                        </td>
+                        <td>
+                          {result?.isError
+                            ? "Unavailable"
+                            : data && coverage?.status === "NONE"
+                              ? "No declaration"
+                              : displayCount(
+                                  valueObject(data?.totals)?.declared_records,
+                                )}
+                        </td>
+                        <td>
+                          {result?.isError
+                            ? "Unavailable"
+                            : data && coverage?.status === "NONE"
+                              ? "No declaration"
+                              : displayCount(
+                                  valueObject(data?.totals)
+                                    ?.demo_active_records,
+                                )}
+                        </td>
+                        <td>
+                          {Object.keys(institutionCategories).length ? (
+                            <div className="category-summary">
+                              {Object.entries(institutionCategories).map(
+                                ([key, value]) => (
+                                  <span
+                                    className="category-summary-item"
+                                    key={key}
+                                  >
+                                    <strong>{prettyLabel(key)}</strong>
+                                    <small
+                                      aria-label={`${displayCount(value.declared)} declared, ${displayCount(value.active)} active`}
+                                    >
+                                      {displayCount(value.declared)} /{" "}
+                                      {displayCount(value.active)}
+                                    </small>
+                                  </span>
+                                ),
+                              )}
+                            </div>
+                          ) : data && coverage?.status === "NONE" ? (
+                            "No declaration"
+                          ) : (
+                            "Unavailable"
+                          )}
+                        </td>
+                        {isOfficer && (
+                          <td>
+                            <span
+                              className={`status-badge ${freshness?.tone ?? "neutral"}`}
+                            >
+                              {freshness?.label ?? "Unavailable"}
+                            </span>
+                            <small>{freshness?.note}</small>
+                          </td>
+                        )}
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </DashboardTable>
+            )}
+          </section>
           <InstitutionsRequiringReview
             canOpenInstitution={!!isOfficer}
             initialYear={dashboardYear}

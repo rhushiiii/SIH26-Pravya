@@ -9,11 +9,12 @@ from pydantic import BaseModel, Field
 from app.core.pagination import Pagination
 from app.modules.cases.models import CasePriority, CaseSeverity, CaseStatus
 
+CategoryScheme = Literal["LEGACY", "RESERVATION"]
 GroupBy = Literal["academic_year", "institution", "programme", "region"]
 # NO_CURRENT_SNAPSHOT means "unknown", never zero enrolment.
 TrendStatus = Literal["COMPLETE", "PARTIAL", "NO_CURRENT_SNAPSHOT"]
 FreshnessStatus = Literal["FRESH", "STALE", "NO_CURRENT_SNAPSHOT"]
-IntakeStatus = Literal["OK", "NO_CURRENT_SNAPSHOT", "NO_RULE"]
+IntakeStatus = Literal["OK", "NO_CURRENT_SNAPSHOT", "NO_RULE", "UNKNOWN_CATEGORY"]
 Drilldown = dict[str, str]
 
 NOTICE = (
@@ -23,6 +24,7 @@ NOTICE = (
 
 
 class AnalyticsFilters(BaseModel):
+    category_scheme: CategoryScheme = "LEGACY"
     academic_year: str | None = None
     institution_id: UUID | None = None
     region: str | None = None
@@ -48,8 +50,8 @@ class AnalyticsMeta(BaseModel):
 
 
 class CategoryCount(BaseModel):
-    declared_records: int = 0
-    active_records: int = 0
+    declared_records: int | None = 0
+    active_records: int | None = 0
 
 
 class TrendRow(BaseModel):

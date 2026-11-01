@@ -52,13 +52,15 @@ def test_upload_policy_uses_parser_headers_and_configured_limits(
         }
     )
     response = client.get(
-        "/api/v1/submissions/upload-policy", headers=auth_headers(alias)
+        "/api/v1/submissions/upload-policy?schema_version=v1",
+        headers=auth_headers(alias),
     )
     assert response.status_code == 200
     assert response.headers["cache-control"] == "no-store"
     assert response.json() == {
         "schema_version": "v1",
         "required_headers": list(HEADERS),
+        "reservation_categories": [],
         "encoding": "UTF-8",
         "accepts_utf8_bom": True,
         "accepted_formats": ["csv", "xlsx"],

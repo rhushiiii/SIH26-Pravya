@@ -21,6 +21,7 @@ from app.modules.analytics.schemas import (
     AnalyticsMeta,
     CaseTotals,
     CategoryCount,
+    CategoryScheme,
     CompletenessRow,
     CoverageCounts,
     Drilldown,
@@ -35,6 +36,11 @@ from app.modules.analytics.schemas import (
 )
 from app.modules.cases.models import CLOSED_STATUSES, ReviewCase
 from app.modules.cases.services import case_flags
+from app.modules.institutions.categories import (
+    RESERVATION_GROUPS,
+    RESERVATION_RULE_VERSION,
+    reservation_category_counts,
+)
 from app.modules.institutions.models import Institution, IntakeRule, Programme
 from app.modules.intake.services import (
     capacity_line,
@@ -77,6 +83,7 @@ class Filters:
     institution_id: UUID | None = None
     region: str | None = None
     programme_code: str | None = None
+    category_scheme: CategoryScheme = "LEGACY"
 
     def echo(self, **extra: object) -> AnalyticsFilters:
         return AnalyticsFilters(**asdict(self), **extra)
@@ -102,8 +109,36 @@ class Counts:
         self.active += other.active
         self.unclassified_active += other.unclassified_active
         for name, value in other.categories.items():
-            self.categories[name].declared_records += value.declared_records
-            self.categories[name].active_records += value.active_records
+            target = self.categories[name]
+            target.declared_records = add_known(
+                target.declared_records, value.declared_records
+            )
+            target.active_records = add_known(
+                target.active_records, value.active_records
+            )
+
+
+def add_known(left: int | None, right: int | None) -> int | None:
+    return left + right if left is not None and right is not None else None
+
+
+def category_names(scheme: CategoryScheme) -> tuple[str, ...]:
+    return RESERVATION_GROUPS if scheme == "RESERVATION" else CATEGORIES
+
+
+def empty_counts(scheme: CategoryScheme) -> Counts:
+    return Counts(categories={name: CategoryCount() for name in category_names(scheme)})
+
+
+def rule_version(f: Filters, settings: Settings) -> str:
+    return (
+        RESERVATION_RULE_VERSION
+        if f.category_scheme == "RESERVATION"
+        else settings.validation_intake_rule_version
+    )
+
+
+RESERVATION_NOTE = "PwD overlaps main categories; never add PwD to student headcount."
 
 
 def pick(**values: object) -> Drilldown:
@@ -169,12 +204,41 @@ def load_scopes(
 
 
 def load_counts(
-    session: Session, scopes: dict[tuple[UUID, str], ScopeData]
+    session: Session,
+    scopes: dict[tuple[UUID, str], ScopeData],
+    category_scheme: CategoryScheme = "LEGACY",
 ) -> dict[UUID, Counts]:
     """Per current batch: declared rows and ACTIVE rows, by admission category."""
     batch_ids = [s.current_batch_id for s in scopes.values() if s.current_batch_id]
-    counts: dict[UUID, Counts] = {batch_id: Counts() for batch_id in batch_ids}
+    counts: dict[UUID, Counts] = {
+        batch_id: empty_counts(category_scheme) for batch_id in batch_ids
+    }
     if not batch_ids:
+        return counts
+    if category_scheme == "RESERVATION":
+        records = session.scalars(
+            select(StudentRecordVersion).where(
+                StudentRecordVersion.batch_id.in_(batch_ids)
+            )
+        )
+        grouped: dict[UUID, list[StudentRecordVersion]] = defaultdict(list)
+        for record in records:
+            grouped[record.batch_id].append(record)
+        for batch_id, rows in grouped.items():
+            entry = counts[batch_id]
+            entry.declared = len(rows)
+            entry.active = sum(row.enrollment_status == "ACTIVE" for row in rows)
+            entry.unclassified_active = sum(
+                row.enrollment_status == "ACTIVE" and row.reservation_category is None
+                for row in rows
+            )
+            entry.categories = {
+                name: CategoryCount(
+                    declared_records=value["declared_records"],
+                    active_records=value["demo_active_records"],
+                )
+                for name, value in reservation_category_counts(rows).items()
+            }
         return counts
     active = StudentRecordVersion.enrollment_status == "ACTIVE"
     for batch_id, category, declared, active_n in session.execute(
@@ -193,8 +257,9 @@ def load_counts(
         entry.declared += declared
         entry.active += active_n
         if category in entry.categories:
-            entry.categories[category].declared_records += declared
-            entry.categories[category].active_records += active_n
+            value = entry.categories[category]
+            value.declared_records = (value.declared_records or 0) + declared
+            value.active_records = (value.active_records or 0) + active_n
         else:
             entry.unclassified_active += active_n
     return counts
@@ -266,7 +331,7 @@ def enrolment_trends(
 ) -> tuple[AnalyticsMeta, list[TrendRow]]:
     units = programme_units(session, f)
     scopes = load_scopes(session, units, f.academic_year)
-    counts = load_counts(session, scopes)
+    counts = load_counts(session, scopes, f.category_scheme)
     years = (
         [f.academic_year] if f.academic_year else sorted({year for _, year in scopes})
     )
@@ -282,7 +347,7 @@ def enrolment_trends(
     rows: list[TrendRow] = []
     for year in years:
         for (institution, programme), programme_ids in groups.values():
-            total = Counts()
+            total = empty_counts(f.category_scheme)
             with_snapshot = 0
             for pid in programme_ids:
                 scope = scopes.get((pid, year))
@@ -354,7 +419,7 @@ def submission_completeness(
     programme_ids = [p.id for _, p in units]
     declarations = latest_declarations_bulk(session, programme_ids)
     pending = pending_candidates(session, programme_ids)
-    counts = load_counts(session, scopes)
+    counts = load_counts(session, scopes, f.category_scheme)
     years = years_for(units, f, scopes, set(declarations) | set(pending))
     none_year: list[str | None] = [None]
     rows: list[CompletenessRow] = []
@@ -434,10 +499,10 @@ def submission_completeness(
 def intake_utilisation(
     session: Session, f: Filters, settings: Settings, now: datetime
 ) -> tuple[AnalyticsMeta, list[UtilisationRow]]:
-    version = settings.validation_intake_rule_version
+    version = rule_version(f, settings)
     units = programme_units(session, f)
     scopes = load_scopes(session, units, f.academic_year)
-    counts = load_counts(session, scopes)
+    counts = load_counts(session, scopes, f.category_scheme)
     rule_scopes = {
         (pid, year)
         for pid, year in session.execute(
@@ -460,7 +525,7 @@ def intake_utilisation(
             )
             scope = scopes.get((programme.id, year))
             current = scope.current_batch_id if scope else None
-            for category in CATEGORIES:
+            for category in category_names(f.category_scheme):
                 rule = rules.get(category)
                 active = (
                     counts[current].categories[category].active_records
@@ -477,9 +542,12 @@ def intake_utilisation(
                         None,
                     )
                 elif active is None:
-                    status = "NO_CURRENT_SNAPSHOT"
+                    status = (
+                        "NO_CURRENT_SNAPSHOT" if current is None else "UNKNOWN_CATEGORY"
+                    )
                     calculation = (
-                        f"no current activated snapshot; ACTIVE count unknown (not "
+                        "snapshot or category coverage incomplete; "
+                        "ACTIVE count unknown (not "
                         f"zero); approved {approved} (rule {rule.rule_version}, "
                         f"{category})"
                     )

@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/filters";
 import { Pagination } from "@/components/ui/pagination";
 import { useSession } from "@/features/auth/session";
-import { useApiQuery, useScope } from "@/lib/api/hooks";
+import { useApiQuery, useDraftFilters, useScope } from "@/lib/api/hooks";
 import { validAcademicYear } from "@/features/submissions/data";
 import type { components } from "@/lib/api/generated";
 import { displayCount, when } from "@/lib/format";
@@ -89,7 +89,7 @@ function Frame({
   const { coverage } = data;
   return (
     <div className="analytics-stack">
-      <div aria-live="polite">
+      <div className="analytics-context" aria-live="polite">
         <p className="analytics-meta">
           <span>
             {coverage.institutions_with_current_snapshot} of{" "}
@@ -107,6 +107,11 @@ function Frame({
           </span>
         </p>
         <p className="data-note">{data.notice}</p>
+        <p className="data-note">
+          PwD overlaps primary reservation categories; do not add category
+          counts into a student total. Unknown legacy classifications are
+          unavailable.
+        </p>
       </div>
       {children(data)}
       {data.pagination.total > data.pagination.page_size && (
@@ -154,11 +159,18 @@ export function AnalyticsExplorer() {
   const officer = session?.user.role === "AICTE_OFFICER";
   const [tab, setTab] = useState<TabId>("trends");
   const [groupBy, setGroupBy] = useState<GroupBy>("academic_year");
-  const [draft, setDraft] = useState<Filters>(EMPTY);
-  const [filters, setFilters] = useState<Filters>(EMPTY);
-  const [error, setError] = useState("");
   const [pages, setPages] = useState<Record<string, number>>({});
   const tabRefs = useRef<Array<HTMLButtonElement | null>>([]);
+  const resetPages = () => setPages({});
+  const { draft, setDraft, filters, error, apply, clear } =
+    useDraftFilters<Filters>(
+      EMPTY,
+      (candidate) =>
+        candidate.year && !validAcademicYear(candidate.year)
+          ? "Enter a consecutive academic year, for example 2026-27."
+          : null,
+      { onApplied: resetPages, onCleared: resetPages },
+    );
 
   const institutions = useInstitutionOptions(!!session);
   const regions = regionsOf(institutions.data?.data ?? []);
@@ -170,6 +182,7 @@ export function AnalyticsExplorer() {
     const query = new URLSearchParams({
       page: String(page),
       page_size: String(PAGE_SIZE),
+      category_scheme: "RESERVATION",
       ...extra,
     });
     if (tab !== "cases" && filters.year)
@@ -216,18 +229,8 @@ export function AnalyticsExplorer() {
     tabRefs.current[next]?.focus();
   }
 
-  function apply() {
-    if (draft.year && !validAcademicYear(draft.year)) {
-      setError("Enter a consecutive academic year, for example 2026-27.");
-      return;
-    }
-    setError("");
-    setFilters(draft);
-    setPages({});
-  }
-
   return (
-    <div className="dashboard-page">
+    <div className="dashboard-page analytics-page">
       <header className="page-heading">
         <p className="eyebrow">AICTE ANALYTICS</p>
         <h1>Analytics</h1>
@@ -304,16 +307,7 @@ export function AnalyticsExplorer() {
           <button className="button secondary" type="submit">
             Apply filters
           </button>
-          <button
-            className="button secondary"
-            type="button"
-            onClick={() => {
-              setDraft(EMPTY);
-              setFilters(EMPTY);
-              setError("");
-              setPages({});
-            }}
-          >
+          <button className="button secondary" type="button" onClick={clear}>
             Clear
           </button>
         </form>
@@ -329,12 +323,21 @@ export function AnalyticsExplorer() {
         )}
       </section>
 
-      <section className="panel" aria-label="Analytics results">
-        <p>
+      <section
+        className={`panel analytics-results analytics-results-${tab}`}
+        aria-label="Analytics results"
+      >
+        <header className="panel-heading analytics-results-heading">
+          <div>
+            <p className="eyebrow">CURRENT DECLARATIONS</p>
+            <h2>{TABS.find((item) => item.id === tab)?.label}</h2>
+          </div>
           <Link
+            className="button secondary small"
             href={`/reports?${new URLSearchParams(
               Object.entries({
                 academic_year: filters.year,
+                category_scheme: "RESERVATION",
                 institution_id: filters.institution,
                 region: filters.region,
               }).filter(([, v]) => v),
@@ -342,7 +345,7 @@ export function AnalyticsExplorer() {
           >
             Download report
           </Link>
-        </p>
+        </header>
         <div className="tab-list" role="tablist" aria-label="Analytics views">
           {TABS.map((item, index) => (
             <button
@@ -477,14 +480,25 @@ function TrendsView({ data, officer }: { data: Trends; officer: boolean }) {
                 {displayCount(row.unclassified_active_records, "", NO_DATA)}
               </td>
               <td>
-                {row.categories
-                  ? Object.entries(row.categories)
-                      .map(
-                        ([k, v]) =>
-                          `${prettyLabel(k)} ${v.active_records}/${v.declared_records}`,
-                      )
-                      .join(", ") || NO_DATA
-                  : NO_DATA}
+                {row.categories && Object.keys(row.categories).length > 0 ? (
+                  <ul className="analytics-category-summary">
+                    {Object.entries(row.categories).map(
+                      ([category, counts]) => (
+                        <li key={category}>
+                          <span>{prettyLabel(category)}</span>
+                          <strong
+                            aria-label={`${displayCount(counts.active_records)} active, ${displayCount(counts.declared_records)} declared`}
+                          >
+                            {displayCount(counts.active_records)} /{" "}
+                            {displayCount(counts.declared_records)}
+                          </strong>
+                        </li>
+                      ),
+                    )}
+                  </ul>
+                ) : (
+                  NO_DATA
+                )}
               </td>
               <td>
                 {row.programmes_with_current_snapshot} of {row.programmes_total}
@@ -641,6 +655,7 @@ function UtilisationView({
     OK: "Rule applied",
     NO_RULE: "No intake rule",
     NO_CURRENT_SNAPSHOT: "No current snapshot",
+    UNKNOWN_CATEGORY: "Category not provided",
   };
   return (
     <>

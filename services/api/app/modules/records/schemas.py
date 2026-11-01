@@ -23,6 +23,8 @@ class RecordRow(BaseModel):
     student_name: str
     masked_apaar: str
     category: str
+    reservation_category: str | None = None
+    is_pwd: bool | None = None
     enrollment_status: str
     enrollment_date: date | None
     # Status in the batch's latest completed validation run; None if never validated.

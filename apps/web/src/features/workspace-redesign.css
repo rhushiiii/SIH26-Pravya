@@ -1,0 +1,524 @@
+.portal-layout {
+  color: var(--ui-text);
+  background: var(--ui-bg);
+  min-width: 0;
+}
+
+.portal-layout :is(main, section, article, form, aside, div) {
+  min-width: 0;
+}
+.portal-layout
+  :is(
+    .dashboard-page,
+    .validation-page,
+    .analytics-page,
+    .report-page,
+    .case-detail-page,
+    .institution-profile-page,
+    .reconciliation-page
+  ) {
+  max-width: 1440px;
+  margin-inline: auto;
+}
+.portal-layout
+  :is(.analytics-page, .report-page, .case-detail-page, .reconciliation-page)
+  > *
+  + * {
+  margin-top: 24px;
+}
+.portal-layout
+  :is(.dashboard-page, .validation-page, .institution-profile-page) {
+  display: grid;
+  gap: 24px;
+}
+.portal-layout
+  :is(.dashboard-page, .validation-page, .institution-profile-page)
+  > * {
+  margin-top: 0;
+}
+.portal-layout
+  :is(.dashboard-page, .validation-page, .institution-profile-page)
+  > :is(.page-heading, .dashboard-heading) {
+  margin-bottom: 0;
+}
+.portal-layout
+  .dashboard-page
+  > .panel[aria-label="Dashboard filters"]
+  .dashboard-filters {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+.portal-layout
+  :is(
+    .page-heading,
+    .dashboard-heading,
+    .review-heading,
+    .panel-heading,
+    .section-inline-heading,
+    .analytics-results-heading
+  ) {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.portal-layout :is(h1, h2, h3) {
+  color: var(--ui-text);
+  letter-spacing: -0.025em;
+}
+.portal-layout
+  :is(
+    .quiet-label,
+    .data-note,
+    .form-help,
+    .cell-note,
+    .analytics-context,
+    .analytics-meta
+  ) {
+  color: var(--ui-muted);
+}
+
+.portal-layout
+  :is(
+    .panel,
+    .dashboard-panel,
+    .dashboard-coverage-panel,
+    .dashboard-note-panel,
+    .profile-card,
+    .report-card,
+    .finding-card,
+    .review-callout,
+    .review-count-card,
+    .review-subsection,
+    .intake-assessment,
+    .intake-history,
+    .intake-sim-form,
+    .institution-tab-panel,
+    .institution-rule-history,
+    .integrity-score-details,
+    .integrity-decision-history,
+    .reconciliation-record,
+    .reconciliation-event-facts,
+    .reconciliation-timeline,
+    .token-panel,
+    .upload-outcome,
+    .empty-state,
+    .error-state,
+    .success-state
+  ) {
+  border: 1px solid var(--ui-line);
+  border-radius: var(--ui-radius);
+  background: var(--ui-surface);
+  box-shadow: none;
+  overflow: hidden;
+}
+.portal-layout
+  :is(
+    .panel-padding,
+    .panel > .panel-padding,
+    .dashboard-panel,
+    .dashboard-coverage-panel,
+    .dashboard-note-panel,
+    .profile-card,
+    .report-card,
+    .review-subsection,
+    .intake-assessment,
+    .intake-history,
+    .intake-sim-form
+  ) {
+  padding: clamp(16px, 2.2vw, 24px);
+}
+.portal-layout
+  :is(
+    .dashboard-grid,
+    .dashboard-metrics,
+    .validation-metrics,
+    .review-count-grid,
+    .review-scope-grid,
+    .metadata-grid,
+    .case-facts,
+    .profile-identity,
+    .transition-grid,
+    .intake-diff-list,
+    .intake-additions,
+    .integrity-signal-list,
+    .reconciliation-records,
+    .directory-item,
+    .report-card
+  ) {
+  gap: 16px;
+}
+.portal-layout .dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+}
+.portal-layout .dashboard-grid > * {
+  grid-column: span 6;
+}
+.portal-layout .dashboard-grid > .dashboard-coverage-panel {
+  grid-column: 1 / -1;
+}
+.portal-layout :is(.dashboard-metric, .review-count-card) {
+  position: relative;
+  padding: 20px;
+  border: 1px solid var(--ui-line);
+  border-radius: 20px;
+  background: #ffffff;
+  box-shadow: none;
+}
+.portal-layout .dashboard-metric::after {
+  content: none;
+}
+.portal-layout
+  :is(.dashboard-page, .validation-page, .institution-profile-page)
+  > .panel
+  + .panel {
+  margin-top: 0;
+}
+.portal-layout .dashboard-grid > .panel > .partial-note {
+  margin: 16px 24px 0;
+  font-size: 11px;
+  line-height: 1.6;
+}
+.portal-layout .dashboard-metric > span {
+  color: var(--ui-muted);
+  font-size: 12px;
+}
+.portal-layout .dashboard-metric strong {
+  display: block;
+  margin: 10px 0 6px;
+  color: var(--ui-text);
+  font-size: clamp(24px, 3vw, 34px);
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+.portal-layout .dashboard-metric small {
+  color: var(--ui-muted);
+  line-height: 1.5;
+}
+
+.portal-layout
+  :is(
+    .dashboard-filters,
+    .submission-filters,
+    .validation-filters,
+    .case-filters,
+    .search-form
+  ) {
+  display: flex;
+  align-items: end;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid var(--ui-line);
+  border-radius: 20px;
+  background: #fff;
+}
+.portal-layout
+  :is(
+    .dashboard-filters label,
+    .submission-filters label,
+    .validation-filters label,
+    .case-filters label,
+    .search-form label,
+    .dialog-field
+  ) {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  color: #63666b;
+  font-size: 12px;
+  font-weight: 600;
+  flex: 1 1 150px;
+  min-width: 0;
+}
+.portal-layout
+  :is(
+    input:not([type="checkbox"]):not([type="radio"]):not([type="file"]),
+    select,
+    textarea
+  ) {
+  width: 100%;
+  max-width: 100%;
+  min-height: 42px;
+  padding: 10px 12px;
+  border: 1px solid #d9dcd8;
+  border-radius: 10px;
+  background: #fff;
+  color: var(--ui-text);
+  font: inherit;
+}
+.portal-layout textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+.portal-layout :is(input, select, textarea, button, a):focus-visible {
+  outline: 3px solid var(--ui-accent-action);
+  outline-offset: 2px;
+}
+.portal-layout
+  :is(
+    .button.primary,
+    .button:not(.secondary):not(.ghost):not(.danger),
+    .activation-button,
+    .validation-action
+  ) {
+  border-color: var(--ui-accent);
+  background: var(--ui-accent-action);
+  color: #fff;
+}
+.portal-layout
+  :is(
+    .button,
+    .activation-button,
+    .validation-action,
+    .tab-list button,
+    .institution-tabs button
+  ) {
+  border-radius: 10px;
+  transition:
+    background-color 180ms var(--ui-ease),
+    border-color 180ms var(--ui-ease),
+    transform 180ms var(--ui-ease);
+}
+.portal-layout :is(.button.secondary, .button.ghost) {
+  border: 1px solid var(--ui-line);
+  background: #fff;
+  color: var(--ui-text);
+}
+.portal-layout :is(.button, .activation-button, .validation-action) {
+  min-height: 40px;
+  padding: 9px 14px;
+}
+
+.portal-layout .table-scroll {
+  max-width: 100%;
+  overflow: auto;
+  overscroll-behavior-inline: contain;
+  border: 1px solid var(--ui-line);
+  border-radius: 12px;
+  background: #fff;
+}
+.portal-layout table {
+  width: 100%;
+  min-width: 680px;
+  border-collapse: separate;
+  border-spacing: 0;
+  color: var(--ui-text);
+  font-size: 13px;
+}
+.portal-layout :is(th, td) {
+  min-width: 100px;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--ui-line);
+  text-align: left;
+  vertical-align: top;
+}
+.portal-layout th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: #f6f6f4;
+  color: #63666b;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.025em;
+}
+.portal-layout tbody tr:last-child td {
+  border-bottom: 0;
+}
+.portal-layout tbody tr:hover {
+  background: #fafbf9;
+}
+.portal-layout
+  :is(
+    dd,
+    .masked-value,
+    .request-id,
+    .code-label,
+    .batch-provenance,
+    .reconciliation-event-facts,
+    .metadata-item
+  ) {
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
+.portal-layout
+  :is(.status-badge, .count-pill, .demo-badge, .coverage-col-status) {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  max-width: 100%;
+  padding: 5px 9px;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 650;
+  line-height: 1.2;
+  white-space: normal;
+}
+.portal-layout .dashboard-coverage-table td {
+  white-space: normal;
+}
+.portal-layout :is(.upload-layout, .upload-input-modes) {
+  display: grid;
+  grid-template-columns: minmax(0, 1.65fr) minmax(280px, 1fr);
+  gap: 20px;
+}
+.portal-layout .upload-form .file-field {
+  min-height: 124px;
+  padding: 24px;
+  border: 1.5px dashed #a9bbb1;
+  border-radius: 20px;
+  background: #f5f9f6;
+  color: var(--ui-text);
+}
+.portal-layout .student-entry {
+  display: grid;
+  gap: 16px;
+}
+.portal-layout :is(.student-entry-record, .student-entry-fields) {
+  padding: 16px;
+  border: 1px solid var(--ui-line);
+  border-radius: 12px;
+  background: #fff;
+}
+.portal-layout .student-entry-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+.portal-layout
+  :is(
+    .case-timeline,
+    .reconciliation-timeline,
+    .integrity-decision-history,
+    .institution-rule-history,
+    .intake-history
+  ) {
+  display: grid;
+  gap: 12px;
+}
+.portal-layout
+  :is(
+    .review-entry,
+    .case-timeline > *,
+    .reconciliation-timeline > *,
+    .integrity-decision-history > *,
+    .institution-rule-history > *,
+    .intake-history > *
+  ) {
+  padding: 14px 16px;
+  border: 1px solid var(--ui-line);
+  border-radius: 12px;
+  background: #fff;
+}
+.portal-layout :is(.evidence-list, .finding-list, .review-findings-list) {
+  display: grid;
+  gap: 10px;
+  padding: 0;
+  list-style: none;
+}
+.portal-layout .evidence-list > * {
+  padding: 13px 15px;
+  border-left: 3px solid var(--ui-accent);
+  border-radius: 0 10px 10px 0;
+  background: #f0f5f1;
+  overflow-wrap: anywhere;
+}
+.portal-layout .category-bar-track {
+  overflow: hidden;
+  border-radius: 999px;
+  background: #eeefeb;
+}
+.portal-layout .category-bar-track > span {
+  display: block;
+  min-height: 8px;
+  border-radius: 999px;
+  background: var(--ui-accent);
+}
+.portal-layout
+  :is(
+    .directory-item,
+    .reconciliation-list-link,
+    .notification-actions,
+    .case-action-buttons,
+    .finding-actions,
+    .outcome-actions,
+    .button-row
+  ) {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+.portal-layout :is(.institution-emblem, .directory-icon) {
+  border-radius: 12px;
+  background: var(--ui-accent-soft);
+  color: var(--ui-accent);
+}
+
+@media (max-width: 900px) {
+  .portal-layout .dashboard-grid > * {
+    grid-column: span 6;
+  }
+}
+@media (max-width: 1000px) {
+  .portal-layout :is(.upload-layout, .upload-input-modes) {
+    grid-template-columns: 1fr;
+  }
+}
+@media (min-width: 1600px) {
+  .portal-layout .student-entry-fields {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@media (max-width: 600px) {
+  .portal-layout
+    :is(
+      .dashboard-page,
+      .validation-page,
+      .analytics-page,
+      .report-page,
+      .case-detail-page,
+      .institution-profile-page,
+      .reconciliation-page
+    ) {
+    padding-inline: 14px;
+  }
+  .portal-layout .dashboard-grid > * {
+    grid-column: 1 / -1;
+  }
+  .portal-layout .student-entry-fields {
+    grid-template-columns: 1fr;
+  }
+  .portal-layout
+    :is(
+      .dashboard-filters,
+      .submission-filters,
+      .validation-filters,
+      .case-filters,
+      .search-form
+    ) {
+    align-items: stretch;
+  }
+  .portal-layout
+    :is(
+      .dashboard-filters > *,
+      .submission-filters > *,
+      .validation-filters > *,
+      .case-filters > *
+    ) {
+    flex-basis: 100%;
+  }
+  .portal-layout table {
+    font-size: 12px;
+  }
+  .portal-layout :is(th, td) {
+    padding: 10px;
+  }
+}

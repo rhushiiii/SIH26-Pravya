@@ -1,5 +1,7 @@
 "use client";
 
+import { categoryLabel } from "@/features/intake/shared";
+
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
@@ -15,7 +17,13 @@ import {
   type ValidationStatus,
 } from "@/features/records/shared";
 import { useApiQuery, useScope } from "@/lib/api/hooks";
-import { ApiError, errorMessage, isUUID } from "@/lib/api/client";
+import {
+  ApiError,
+  classifyMutationError,
+  errorMessage,
+  isUUID,
+  jsonInit,
+} from "@/lib/api/client";
 import { saveBlob } from "@/lib/download";
 import type { components } from "@/lib/api/generated";
 import { countValue, plain, valueObject, when } from "@/lib/format";
@@ -24,12 +32,14 @@ import { findingGuidance, safeEvidence } from "./guidance";
 type Run = components["schemas"]["RunResponse"];
 type RunPage = components["schemas"]["Page_RunResponse_"];
 type Finding = components["schemas"]["FindingResponse"];
+type Reconciliation = components["schemas"]["ReconciliationResponse"];
 type FindingPage = components["schemas"]["Page_FindingResponse_"];
 type RowPage = components["schemas"]["Page_RowResponse_"];
 type Batch = components["schemas"]["BatchResponse"];
 type QueryState = {
   run_id?: string;
   run_page?: string;
+  compare_run_id?: string;
   row_page?: string;
   row_status?: string;
   finding_page?: string;
@@ -42,6 +52,64 @@ type QueryState = {
 
 const pageSize = 10;
 const severityOptions = ["ERROR", "WARNING", "INFO"] as const;
+
+type IntakeRuleSnapshot = {
+  category: string;
+  approvedSeats: number;
+  version: string | null;
+  source: string | null;
+};
+
+function intakeRulesFromRun(run: Run | undefined): IntakeRuleSnapshot[] {
+  const snapshot = valueObject(run?.ruleset_snapshot);
+  const entries = Array.isArray(snapshot?.intake_rules)
+    ? snapshot.intake_rules.flatMap((entry) => {
+        const rule = valueObject(entry);
+        if (
+          !rule ||
+          typeof rule.category !== "string" ||
+          typeof rule.approved_seats !== "number"
+        ) {
+          return [];
+        }
+        return [
+          {
+            category: rule.category,
+            approvedSeats: rule.approved_seats,
+            version:
+              typeof rule.rule_version === "string" ? rule.rule_version : null,
+            source:
+              typeof rule.source_label === "string" ? rule.source_label : null,
+          },
+        ];
+      })
+    : [];
+  const categories = Array.isArray(snapshot?.categories)
+    ? snapshot.categories.filter(
+        (category): category is string => typeof category === "string",
+      )
+    : entries.map((rule) => rule.category);
+  return categories.map(
+    (category) =>
+      entries.find((rule) => rule.category === category) ?? {
+        category,
+        approvedSeats: Number.NaN,
+        version: null,
+        source: null,
+      },
+  );
+}
+
+function snapshotValue(run: Run, key: string): string {
+  const value = valueObject(run.ruleset_snapshot)?.[key];
+  return typeof value === "string" || typeof value === "number"
+    ? String(value)
+    : "Unavailable";
+}
+
+function snapshotCount(run: Run, key: string): string {
+  return countValue(valueObject(run.summary)?.[key])?.toLocaleString() ?? "—";
+}
 
 function runStatusLabel(status: ValidationStatus | null | undefined) {
   if (!status) return "Not run";
@@ -102,6 +170,7 @@ export function ValidationWorkspace({
   const [filterError, setFilterError] = useState("");
 
   const runId = query.run_id ?? "";
+  const comparisonRunId = query.compare_run_id ?? "";
   const runPageNumber = stateNumber(query.run_page);
   const rowPageNumber = stateNumber(query.row_page);
   const findingPageNumber = stateNumber(query.finding_page);
@@ -123,10 +192,11 @@ export function ValidationWorkspace({
   };
   const navigate = (changes: Partial<QueryState>, reset = false) => {
     const current: Record<string, string | undefined> = reset
-      ? {}
+      ? { compare_run_id: comparisonRunId || undefined }
       : {
           run_id: runId || undefined,
           run_page: query.run_page,
+          compare_run_id: comparisonRunId || undefined,
           row_page: query.row_page,
           row_status: query.row_status,
           finding_page: query.finding_page,
@@ -156,6 +226,12 @@ export function ValidationWorkspace({
     [...baseKey, "run", runId],
     `/submissions/${batchId}/validation-runs/${runId}`,
     { enabled: isUUID(batchId) && isUUID(runId) },
+  );
+  const comparisonRun = useApiQuery<Run>(
+    [...baseKey, "run", comparisonRunId],
+    isUUID(batchId) && isUUID(comparisonRunId) && comparisonRunId !== runId
+      ? `/submissions/${batchId}/validation-runs/${comparisonRunId}`
+      : null,
   );
   const rowsPath = (() => {
     const params = new URLSearchParams({
@@ -204,22 +280,20 @@ export function ValidationWorkspace({
       navigate({ run_id: created.id }, true);
     },
     onError: (error) => {
-      if (error instanceof ApiError && error.status === 409) {
+      const outcome = classifyMutationError(error);
+      if (outcome.kind === "conflict") {
         setAnnouncement(
           "A validation already completed or the candidate changed state. Refresh run history and select the saved run.",
         );
         void queryClient.invalidateQueries({ queryKey: [...baseKey, "runs"] });
         return;
       }
-      if (
-        error instanceof ApiError &&
-        error.status >= 400 &&
-        error.status < 500
-      ) {
+      if (outcome.kind === "client") {
         setAnnouncement(
-          error.code === "MATCHING_CONFIGURATION_UNAVAILABLE"
+          error instanceof ApiError &&
+            error.code === "MATCHING_CONFIGURATION_UNAVAILABLE"
             ? "Validation was not started because the server's APAAR matching configuration is unavailable. Contact the local API operator."
-            : `Validation was not accepted. ${errorMessage(error)}`,
+            : `Validation was not accepted. ${outcome.message}`,
         );
         return;
       }
@@ -239,19 +313,14 @@ export function ValidationWorkspace({
       navigate({ run_id: created.id }, true);
     },
     onError: (error) => {
-      if (error instanceof ApiError && error.status === 409) {
+      const outcome = classifyMutationError(error);
+      if (outcome.kind === "conflict") {
         setAnnouncement(
           "The candidate could not be revalidated in its current state. Refresh run history.",
         );
         void queryClient.invalidateQueries({ queryKey: [...baseKey, "runs"] });
-      } else if (
-        error instanceof ApiError &&
-        error.status >= 400 &&
-        error.status < 500
-      ) {
-        setAnnouncement(
-          `Revalidation was not accepted. ${errorMessage(error)}`,
-        );
+      } else if (outcome.kind === "client") {
+        setAnnouncement(`Revalidation was not accepted. ${outcome.message}`);
       } else {
         setAnnouncement(
           "Revalidation outcome is unknown. The request was not retried. Refresh run history before deciding what to do next.",
@@ -276,20 +345,62 @@ export function ValidationWorkspace({
         : Array.isArray(finding.evidence.affected_record_ids)
           ? (finding.evidence.affected_record_ids as string[])
           : [];
-      return request<{ id: string }>("/cases", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
+      return request<{ id: string }>(
+        "/cases",
+        jsonInit("POST", {
           category: "POTENTIAL_DUPLICATE",
           summary: finding.explanation,
           record_version_ids: recordIds,
         }),
-      });
+      );
     },
     retry: false,
     onSuccess: (created) => {
       setCaseError("");
       router.push(`/cases/${created.id}`);
+    },
+    onError: (error) => setCaseError(errorMessage(error)),
+  });
+  const openReconciliation = useMutation({
+    mutationFn: async (finding: Finding) => {
+      const localIds = Array.isArray(finding.evidence.affected_record_ids)
+        ? finding.evidence.affected_record_ids.filter(
+            (value): value is string => typeof value === "string",
+          )
+        : finding.record_version_id
+          ? [finding.record_version_id]
+          : [];
+      const references = Array.isArray(finding.evidence.peer_references)
+        ? finding.evidence.peer_references.filter(
+            (value): value is { record_version_id: string } =>
+              typeof value === "object" &&
+              value !== null &&
+              "record_version_id" in value &&
+              typeof value.record_version_id === "string",
+          )
+        : [];
+      const pairs = localIds.flatMap((local_record_version_id) =>
+        references.map((reference) => ({
+          finding_id: finding.id,
+          local_record_version_id,
+          peer_record_version_id: reference.record_version_id,
+        })),
+      );
+      if (!pairs.length)
+        throw new Error(
+          "No linked peer records are available for this finding.",
+        );
+      const created = await Promise.all(
+        pairs.map((body) =>
+          request<Reconciliation>("/reconciliations", jsonInit("POST", body)),
+        ),
+      );
+      return created[0];
+    },
+    retry: false,
+    onSuccess: (created) => {
+      setCaseError("");
+      router.push(`/reconciliations/${created.id}`);
     },
     onError: (error) => setCaseError(errorMessage(error)),
   });
@@ -383,6 +494,8 @@ export function ValidationWorkspace({
           ].includes(key) && ["string", "number"].includes(typeof value),
       )
     : [];
+  const intakeRules = intakeRulesFromRun(selectedRun.data);
+  const intakeCategories = intakeRules.map((rule) => rule.category);
 
   if (!isUUID(batchId))
     return (
@@ -438,12 +551,27 @@ export function ValidationWorkspace({
         </Link>
       </div>
 
+      <ol className="submission-lifecycle" aria-label="Submission lifecycle">
+        <li className="complete">
+          <span>01</span> Upload saved
+        </li>
+        <li aria-current="step">
+          <span>02</span> Validate findings
+        </li>
+        <li>
+          <span>03</span> Review evidence
+        </li>
+        <li>
+          <span>04</span> Explicit activation
+        </li>
+      </ol>
       <section className="validation-notice" aria-label="Validation meaning">
         <strong>Local rule checks only</strong>
         <p>
           APAAR format checks are local syntax checks, not government identity
           verification. Findings are review signals, not fraud decisions.
-          Candidate rows cannot be edited; corrections use a new complete CSV.
+          Candidate rows cannot be edited; corrections use a new complete
+          submission through file upload or direct entry.
         </p>
       </section>
 
@@ -551,6 +679,10 @@ export function ValidationWorkspace({
                     navigate(
                       {
                         run_id: run.id,
+                        compare_run_id:
+                          comparisonRunId === run.id
+                            ? undefined
+                            : comparisonRunId || undefined,
                         row_page: undefined,
                         row_status: undefined,
                         finding_page: undefined,
@@ -697,6 +829,254 @@ export function ValidationWorkspace({
                 ))}
               </dl>
             )}
+            <section
+              className="historical-rule-snapshot"
+              aria-labelledby="historical-rule-snapshot-heading"
+            >
+              <div className="historical-rule-heading">
+                <div>
+                  <p className="eyebrow">HISTORICAL RULE SNAPSHOT</p>
+                  <h3 id="historical-rule-snapshot-heading">
+                    Intake limits applied to this run
+                  </h3>
+                </div>
+                <span className="demo-badge">DEMO CONFIGURATION</span>
+              </div>
+              <p className="cell-note">
+                These are the saved values used when this immutable run was
+                evaluated. Later rule edits do not change this snapshot; this is
+                not a new evaluation or an official capacity decision.
+              </p>
+              {intakeCategories.length > 0 ? (
+                <ul className="historical-rule-list">
+                  {intakeCategories.map((category) => {
+                    const rule = intakeRules.find(
+                      (entry) => entry.category === category,
+                    );
+                    return (
+                      <li key={category}>
+                        <span>{categoryLabel(category)}</span>
+                        {rule ? (
+                          <>
+                            <strong>
+                              {rule.approvedSeats.toLocaleString()} approved
+                              seats
+                            </strong>
+                            <small>
+                              {rule.version ?? "Version unavailable"}
+                              {rule.source ? ` · ${rule.source}` : ""}
+                            </small>
+                          </>
+                        ) : (
+                          <>
+                            <strong>No rule captured</strong>
+                            <small>
+                              No category limit was available in this run.
+                            </small>
+                          </>
+                        )}
+                      </li>
+                    );
+                  })}
+                </ul>
+              ) : (
+                <p className="historical-rule-empty">
+                  This run has no captured intake-rule categories. Check its
+                  findings for missing-rule information.
+                </p>
+              )}
+            </section>
+          </section>
+
+          <section
+            className="panel historical-comparison"
+            aria-labelledby="historical-comparison-heading"
+          >
+            <header className="panel-heading">
+              <div>
+                <p className="eyebrow">RULE TIME MACHINE · READ ONLY</p>
+                <h2 id="historical-comparison-heading">
+                  Compare saved evaluations
+                </h2>
+                <p className="cell-note">
+                  Compare two immutable runs of this same candidate. Stored
+                  findings and captured settings are shown as recorded; this
+                  does not rerun validation.
+                </p>
+              </div>
+              <label className="inline-filter">
+                Compare with
+                <select
+                  value={comparisonRunId}
+                  onChange={(event) =>
+                    navigate({
+                      compare_run_id: event.target.value || undefined,
+                    })
+                  }
+                  aria-label="Choose a saved validation run to compare"
+                >
+                  <option value="">Select a saved run</option>
+                  {runs.data?.data
+                    .filter((run) => run.id !== selectedRun.data.id)
+                    .map((run) => (
+                      <option key={run.id} value={run.id}>
+                        {run.kind === "INITIAL"
+                          ? "Initial validation"
+                          : "Officer revalidation"}{" "}
+                        · {when(run.completed_at)}
+                      </option>
+                    ))}
+                  {comparisonRun.data &&
+                    !runs.data?.data.some(
+                      (run) => run.id === comparisonRun.data.id,
+                    ) && (
+                      <option value={comparisonRun.data.id}>
+                        {comparisonRun.data.kind === "INITIAL"
+                          ? "Initial validation"
+                          : "Officer revalidation"}{" "}
+                        · {when(comparisonRun.data.completed_at)}
+                      </option>
+                    )}
+                </select>
+              </label>
+            </header>
+            {comparisonRunId === runId && comparisonRunId ? (
+              <p className="historical-comparison-empty">
+                Choose a different run to compare with the selected evaluation.
+              </p>
+            ) : !comparisonRunId ? (
+              <p className="historical-comparison-empty">
+                Choose another saved run from the selector to compare its
+                original settings and results.
+              </p>
+            ) : comparisonRun.isPending ? (
+              <Loading label="Loading saved comparison run…" />
+            ) : comparisonRun.isError || !comparisonRun.data ? (
+              <ErrorPanel
+                error={comparisonRun.error}
+                retry={() => void comparisonRun.refetch()}
+              />
+            ) : (
+              <>
+                <div className="historical-comparison-note">
+                  <strong>Recorded results, not a recalculation</strong>
+                  <span>
+                    Both runs reference the same immutable candidate rows. A
+                    difference can also reflect changed comparison scope or
+                    structural rules.
+                  </span>
+                </div>
+                <div className="table-scroll">
+                  <table className="historical-comparison-table">
+                    <caption>
+                      Saved run settings and results · DEMO configuration
+                    </caption>
+                    <thead>
+                      <tr>
+                        <th scope="col">Measure</th>
+                        <th scope="col">
+                          {comparisonRun.data.kind === "INITIAL"
+                            ? "Initial validation"
+                            : "Earlier revalidation"}
+                          <small>{when(comparisonRun.data.completed_at)}</small>
+                        </th>
+                        <th scope="col">
+                          {selectedRun.data.kind === "INITIAL"
+                            ? "Initial validation"
+                            : "Selected revalidation"}
+                          <small>{when(selectedRun.data.completed_at)}</small>
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {[
+                        [
+                          "Structural ruleset",
+                          snapshotValue(
+                            comparisonRun.data,
+                            "structural_ruleset_version",
+                          ),
+                          snapshotValue(
+                            selectedRun.data,
+                            "structural_ruleset_version",
+                          ),
+                        ],
+                        [
+                          "Intake rule version",
+                          snapshotValue(
+                            comparisonRun.data,
+                            "intake_rule_version",
+                          ),
+                          snapshotValue(
+                            selectedRun.data,
+                            "intake_rule_version",
+                          ),
+                        ],
+                        [
+                          "Candidate active rows",
+                          snapshotCount(
+                            comparisonRun.data,
+                            "candidate_demo_active_records",
+                          ),
+                          snapshotCount(
+                            selectedRun.data,
+                            "candidate_demo_active_records",
+                          ),
+                        ],
+                        ...(["VALID", "FLAGGED", "INCOMPLETE"] as const).map(
+                          (status) => [
+                            `${status} records`,
+                            countValue(
+                              valueObject(
+                                valueObject(comparisonRun.data.summary)
+                                  ?.record_status_counts,
+                              )?.[status],
+                            )?.toLocaleString() ?? "—",
+                            countValue(
+                              valueObject(
+                                valueObject(selectedRun.data.summary)
+                                  ?.record_status_counts,
+                              )?.[status],
+                            )?.toLocaleString() ?? "—",
+                          ],
+                        ),
+                        ...Array.from(
+                          new Set([
+                            ...intakeRulesFromRun(comparisonRun.data).map(
+                              (rule) => rule.category,
+                            ),
+                            ...intakeRules.map((rule) => rule.category),
+                          ]),
+                        ).map((category) => {
+                          const oldRule = intakeRulesFromRun(
+                            comparisonRun.data,
+                          ).find((rule) => rule.category === category);
+                          const currentRule = intakeRules.find(
+                            (rule) => rule.category === category,
+                          );
+                          return [
+                            `${categoryLabel(category)} approved seats`,
+                            oldRule && Number.isFinite(oldRule.approvedSeats)
+                              ? oldRule.approvedSeats.toLocaleString()
+                              : "No rule captured",
+                            currentRule &&
+                            Number.isFinite(currentRule.approvedSeats)
+                              ? currentRule.approvedSeats.toLocaleString()
+                              : "No rule captured",
+                          ];
+                        }),
+                      ].map(([label, earlier, current]) => (
+                        <tr key={label}>
+                          <th scope="row">{label}</th>
+                          <td>{earlier}</td>
+                          <td>{current}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </>
+            )}
           </section>
 
           <ReviewActivation
@@ -777,7 +1157,8 @@ export function ValidationWorkspace({
                       <th scope="col">Student</th>
                       <th scope="col">College ID</th>
                       <th scope="col">Programme / year</th>
-                      <th scope="col">Category</th>
+                      <th scope="col">Reservation category</th>
+                      <th scope="col">PwD</th>
                       <th scope="col">Enrolment</th>
                       <th scope="col">APAAR (masked)</th>
                       <th scope="col">Run status</th>
@@ -795,7 +1176,18 @@ export function ValidationWorkspace({
                             {row.academic_year}
                           </small>
                         </td>
-                        <td>{row.admission_category || "Missing"}</td>
+                        <td>
+                          {row.reservation_category
+                            ? categoryLabel(row.reservation_category)
+                            : "Not provided (legacy)"}
+                        </td>
+                        <td>
+                          {row.is_pwd == null
+                            ? "Not provided (legacy)"
+                            : row.is_pwd
+                              ? "Yes"
+                              : "No"}
+                        </td>
                         <td>
                           {row.enrollment_status || "Missing"}
                           <small className="cell-note">
@@ -1002,18 +1394,35 @@ export function ValidationWorkspace({
                       {officer &&
                         finding.rule_code ===
                           "POTENTIAL_CROSS_INSTITUTION_DUPLICATE" && (
-                          <button
-                            className="button secondary small"
-                            disabled={openCase.isPending}
-                            onClick={() => {
-                              setCaseError("");
-                              openCase.mutate(finding);
-                            }}
-                          >
-                            {openCase.isPending
-                              ? "Opening case…"
-                              : "Open case for this finding"}
-                          </button>
+                          <div className="finding-actions">
+                            {matchContext === "CURRENT_ACTIVE" &&
+                              finding.cross_current_freshness === "FRESH" && (
+                                <button
+                                  className="button primary small"
+                                  disabled={openReconciliation.isPending}
+                                  onClick={() => {
+                                    setCaseError("");
+                                    openReconciliation.mutate(finding);
+                                  }}
+                                >
+                                  {openReconciliation.isPending
+                                    ? "Opening reconciliation…"
+                                    : "Investigate transfer or overlap"}
+                                </button>
+                              )}
+                            <button
+                              className="button secondary small"
+                              disabled={openCase.isPending}
+                              onClick={() => {
+                                setCaseError("");
+                                openCase.mutate(finding);
+                              }}
+                            >
+                              {openCase.isPending
+                                ? "Opening case…"
+                                : "Open institution case"}
+                            </button>
+                          </div>
                         )}
                       <div className="finding-explanation">
                         <h3>What went wrong</h3>

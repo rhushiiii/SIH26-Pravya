@@ -8,16 +8,41 @@ from dataclasses import dataclass, field
 from typing import Any
 from uuid import UUID
 
-from app.modules.institutions.models import AdmissionCategory, IntakeRule
+from app.modules.institutions.categories import (
+    LEGACY_CATEGORIES,
+    RESERVATION_CATEGORIES,
+    RESERVATION_GROUPS,
+    RESERVATION_POOLING_NOTE,
+    reservation_category_counts,
+    reservation_coverage,
+)
+from app.modules.institutions.models import IntakeRule
 from app.modules.submissions.models import StudentRecordVersion, SubmissionBatch
-from app.modules.submissions.parsing import HEADERS
+from app.modules.submissions.parsing import headers_for
 
 RULESET_VERSION = "LOCAL-DEMO-v1"
 # Bump whenever activation-blocking rules change. Legacy M3 runs map explicitly
 # to v1 only; never infer compatibility from a missing version in future runs.
 STRUCTURAL_RULESET_VERSION = "LOCAL-STRUCTURE-DEMO-v1"
 STATUSES = ("ACTIVE", "WITHDRAWN", "TRANSFERRED", "COMPLETED")
-CATEGORIES = tuple(category.value for category in AdmissionCategory)
+CATEGORIES = LEGACY_CATEGORIES
+RESERVATION_RULESET_VERSION = "LOCAL-DEMO-v2"
+RESERVATION_STRUCTURAL_RULESET_VERSION = "LOCAL-STRUCTURE-DEMO-v2"
+
+
+def categories_for(batch: SubmissionBatch) -> tuple[str, ...]:
+    return RESERVATION_GROUPS if batch.schema_version == "v2" else CATEGORIES
+
+
+def structural_fields_for(batch: SubmissionBatch) -> set[str]:
+    if batch.schema_version == "v2":
+        return (STRUCTURAL_FIELDS - {"admission_category"}) | {
+            "reservation_category",
+            "is_pwd",
+        }
+    return STRUCTURAL_FIELDS
+
+
 STRUCTURAL_FIELDS = {
     "college_student_id",
     "academic_year",
@@ -61,8 +86,8 @@ def structural_findings(
     local_ids: dict[str, list[StudentRecordVersion]] = defaultdict(list)
     for row in rows:
         values = row.normalized_json
-        for column in HEADERS:
-            if column in STRUCTURAL_FIELDS and not values[column]:
+        for column in headers_for(batch.schema_version):
+            if column in structural_fields_for(batch) and not values[column]:
                 findings.append(
                     Finding(
                         "REQUIRED_FIELD_MISSING",
@@ -74,7 +99,7 @@ def structural_findings(
                         {"source_row_number": row.source_row_number},
                     )
                 )
-        checks = (
+        checks: tuple[tuple[str, str, bool, str], ...] = (
             (
                 "academic_year",
                 "INVALID_ACADEMIC_YEAR",
@@ -89,9 +114,17 @@ def structural_findings(
                 "Programme differs from the candidate scope",
             ),
             (
-                "admission_category",
-                "INVALID_ADMISSION_CATEGORY",
-                values["admission_category"] not in CATEGORIES,
+                "reservation_category"
+                if batch.schema_version == "v2"
+                else "admission_category",
+                "INVALID_RESERVATION_CATEGORY"
+                if batch.schema_version == "v2"
+                else "INVALID_ADMISSION_CATEGORY",
+                (
+                    values.get("reservation_category") not in RESERVATION_CATEGORIES
+                    if batch.schema_version == "v2"
+                    else values["admission_category"] not in CATEGORIES
+                ),
                 "Category is not supported by this DEMO ruleset",
             ),
             (
@@ -101,6 +134,15 @@ def structural_findings(
                 "Enrolment status is not supported by this DEMO ruleset",
             ),
         )
+        if batch.schema_version == "v2":
+            checks += (
+                (
+                    "is_pwd",
+                    "INVALID_PWD_STATUS",
+                    values["is_pwd"] not in ("YES", "NO"),
+                    "PwD status must explicitly be YES or NO",
+                ),
+            )
         for column, code, failed, message in checks:
             if values[column] and failed:
                 findings.append(
@@ -177,18 +219,26 @@ def evaluate(
     for row in rows:
         check_budget()
         values = row.normalized_json
-        for column in HEADERS:
-            if column not in STRUCTURAL_FIELDS and not values[column]:
+        for column in headers_for(batch.schema_version):
+            if column not in structural_fields_for(batch) and not values[column]:
                 add(
                     row,
                     "REQUIRED_FIELD_MISSING",
                     column,
                     "Required value is missing",
-                    blocking=column in STRUCTURAL_FIELDS,
+                    blocking=column in structural_fields_for(batch),
                 )
         year = values["academic_year"]
         programme = values["programme_code"]
-        category = values["admission_category"]
+        category = (
+            values["reservation_category"]
+            if batch.schema_version == "v2"
+            else values["admission_category"]
+        )
+        primary_categories = (
+            RESERVATION_CATEGORIES if batch.schema_version == "v2" else CATEGORIES
+        )
+        pwd_valid = batch.schema_version != "v2" or values["is_pwd"] in ("YES", "NO")
         status = values["enrollment_status"]
         scope_valid = (
             valid_year(year)
@@ -215,13 +265,22 @@ def evaluate(
                 )
         if values["college_student_id"]:
             local_ids[values["college_student_id"]].append(row)
-        if category in CATEGORIES:
+        if category in primary_categories:
             declared[category] += 1
+        if batch.schema_version == "v2" and values["is_pwd"] == "YES":
+            declared["PWD"] += 1
+            if scope_valid and status == "ACTIVE":
+                active["PWD"] += 1
         if status == "ACTIVE":
             active_records += 1
-            if scope_valid and category in CATEGORIES:
+            if scope_valid and category in primary_categories:
                 active[category] += 1
-        if not scope_valid or category not in CATEGORIES or status not in STATUSES:
+        if (
+            not scope_valid
+            or category not in primary_categories
+            or status not in STATUSES
+            or not pwd_valid
+        ):
             unclassifiable += 1
 
     def group_finding(
@@ -334,7 +393,7 @@ def evaluate(
     ambiguous_ids = any(len(group) > 1 for group in local_ids.values()) or any(
         not row.college_student_id for row in rows
     )
-    for category in CATEGORIES:
+    for category in categories_for(batch):
         rule = capacities.get(category)
         if rule is None:
             findings.append(
@@ -361,19 +420,21 @@ def evaluate(
                 )
             )
 
-    return findings, {
+    summary = {
         "reported_records": len(rows),
         "candidate_demo_active_records": active_records,
         "category_declared_records": {
-            category: declared[category] for category in CATEGORIES
+            category: declared[category] for category in categories_for(batch)
         },
         "category_allocated_active_records": {
-            category: active[category] for category in CATEGORIES
+            category: active[category] for category in categories_for(batch)
         },
         "unclassifiable_records": unclassifiable,
         "ambiguous_student_ids": ambiguous_ids,
         "intake_assessment": "INCOMPLETE"
-        if unclassifiable or ambiguous_ids or len(capacities) != len(CATEGORIES)
+        if unclassifiable
+        or ambiguous_ids
+        or not set(categories_for(batch)).issubset(capacities)
         else "COMPLETE",
         "current_overlap_records_at_evaluation": len(current_overlap),
         "matching_excluded_current_peer_records": excluded_current_peers,
@@ -381,3 +442,13 @@ def evaluate(
         "source_label": "DEMO",
         "count_basis": "CANDIDATE_ROWS_NOT_CURRENT_ENROLMENT",
     }
+    if batch.schema_version == "v2":
+        summary.update(
+            {
+                "category_scheme": "RESERVATION",
+                "reservation_category_counts": reservation_category_counts(rows),
+                "reservation_coverage": reservation_coverage(rows),
+                "category_overlap_note": RESERVATION_POOLING_NOTE,
+            }
+        )
+    return findings, summary

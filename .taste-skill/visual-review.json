@@ -1,0 +1,180 @@
+{
+  "reference": "https://collectiveos.vercel.app/",
+  "scope": "Visual frontend redesign only. Backend, database, auth, API client, routes and feature business logic were not edited.",
+  "direction": {
+    "app_style": "achromatic-ledger",
+    "seed": 837440384,
+    "override": "User-selected CollectiveOS composition, palette, rounded surfaces and capsule navigation take precedence over randomly dealt composition and strict house style."
+  },
+  "idea": "On this page, PRAVYA’s immutable submission journey becomes the inset interactive workspace in the CollectiveOS composition.",
+  "live_thing": "Existing Upload, Validate, Review and Activate stage selector; pointer and keyboard tested.",
+  "subject_inventory": [
+    "Immutable candidate submissions",
+    "Independent local validation and identity verification",
+    "Evidence-linked findings",
+    "Explicit review receipts",
+    "Deliberate snapshot activation",
+    "Current versus previous declarations",
+    "Institution-scoped access",
+    "Officer review",
+    "Aggregate-only management",
+    "Synthetic data notices"
+  ],
+  "arguments": [
+    "Hero: admissions workflow in one workspace, evidenced by the existing interactive journey",
+    "Overview: unified evidence and immutable history, evidenced by the existing three principles",
+    "Capabilities: what local checks and reviews do, using all existing feature descriptions",
+    "Preview: honest workspace layout, with existing missing values retained",
+    "Roles: distinct work and permitted scope, using existing four role descriptions",
+    "Security: authorization, provenance and explicit decision boundaries",
+    "Close: existing design principle and real sign-in destination"
+  ],
+  "allowances": {
+    "eyebrow": "Preserve existing content; reference itself uses capsule section labels.",
+    "numbering": "Preserve existing workflow and card labels; reference uses numbered steps.",
+    "outlined-box": "Reference uses subtle outlines around white rounded cards; real forms and UI keep their borders.",
+    "pill-nav": "Explicitly requested CollectiveOS capsule navigation.",
+    "palette-cream": "Match the user-selected reference #f6f3ec ground.",
+    "few-pictures": "Preserve existing PRAVYA content; do not invent product imagery or records to satisfy an unrelated marketing-image minimum.",
+    "no-footage": "Reference has no video; no relevant PRAVYA footage was provided.",
+    "small-text": "Existing metadata remains subordinate and visible; reference has small labels; main running body is 16px.",
+    "size-count": "Working preview, metadata and marketing sections share the existing content, requiring more than five type sizes.",
+    "grey-body": "Reference uses muted supporting copy; browser-measured contrast remains readable.",
+    "gradient": "CSS curtain-like backdrop recreates the reference visual without downloading its assets."
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "seen_in_one_second": "Centered admissions headline and inset workspace; first reference translation.",
+      "idea": "Immutable admissions stages become an explorable inset workspace.",
+      "live_thing": "Four-stage selector.",
+      "layout_words": "hero=centered / overview=three columns / capabilities=dark grid / preview=workspace / roles=two columns / security=two columns / close=dark field",
+      "scores": {
+        "design": 6,
+        "usability": 7,
+        "creativity": 6,
+        "content": 8,
+        "weighted": 6.5,
+        "capped": 6
+      },
+      "caps_applied": [
+        "Unresolved inspector findings"
+      ],
+      "top_three": [
+        {
+          "screenshot": "after/mobile-page-01.jpg",
+          "problem": "Long role heading wraps over two lines.",
+          "fix": "Reduce mobile heading size without deleting words."
+        },
+        {
+          "screenshot": "after/desktop-fold.jpg",
+          "problem": "Curtain backdrop is missing.",
+          "fix": "Reset inherited one-pixel pseudo-element height."
+        },
+        {
+          "screenshot": "after/mobile-page-01.jpg",
+          "problem": "Role cards retain a large inherited blank band.",
+          "fix": "Reset heading padding and minimum height."
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "seen_in_one_second": "Ivory curtains, charcoal capsule and a clear interactive admissions workflow.",
+      "idea": "Immutable admissions stages become an explorable inset workspace.",
+      "live_thing": "Four-stage selector; keyboard tested.",
+      "layout_words": "hero=centered interactive workspace / overview=three columns / capabilities=dark grid / preview=workspace / roles=two columns / security=two columns / close=dark field",
+      "scores": {
+        "design": 6.5,
+        "usability": 8,
+        "creativity": 7,
+        "content": 8,
+        "weighted": 7.2,
+        "capped": 6.5
+      },
+      "caps_applied": [
+        "Strict Taste rubric caps intentional eyebrow labels and decorative backdrop at 6.5; reference fidelity is the user priority.",
+        "Fewer than four real pictures cap design at 6.5; existing product content is preserved."
+      ],
+      "top_three": [
+        {
+          "screenshot": "production/desktop-fold.jpg",
+          "problem": "Navigation is wider than the reference because PRAVYA retains all six existing section links and its wordmark.",
+          "resolution": "Retained for complete existing navigation."
+        },
+        {
+          "screenshot": "production/desktop-page-02.jpg",
+          "problem": "Workspace preview has missing metrics and no live chart values.",
+          "resolution": "Retained honest existing missing/empty values; no fabricated totals."
+        },
+        {
+          "screenshot": "production/mobile-page-02.jpg",
+          "problem": "Long existing design principle remains a substantial text block.",
+          "resolution": "Reduced its scale while retaining all existing words."
+        }
+      ]
+    }
+  ],
+  "validation": {
+    "production_url": "http://127.0.0.1:3002",
+    "inspection": "production/report.json",
+    "viewports": [
+      1440,
+      768,
+      390
+    ],
+    "production_failures": 0,
+    "production_warnings": 0,
+    "exceptions_are_explicit": true,
+    "all_final_inspection_screenshots_opened": true,
+    "main_headline_lines": [
+      2,
+      2,
+      2
+    ],
+    "horizontal_overflow": false,
+    "console_errors_on_production_landing": 0,
+    "lint": "PASS",
+    "typescript": "PASS",
+    "production_build": "PASS after final login readability corrections",
+    "api_type_contract": "PASS; generated API types match backend",
+    "edited_file_formatting": "PASS",
+    "repository_formatting": "FAIL; 60 files outside edited scope already need formatting",
+    "interactions": [
+      "All four journey stages",
+      "Keyboard Enter changes the selected journey stage",
+      "How It Works anchor",
+      "Mobile navigation",
+      "Nested demo account chooser",
+      "Cedar and officer account links select corresponding aliases",
+      "Reduced-motion content visibility",
+      "Sign-in service-unavailable feedback"
+    ],
+    "login_inspection": {
+      "report": "login-final/report.json",
+      "failures": 0,
+      "warnings": 1,
+      "reason": "Existing secondary labels, account role sublines, purpose notice and session help use 11–12px; readable main titles and actions retain their hierarchy.",
+      "all_screenshots_opened": true
+    },
+    "static_taste_lint": "FAIL: intentional reference conventions and preserved labels are flagged by the strict static house-style scan; raw results in static-lint.json. Browser checks use explicit allowances."
+  },
+  "limitations": [
+    "Live API unreachable at 127.0.0.1:8000; Docker engine unavailable. Authenticated dashboards, uploads and server-backed mutations could not be exercised.",
+    "The frontend has no existing automated UI regression suite; no test harness was added.",
+    "This is a reference-inspired restyle preserving PRAVYA content, not a pixel-identical copy of the agency site."
+  ],
+  "assets": {
+    "external_assets_added": [],
+    "drawings": "Decorative curtains are drawn in CSS; existing PRAVYA UI and SVG icons remain.",
+    "sample_data_added": false
+  },
+  "files": [
+    "apps/web/src/app/design-system.css",
+    "apps/web/src/components/shell-redesign.css",
+    "apps/web/src/features/workspace-redesign.css",
+    "apps/web/src/features/auth/login-redesign.css",
+    "apps/web/src/features/landing/landing-redesign.css",
+    "apps/web/src/features/landing/home.tsx"
+  ]
+}

@@ -11,6 +11,7 @@ from pydantic import (
     field_validator,
 )
 
+from app.modules.institutions.categories import ReservationCategory
 from app.modules.institutions.schemas import AcademicYear
 from app.modules.submissions.models import ProcessingStatus
 
@@ -21,7 +22,7 @@ class UploadContext(BaseModel):
     institution_id: UUID
     programme_id: UUID
     academic_year: AcademicYear
-    schema_version: Literal["v1"] = "v1"
+    schema_version: Literal["v1", "v2"] = "v1"
 
 
 class UploadResponse(BaseModel):
@@ -32,8 +33,11 @@ class UploadResponse(BaseModel):
 
 
 class UploadPolicyResponse(BaseModel):
-    schema_version: Literal["v1"] = "v1"
+    schema_version: Literal["v1", "v2"] = "v2"
     required_headers: list[str]
+    reservation_categories: list[ReservationCategory] = Field(
+        default_factory=lambda: list(ReservationCategory)
+    )
     encoding: Literal["UTF-8"] = "UTF-8"
     accepts_utf8_bom: Literal[True] = True
     accepted_formats: list[Literal["csv", "xlsx"]] = ["csv", "xlsx"]
@@ -84,6 +88,8 @@ class RowResponse(BaseModel):
     academic_year: str
     programme_code: str
     admission_category: str
+    reservation_category: str | None = None
+    is_pwd: bool | None = None
     enrollment_status: str
     enrollment_date: date | None
     apaar_id_masked: str

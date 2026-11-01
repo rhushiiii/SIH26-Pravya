@@ -10,11 +10,25 @@ import {
 import { useSession } from "@/features/auth/session";
 import { EmptyState, ErrorPanel, Loading } from "@/components/ui/feedback";
 import { Icon } from "@/components/ui/icon";
+import {
+  Attachment,
+  AttachmentContent,
+  AttachmentDescription,
+  AttachmentMedia,
+  AttachmentTitle,
+} from "@/components/ui/attachment";
 import { useApiQuery, useScope } from "@/lib/api/hooks";
 import { ApiError, isUUID, wasReplayed } from "@/lib/api/client";
 import { saveBlob } from "@/lib/download";
 import type { components } from "@/lib/api/generated";
 import { useSubmissionContext, validAcademicYear } from "./data";
+import {
+  StudentEntry,
+  blankStudent,
+  sampleStudents,
+  studentCSV,
+  type StudentDraft,
+} from "./student-entry";
 import {
   acceptAttribute,
   formatList,
@@ -36,7 +50,14 @@ export function CandidateUpload() {
   const [year, setYear] = useState("");
   const [formError, setFormError] = useState("");
   const [synthetic, setSynthetic] = useState(false);
+  const [inputMode, setInputMode] = useState<"file" | "manual">("file");
+  const [selectedFileInfo, setSelectedFileInfo] = useState<{
+    name: string;
+    size: number;
+  } | null>(null);
+  const [students, setStudents] = useState<StudentDraft[]>([blankStudent()]);
   const file = useRef<HTMLInputElement>(null);
+  const priorGeneration = useRef(session?.generation);
   const attempting = useRef(false);
   // One key per submission attempt: kept while the same attempt is pending or
   // its outcome is unknown, cleared when a new upload is deliberately prepared.
@@ -55,15 +76,15 @@ export function CandidateUpload() {
     retry: false,
     networkMode: "always", // Never queue an offline upload for automatic later execution.
     gcTime: 0,
-    mutationFn: async (): Promise<UploadResult & { replayed: boolean }> => {
-      const selectedFile = file.current?.files?.[0];
-      if (!selectedFile) throw new ApiError(422, "INVALID_REQUEST");
+    mutationFn: async (
+      selectedFile: File,
+    ): Promise<UploadResult & { replayed: boolean }> => {
       const body = new FormData();
       body.append("file", selectedFile);
       body.append("institution_id", institutionId);
       body.append("programme_id", programme);
       body.append("academic_year", year);
-      body.append("schema_version", "v1");
+      body.append("schema_version", "v2");
       const result = await request<UploadResult>("/submissions", {
         method: "POST",
         body,
@@ -93,6 +114,12 @@ export function CandidateUpload() {
   });
   const otherPending = pendingUploads > 0 && !mutation.isPending;
   useEffect(() => {
+    if (priorGeneration.current === session?.generation) return;
+    priorGeneration.current = session?.generation;
+    if (file.current) file.current.value = "";
+    setSelectedFileInfo(null);
+  }, [session?.generation]);
+  useEffect(() => {
     if (!mutation.isPending && !otherPending) return;
     const warn = (event: BeforeUnloadEvent) => {
       event.preventDefault();
@@ -111,7 +138,29 @@ export function CandidateUpload() {
       (mutation.isError && uploadError(mutation.error).uncertain)
     )
       return;
-    const selectedFile = file.current?.files?.[0];
+    let selectedFile = file.current?.files?.[0];
+    if (inputMode === "manual" && policy.data) {
+      const selectedProgramme = options.find((item) => item.id === programme);
+      try {
+        selectedFile = new File(
+          [
+            studentCSV(
+              students,
+              year,
+              selectedProgramme?.code ?? "",
+              policy.data.required_headers,
+            ),
+          ],
+          "synthetic-direct-entry.csv",
+          { type: "text/csv;charset=utf-8" },
+        );
+      } catch {
+        setFormError(
+          "Direct entry is unavailable for this upload schema. Reload the upload policy or use its file template.",
+        );
+        return;
+      }
+    }
     let issue = "";
     if (!policy.data || policy.isError)
       issue =
@@ -124,20 +173,48 @@ export function CandidateUpload() {
         "Choose an active programme belonging to your active institution.";
     else if (!validAcademicYear(year))
       issue = "Use consecutive academic years, for example 2026-27.";
+    else if (
+      inputMode === "manual" &&
+      !policy.data.accepted_formats.includes("csv")
+    )
+      issue =
+        "Direct entry requires CSV support in the configured upload policy.";
+    else if (
+      inputMode === "manual" &&
+      (!students.length || students.length > policy.data.max_rows)
+    )
+      issue =
+        "Enter at least one student and stay within the configured record limit.";
+    else if (
+      inputMode === "manual" &&
+      students.some(
+        (row) =>
+          ![
+            row.college_student_id,
+            row.student_name,
+            row.apaar_id,
+            row.enrollment_date,
+          ].some((value) => value.trim()),
+      )
+    )
+      issue =
+        "A student row is empty. Enter its details or remove it before saving.";
     else if (!selectedFile || selectedFile.size === 0)
       issue = `Choose a non-empty synthetic student file (${formatList(policy.data.accepted_formats)}).`;
     else if (selectedFile.size > policy.data.max_file_bytes)
       issue =
         "The selected file exceeds the configured file-size limit. It has not been sent.";
     else if (!synthetic)
-      issue = "Confirm that the file contains synthetic student records only.";
+      issue = "Confirm that these are synthetic student records only.";
     setFormError(issue);
-    if (issue) return;
+    if (issue || !selectedFile) return;
     attempting.current = true;
-    mutation.mutate(undefined, {
+    mutation.mutate(selectedFile, {
       onSuccess: () => {
         attemptKey.current = null;
         if (file.current) file.current.value = "";
+        setSelectedFileInfo(null);
+        setStudents([blankStudent()]);
         void queryClient.invalidateQueries({
           queryKey: [
             "private",
@@ -160,6 +237,49 @@ export function CandidateUpload() {
     setFormError("");
     setSynthetic(false);
     if (file.current) file.current.value = "";
+    setSelectedFileInfo(null);
+    setStudents([blankStudent()]);
+  }
+
+  function draftChanged() {
+    attemptKey.current = null;
+    setFormError("");
+    if (mutation.isError && !uploadError(mutation.error).uncertain)
+      mutation.reset();
+  }
+
+  function downloadSample(withFindings: boolean) {
+    const selectedProgramme = options.find(
+      (item) => item.id === programme && item.active,
+    );
+    if (!policy.data || !selectedProgramme || !validAcademicYear(year)) {
+      setFormError(
+        "Choose a programme and valid academic year before downloading its sample.",
+      );
+      return;
+    }
+    try {
+      saveBlob({
+        blob: new Blob(
+          [
+            studentCSV(
+              sampleStudents(year, withFindings),
+              year,
+              selectedProgramme.code,
+              policy.data.required_headers,
+            ),
+          ],
+          { type: "text/csv;charset=utf-8" },
+        ),
+        filename: withFindings
+          ? "pravya-synthetic-with-issues.csv"
+          : "pravya-synthetic-students.csv",
+      });
+    } catch {
+      setFormError(
+        "Samples are unavailable for this upload schema. Use its file template instead.",
+      );
+    }
   }
 
   function downloadTemplate() {
@@ -168,7 +288,7 @@ export function CandidateUpload() {
       blob: new Blob([templateCSV(policy.data.required_headers)], {
         type: "text/csv;charset=utf-8",
       }),
-      filename: "pravya-students-v1.csv",
+      filename: "pravya-students-v2.csv",
     });
   }
   const outcome = mutation.isError ? uploadError(mutation.error) : null;
@@ -182,8 +302,11 @@ export function CandidateUpload() {
       <div className="page-heading heading-actions">
         <div>
           <p className="eyebrow">INSTITUTION DECLARATIONS</p>
-          <h1>Upload candidate file</h1>
-          <p>Store a complete synthetic snapshot, with history preserved.</p>
+          <h1>Submit student data</h1>
+          <p>
+            Upload a file or enter records here, then save a candidate with
+            history preserved.
+          </p>
         </div>
         <Link className="button secondary" href="/submissions">
           Submission history
@@ -193,7 +316,7 @@ export function CandidateUpload() {
         <Icon name="upload" />
         <div>
           <h2 id="snapshot-intent">
-            One file. One complete candidate snapshot.
+            One submission. One complete candidate snapshot.
           </h2>
           <p>
             Include every declared record across all admission categories for
@@ -224,7 +347,7 @@ export function CandidateUpload() {
           <header className="panel-heading">
             <div>
               <p className="eyebrow">CANDIDATE INGESTION</p>
-              <h2 id="upload-title">Upload details</h2>
+              <h2 id="upload-title">Student submission</h2>
             </div>
             <span className="quiet-label">Not an activation</span>
           </header>
@@ -260,7 +383,10 @@ export function CandidateUpload() {
                   Programme
                   <select
                     value={programme}
-                    onChange={(event) => setProgramme(event.target.value)}
+                    onChange={(event) => {
+                      draftChanged();
+                      setProgramme(event.target.value);
+                    }}
                     disabled={programmes.isPending || programmes.isError}
                   >
                     <option value="">Select a permitted programme</option>
@@ -277,41 +403,136 @@ export function CandidateUpload() {
                   Academic year
                   <input
                     value={year}
-                    onChange={(event) => setYear(event.target.value)}
+                    onChange={(event) => {
+                      draftChanged();
+                      setYear(event.target.value);
+                    }}
                     placeholder="2026-27"
                     maxLength={7}
                     aria-describedby="upload-year-help"
                   />
                   <span id="upload-year-help" className="form-help">
-                    Consecutive years, YYYY-YY. This must match the CSV records.
+                    Consecutive years, YYYY-YY. Applied to entered rows; must
+                    match uploaded file records.
                   </span>
                 </label>
-                <label className="file-field">
-                  Synthetic student file
-                  <input
-                    ref={file}
-                    type="file"
-                    accept={
-                      policy.data
-                        ? acceptAttribute(policy.data.accepted_formats)
-                        : undefined
-                    }
-                    aria-describedby="file-help"
-                    onChange={() => {
-                      setFormError("");
-                      attemptKey.current = null;
-                      if (mutation.isError && !outcome?.uncertain)
-                        mutation.reset();
+                <fieldset className="upload-input-modes">
+                  <legend>How would you like to provide records?</legend>
+                  <label>
+                    <input
+                      type="radio"
+                      name="input-mode"
+                      value="file"
+                      checked={inputMode === "file"}
+                      onChange={() => {
+                        draftChanged();
+                        setSelectedFileInfo(null);
+                        setInputMode("file");
+                      }}
+                    />
+                    Upload CSV / Excel
+                  </label>
+                  <label>
+                    <input
+                      type="radio"
+                      name="input-mode"
+                      value="manual"
+                      checked={inputMode === "manual"}
+                      onChange={() => {
+                        draftChanged();
+                        setSelectedFileInfo(null);
+                        setInputMode("manual");
+                      }}
+                    />
+                    Enter records in portal
+                  </label>
+                </fieldset>
+                {inputMode === "file" ? (
+                  <>
+                    <label className="file-field">
+                      Synthetic student file
+                      <input
+                        ref={file}
+                        type="file"
+                        accept={
+                          policy.data
+                            ? acceptAttribute(policy.data.accepted_formats)
+                            : undefined
+                        }
+                        aria-describedby="file-help"
+                        onChange={() => {
+                          setFormError("");
+                          attemptKey.current = null;
+                          const selected = file.current?.files?.[0];
+                          setSelectedFileInfo(
+                            selected
+                              ? { name: selected.name, size: selected.size }
+                              : null,
+                          );
+                          if (mutation.isError && !outcome?.uncertain)
+                            mutation.reset();
+                        }}
+                      />
+                      <span id="file-help" className="form-help">
+                        {policy.data
+                          ? `${formatList(policy.data.accepted_formats)} only. `
+                          : ""}
+                        Contents are checked by the server; no student preview
+                        is displayed here.
+                      </span>
+                    </label>
+                    {(selectedFileInfo ||
+                      mutation.isPending ||
+                      mutation.isSuccess ||
+                      outcome) && (
+                      <Attachment
+                        state={
+                          mutation.isPending
+                            ? "uploading"
+                            : mutation.isSuccess
+                              ? "done"
+                              : outcome
+                                ? "error"
+                                : "idle"
+                        }
+                        className="upload-attachment"
+                      >
+                        <AttachmentMedia>
+                          <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M13 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V10z" />
+                            <path d="M13 3v7h7M8 14h8m-8 4h6" />
+                          </svg>
+                        </AttachmentMedia>
+                        <AttachmentContent>
+                          <AttachmentTitle>
+                            {selectedFileInfo?.name ?? "Candidate file"}
+                          </AttachmentTitle>
+                          <AttachmentDescription>
+                            {mutation.isPending
+                              ? "Saving candidate…"
+                              : mutation.isSuccess
+                                ? "Candidate stored · not activated"
+                                : outcome
+                                  ? outcome.message
+                                  : selectedFileInfo
+                                    ? `Selected · not uploaded · ${(selectedFileInfo.size / 1024).toLocaleString(undefined, { maximumFractionDigits: 1 })} KB`
+                                    : "Selected file"}
+                          </AttachmentDescription>
+                        </AttachmentContent>
+                      </Attachment>
+                    )}
+                  </>
+                ) : (
+                  <StudentEntry
+                    rows={students}
+                    maxRows={policy.data?.max_rows ?? 0}
+                    year={year}
+                    onChange={(rows) => {
+                      draftChanged();
+                      setStudents(rows);
                     }}
                   />
-                  <span id="file-help" className="form-help">
-                    {policy.data
-                      ? `${formatList(policy.data.accepted_formats)} only. `
-                      : ""}
-                    Contents are checked by the server; no student preview is
-                    displayed here.
-                  </span>
-                </label>
+                )}
                 <label className="confirmation">
                   <input
                     type="checkbox"
@@ -319,8 +540,8 @@ export function CandidateUpload() {
                     onChange={(event) => setSynthetic(event.target.checked)}
                   />
                   <span>
-                    I confirm that this file contains synthetic student records
-                    only.
+                    I confirm that this submission contains synthetic student
+                    records only.
                   </span>
                 </label>
               </div>
@@ -357,8 +578,10 @@ export function CandidateUpload() {
               >
                 <Icon name="upload" />
                 {mutation.isPending
-                  ? "Uploading and processing…"
-                  : "Upload candidate"}
+                  ? "Saving and processing…"
+                  : inputMode === "manual"
+                    ? "Save candidate to database"
+                    : "Upload candidate"}
               </button>
             )}
             <p className="form-help">
@@ -386,8 +609,8 @@ export function CandidateUpload() {
                   : "Submission "}
                 <span className="code-label">{mutation.data.id}</span>
                 {mutation.data.replayed ? " " : " was parsed and stored. "}
-                is unvalidated and has not been activated. Current enrolment
-                totals are unchanged.
+                The candidate is unvalidated and has not been activated. Current
+                enrolment totals are unchanged.
               </p>
               {mutation.data.warnings?.includes("DUPLICATE_UPLOAD") && (
                 <p className="warning-text">
@@ -396,6 +619,12 @@ export function CandidateUpload() {
                 </p>
               )}
               <div className="outcome-actions">
+                <Link
+                  className="button primary"
+                  href={`/submissions/${mutation.data.id}`}
+                >
+                  Open candidate to validate and review
+                </Link>
                 <Link className="button secondary" href="/submissions">
                   View submission history
                 </Link>
@@ -445,7 +674,7 @@ export function CandidateUpload() {
         <aside className="panel upload-policy" aria-labelledby="policy-title">
           <header className="panel-heading">
             <div>
-              <p className="eyebrow">STRICT V1</p>
+              <p className="eyebrow">STRICT V2</p>
               <h2 id="policy-title">Upload requirements</h2>
             </div>
           </header>
@@ -478,8 +707,43 @@ export function CandidateUpload() {
                 </dd>
               </dl>
               <button className="button secondary" onClick={downloadTemplate}>
-                Download strict-v1 template (CSV)
+                Download strict-v2 template (CSV)
               </button>
+              <h3>Synthetic sample files</h3>
+              <p className="form-help">
+                Select a programme and academic year above. These examples
+                contain three fictional students and use that scope. The second
+                includes a malformed APAAR and missing name to demonstrate
+                findings.
+              </p>
+              <div className="sample-downloads">
+                <button
+                  type="button"
+                  className="button secondary small"
+                  disabled={
+                    locked ||
+                    !programme ||
+                    !validAcademicYear(year) ||
+                    policy.data.max_rows < 3
+                  }
+                  onClick={() => downloadSample(false)}
+                >
+                  Download sample CSV
+                </button>
+                <button
+                  type="button"
+                  className="button secondary small"
+                  disabled={
+                    locked ||
+                    !programme ||
+                    !validAcademicYear(year) ||
+                    policy.data.max_rows < 3
+                  }
+                  onClick={() => downloadSample(true)}
+                >
+                  Download example with issues
+                </button>
+              </div>
               <p className="form-help">
                 Accepted formats: {formatList(policy.data.accepted_formats)}.
                 For Excel, the first worksheet is read with the same headers,

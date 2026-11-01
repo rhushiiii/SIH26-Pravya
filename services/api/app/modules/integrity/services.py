@@ -250,9 +250,9 @@ def data_quality_and_identity(
             )
     latest = ctx.session.execute(
         latest_per_key(
-            select(
-                ApaarVerification.record_version_id, ApaarVerification.status
-            ).where(ApaarVerification.batch_id == batch.id),
+            select(ApaarVerification.record_version_id, ApaarVerification.status).where(
+                ApaarVerification.batch_id == batch.id
+            ),
             key=[ApaarVerification.record_version_id],
             stamp=ApaarVerification.requested_at,
             tie=ApaarVerification.id,

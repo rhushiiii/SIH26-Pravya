@@ -216,6 +216,8 @@ class StudentRecordVersion(Base):
     apaar_identifier_encrypted_or_demo_token: Mapped[str] = mapped_column(Text)
     apaar_match_hash: Mapped[str | None] = mapped_column(String(64), index=True)
     admission_category: Mapped[str] = mapped_column(Text)
+    reservation_category: Mapped[str | None] = mapped_column(Text)
+    is_pwd: Mapped[bool | None]
     enrollment_status: Mapped[str] = mapped_column(Text)
     enrollment_date: Mapped[date | None]
     original_json: Mapped[dict[str, str]] = mapped_column(JSONB)

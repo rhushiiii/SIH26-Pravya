@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState, type KeyboardEvent } from "react";
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 import { useSession } from "@/features/auth/session";
@@ -23,6 +23,16 @@ import type { Programmes } from "@/features/submissions/data";
 
 type Institution = components["schemas"]["InstitutionResponse"];
 
+const PROFILE_TABS = [
+  { id: "overview", label: "Overview" },
+  { id: "programmes", label: "Programmes" },
+  { id: "rules", label: "Intake rules" },
+  { id: "declarations", label: "Declared totals" },
+  { id: "review", label: "Review signals" },
+  { id: "simulation", label: "Simulation" },
+] as const;
+type ProfileTab = (typeof PROFILE_TABS)[number]["id"];
+
 export function InstitutionProfile({
   institutionId,
 }: {
@@ -30,6 +40,39 @@ export function InstitutionProfile({
 }) {
   const { session, request } = useSession();
   const [page, setPage] = useState(1);
+  const [tab, setTab] = useState<ProfileTab>("overview");
+  const [visited, setVisited] = useState<ProfileTab[]>(["overview"]);
+  const tabRefs = useRef<Array<HTMLButtonElement | null>>([]);
+  const officer = session?.user.role === "AICTE_OFFICER";
+  const tabs = PROFILE_TABS.filter((item) =>
+    item.id === "overview" || item.id === "programmes"
+      ? true
+      : item.id === "rules"
+        ? session?.user.role !== "AICTE_MANAGER"
+        : officer,
+  );
+  function selectTab(next: ProfileTab) {
+    setTab(next);
+    setVisited((previous) =>
+      previous.includes(next) ? previous : [...previous, next],
+    );
+  }
+  function onTabKey(event: KeyboardEvent<HTMLButtonElement>, index: number) {
+    const next =
+      event.key === "Home"
+        ? 0
+        : event.key === "End"
+          ? tabs.length - 1
+          : event.key === "ArrowRight"
+            ? (index + 1) % tabs.length
+            : event.key === "ArrowLeft"
+              ? (index - 1 + tabs.length) % tabs.length
+              : null;
+    if (next === null) return;
+    event.preventDefault();
+    selectTab(tabs[next].id);
+    tabRefs.current[next]?.focus();
+  }
   const valid = isUUID(institutionId);
   const key = useScope("institution", institutionId);
   const institution = useApiQuery<Institution>(
@@ -54,7 +97,7 @@ export function InstitutionProfile({
       </section>
     );
   return (
-    <>
+    <div className="institution-profile-page">
       <div className="page-heading">
         <p className="eyebrow">INSTITUTION INFORMATION</p>
         <h1>Institution profile</h1>
@@ -90,111 +133,213 @@ export function InstitutionProfile({
                 {data.active ? "Active institution" : "Inactive institution"}
               </span>
             </section>
-            <div className="metadata-grid">
-              <section className="metadata-item">
-                <span className="tiny-label">PERMANENT INSTITUTION ID</span>
-                <strong>{data.permanent_id}</strong>
-              </section>
-              <section className="metadata-item">
-                <span className="tiny-label">REGION</span>
-                <strong>{plain(data.region)}</strong>
-              </section>
-              <section className="metadata-item">
-                <span className="tiny-label">DATA CONTEXT</span>
-                <strong>Synthetic records</strong>
+            <div
+              className="institution-tabs"
+              role="tablist"
+              aria-label="Institution sections"
+            >
+              {tabs.map((item, index) => (
+                <button
+                  key={item.id}
+                  type="button"
+                  role="tab"
+                  id={`institution-tab-${item.id}`}
+                  aria-selected={tab === item.id}
+                  aria-controls={`institution-panel-${item.id}`}
+                  tabIndex={tab === item.id ? 0 : -1}
+                  ref={(node) => {
+                    tabRefs.current[index] = node;
+                  }}
+                  onClick={() => selectTab(item.id)}
+                  onKeyDown={(event) => onTabKey(event, index)}
+                >
+                  {item.label}
+                </button>
+              ))}
+            </div>
+            <div
+              className="institution-tab-panel"
+              role="tabpanel"
+              id="institution-panel-overview"
+              aria-labelledby="institution-tab-overview"
+              hidden={tab !== "overview"}
+              tabIndex={0}
+            >
+              <div className="metadata-grid">
+                <section className="metadata-item">
+                  <span className="tiny-label">PERMANENT INSTITUTION ID</span>
+                  <strong>{data.permanent_id}</strong>
+                </section>
+                <section className="metadata-item">
+                  <span className="tiny-label">REGION</span>
+                  <strong>{plain(data.region)}</strong>
+                </section>
+                <section className="metadata-item">
+                  <span className="tiny-label">DATA CONTEXT</span>
+                  <strong>Synthetic records</strong>
+                </section>
+                <section className="metadata-item">
+                  <span className="tiny-label">PROGRAMMES</span>
+                  <strong>
+                    {programmes.data
+                      ? programmes.data.pagination.total
+                      : programmes.isError
+                        ? "Unavailable"
+                        : "Loading…"}
+                  </strong>
+                </section>
+              </div>
+            </div>
+            <div
+              className="institution-tab-panel"
+              role="tabpanel"
+              id="institution-panel-programmes"
+              aria-labelledby="institution-tab-programmes"
+              hidden={tab !== "programmes"}
+              tabIndex={0}
+            >
+              <section
+                className="panel"
+                aria-labelledby="programmes-title"
+                aria-busy={programmes.isFetching}
+              >
+                <header className="panel-heading">
+                  <div>
+                    <p className="eyebrow">ACADEMIC STRUCTURE</p>
+                    <h2 id="programmes-title">
+                      Programmes{" "}
+                      {programmes.data && (
+                        <span className="count-pill">
+                          {programmes.data.pagination.total}
+                        </span>
+                      )}
+                    </h2>
+                  </div>
+                  <span className="quiet-label">
+                    Institution-scoped records
+                  </span>
+                </header>
+                {programmes.isPending ? (
+                  <Loading label="Loading programmes…" />
+                ) : programmes.isError ? (
+                  <ErrorPanel
+                    error={programmes.error}
+                    retry={() => void programmes.refetch()}
+                  />
+                ) : programmes.data.data.length === 0 ? (
+                  <EmptyState title="No programmes found">
+                    No programme records are available for this institution.
+                  </EmptyState>
+                ) : (
+                  <div
+                    className="table-scroll"
+                    tabIndex={0}
+                    role="region"
+                    aria-label="Programme table, scroll horizontally on small screens"
+                  >
+                    <table>
+                      <caption className="sr-only">
+                        Programmes belonging to {data.name}
+                      </caption>
+                      <thead>
+                        <tr>
+                          <th scope="col">Programme</th>
+                          <th scope="col">Programme code</th>
+                          <th scope="col">Status</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {programmes.data.data.map((programme) => (
+                          <tr key={programme.id}>
+                            <td>
+                              <strong>{programme.name}</strong>
+                            </td>
+                            <td>
+                              <span className="code-label">
+                                {programme.code}
+                              </span>
+                            </td>
+                            <td>
+                              <span
+                                className={`status-badge ${programme.active ? "active" : "inactive"}`}
+                              >
+                                {programme.active ? "Active" : "Inactive"}
+                              </span>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+                {programmes.data && programmes.data.pagination.total > 10 && (
+                  <QueryPagination
+                    query={programmes}
+                    page={page}
+                    pageSize={10}
+                    change={setPage}
+                  />
+                )}
               </section>
             </div>
-            <section
-              className="panel"
-              aria-labelledby="programmes-title"
-              aria-busy={programmes.isFetching}
-            >
-              <header className="panel-heading">
-                <div>
-                  <p className="eyebrow">ACADEMIC STRUCTURE</p>
-                  <h2 id="programmes-title">
-                    Programmes{" "}
-                    {programmes.data && (
-                      <span className="count-pill">
-                        {programmes.data.pagination.total}
-                      </span>
-                    )}
-                  </h2>
-                </div>
-                <span className="quiet-label">Institution-scoped records</span>
-              </header>
-              {programmes.isPending ? (
-                <Loading label="Loading programmes…" />
-              ) : programmes.isError ? (
-                <ErrorPanel
-                  error={programmes.error}
-                  retry={() => void programmes.refetch()}
-                />
-              ) : programmes.data.data.length === 0 ? (
-                <EmptyState title="No programmes found">
-                  No programme records are available for this institution.
-                </EmptyState>
-              ) : (
-                <div
-                  className="table-scroll"
-                  tabIndex={0}
-                  role="region"
-                  aria-label="Programme table, scroll horizontally on small screens"
-                >
-                  <table>
-                    <caption className="sr-only">
-                      Programmes belonging to {data.name}
-                    </caption>
-                    <thead>
-                      <tr>
-                        <th scope="col">Programme</th>
-                        <th scope="col">Programme code</th>
-                        <th scope="col">Status</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {programmes.data.data.map((programme) => (
-                        <tr key={programme.id}>
-                          <td>
-                            <strong>{programme.name}</strong>
-                          </td>
-                          <td>
-                            <span className="code-label">{programme.code}</span>
-                          </td>
-                          <td>
-                            <span
-                              className={`status-badge ${programme.active ? "active" : "inactive"}`}
-                            >
-                              {programme.active ? "Active" : "Inactive"}
-                            </span>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              )}
-              <QueryPagination
-                query={programmes}
-                page={page}
-                pageSize={10}
-                change={setPage}
-              />
-            </section>
             {session?.user.role !== "AICTE_MANAGER" && (
-              <IntakeRulesPanel
-                institutionId={institutionId}
-                canEdit={session?.user.role === "AICTE_OFFICER"}
-              />
+              <div
+                className="institution-tab-panel"
+                role="tabpanel"
+                id="institution-panel-rules"
+                aria-labelledby="institution-tab-rules"
+                hidden={tab !== "rules"}
+                tabIndex={0}
+              >
+                {visited.includes("rules") && (
+                  <IntakeRulesPanel
+                    institutionId={institutionId}
+                    canEdit={officer}
+                  />
+                )}
+              </div>
             )}
-            {session?.user.role === "AICTE_OFFICER" && (
+            {officer && (
               <>
-                <IntegritySignalsPanel
-                  institutionId={institutionId}
-                  canDecide
-                />
-                <DeclaredTotalsPanel institutionId={institutionId} />
-                <SimulatorPanel institutionId={institutionId} />
+                <div
+                  className="institution-tab-panel"
+                  role="tabpanel"
+                  id="institution-panel-review"
+                  aria-labelledby="institution-tab-review"
+                  hidden={tab !== "review"}
+                  tabIndex={0}
+                >
+                  {visited.includes("review") && (
+                    <IntegritySignalsPanel
+                      institutionId={institutionId}
+                      canDecide
+                    />
+                  )}
+                </div>
+                <div
+                  className="institution-tab-panel"
+                  role="tabpanel"
+                  id="institution-panel-declarations"
+                  aria-labelledby="institution-tab-declarations"
+                  hidden={tab !== "declarations"}
+                  tabIndex={0}
+                >
+                  {visited.includes("declarations") && (
+                    <DeclaredTotalsPanel institutionId={institutionId} />
+                  )}
+                </div>
+                <div
+                  className="institution-tab-panel"
+                  role="tabpanel"
+                  id="institution-panel-simulation"
+                  aria-labelledby="institution-tab-simulation"
+                  hidden={tab !== "simulation"}
+                  tabIndex={0}
+                >
+                  {visited.includes("simulation") && (
+                    <SimulatorPanel institutionId={institutionId} />
+                  )}
+                </div>
               </>
             )}
             <p className="data-note">
@@ -205,6 +350,6 @@ export function InstitutionProfile({
           </>
         )}
       </QueryBoundary>
-    </>
+    </div>
   );
 }

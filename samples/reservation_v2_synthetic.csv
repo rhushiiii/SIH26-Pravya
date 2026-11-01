@@ -1,0 +1,5 @@
+college_student_id,student_name,apaar_id,academic_year,programme_code,reservation_category,is_pwd,enrollment_status,enrollment_date
+SYN-RES-001,Synthetic Learner Alpha,900000000001,2026-27,DEMO-COMP,GENERAL_OPEN,NO,ACTIVE,2026-07-01
+SYN-RES-002,Synthetic Learner Beta,900000000002,2026-27,DEMO-COMP,SC_ST,NO,ACTIVE,2026-07-02
+SYN-RES-003,Synthetic Learner Gamma,900000000003,2026-27,DEMO-COMP,NT,NO,ACTIVE,2026-07-03
+SYN-RES-004,Synthetic Learner Delta,900000000004,2026-27,DEMO-COMP,OBC,YES,ACTIVE,2026-07-04

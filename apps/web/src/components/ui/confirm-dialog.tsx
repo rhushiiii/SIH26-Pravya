@@ -37,8 +37,13 @@ export function ConfirmDialog({
         if (!busy) onCancel();
       }}
     >
+      <span className="confirm-dialog-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M12 8v5m0 3h.01M10.3 3.9 2.8 17a2 2 0 0 0 1.7 3h15a2 2 0 0 0 1.7-3l-7.5-13.1a2 2 0 0 0-3.4 0Z" />
+        </svg>
+      </span>
       <h2 id="confirm-dialog-title">{title}</h2>
-      <div>{children}</div>
+      <div className="confirm-dialog-content">{children}</div>
       <div className="confirm-actions">
         <button
           type="button"

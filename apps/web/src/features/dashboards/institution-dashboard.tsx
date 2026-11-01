@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { ErrorPanel, Loading } from "@/components/ui/feedback";
+import { EmptyState, ErrorPanel, Loading } from "@/components/ui/feedback";
 import { useSession } from "@/features/auth/session";
 import { useApiQuery, useScope } from "@/lib/api/hooks";
 import { DeclaredTotalsPanel } from "@/features/intake/declarations-panel";
@@ -115,6 +115,7 @@ export function InstitutionDashboard({
   const filtersValid = validAcademicYear(year);
   const filterParams = new URLSearchParams({
     academic_year: year,
+    category_scheme: "RESERVATION",
     page: "1",
     page_size: "100",
   });
@@ -134,6 +135,7 @@ export function InstitutionDashboard({
   });
   const intakeParams = new URLSearchParams({
     academic_year: year,
+    category_scheme: "RESERVATION",
     page: "1",
     page_size: "100",
   });
@@ -354,11 +356,15 @@ export function InstitutionDashboard({
                 <div>
                   <p className="eyebrow">CURRENT DECLARATIONS</p>
                   <h2 id="institution-category-title">
-                    Records by admission category
+                    Records by reservation category
                   </h2>
                 </div>
                 <span className="status-badge neutral">Local accounting</span>
               </header>
+              <p className="data-note">
+                PwD overlaps the primary reservation categories; do not add it
+                to the student total. Legacy classifications may be unavailable.
+              </p>
               <CategoryBars
                 categories={categoryData}
                 emptyLabel="No current declarations are available for this scope."
@@ -460,13 +466,10 @@ export function InstitutionDashboard({
                 retry={() => void intake.refetch()}
               />
             ) : intakeRows.length === 0 ? (
-              <div className="empty-state compact">
-                <h3>No intake configuration</h3>
-                <p>
-                  No configured rule was returned for this academic year and
-                  programme selection.
-                </p>
-              </div>
+              <EmptyState className="compact" title="No intake configuration">
+                No configured rule was returned for this academic year and
+                programme selection.
+              </EmptyState>
             ) : (
               <DashboardTable label="Current category records compared with configured intake">
                 <thead>
@@ -545,13 +548,13 @@ export function InstitutionDashboard({
                 retry={() => void submissions.refetch()}
               />
             ) : submissions.data.data.length === 0 ? (
-              <div className="empty-state compact">
-                <h3>No submissions for this filter</h3>
-                <p>
-                  Upload a complete candidate snapshot for the selected academic
-                  year.
-                </p>
-              </div>
+              <EmptyState
+                className="compact"
+                title="No submissions for this filter"
+              >
+                Upload a complete candidate snapshot for the selected academic
+                year.
+              </EmptyState>
             ) : (
               <DashboardTable label="Recent institution submissions">
                 <thead>

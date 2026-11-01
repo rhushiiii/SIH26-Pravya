@@ -3,14 +3,14 @@
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
-import { ErrorPanel, Loading } from "@/components/ui/feedback";
+import { EmptyState, ErrorPanel, Loading } from "@/components/ui/feedback";
 import { Pagination } from "@/components/ui/pagination";
 import { useSession } from "@/features/auth/session";
 import {
   useSubmissionContext,
   validAcademicYear,
 } from "@/features/submissions/data";
-import { ApiError } from "@/lib/api/client";
+import { ApiError, jsonInit } from "@/lib/api/client";
 import { useApiQuery, useScope } from "@/lib/api/hooks";
 import type { components } from "@/lib/api/generated";
 import { when } from "@/lib/format";
@@ -25,8 +25,6 @@ import {
 type Rule = components["schemas"]["IntakeRuleResponse"];
 type RulePage = components["schemas"]["Page_IntakeRuleResponse_"];
 type ChangePage = components["schemas"]["Page_RuleChangeResponse_"];
-
-const jsonHeaders = { "Content-Type": "application/json" };
 
 function EditRuleDialog({
   rule,
@@ -47,11 +45,10 @@ function EditRuleDialog({
   const [error, setError] = useState("");
   const save = useMutation({
     mutationFn: (body: { approved_seats: number; reason: string }) =>
-      request(`/institutions/${institutionId}/intake/${rule.id}`, {
-        method: "PATCH",
-        headers: jsonHeaders,
-        body: JSON.stringify(body),
-      }),
+      request(
+        `/institutions/${institutionId}/intake/${rule.id}`,
+        jsonInit("PATCH", body),
+      ),
     onSuccess: () =>
       onSaved(
         `${programmeName} · ${categoryLabel(rule.category)} DEMO approved seats updated.`,
@@ -132,7 +129,7 @@ export function IntakeRulesPanel({
   const names = new Map(options.map((p) => [p.id, p.name]));
   const rules = useApiQuery<RulePage>(
     [...key, "rules", year],
-    `/institutions/${institutionId}/intake?academic_year=${year}&page=1&page_size=100`,
+    `/institutions/${institutionId}/intake?academic_year=${year}&category_scheme=RESERVATION&page=1&page_size=100`,
     { retry: false },
   );
   const changes = useApiQuery<ChangePage>(
@@ -197,19 +194,18 @@ export function IntakeRulesPanel({
       {rules.isPending ? (
         <Loading label="Loading intake rules…" />
       ) : forbidden ? (
-        <div className="empty-state compact">
-          <h3>Intake rules not available for your role</h3>
-          <p>
-            Your account does not have permission to view intake configuration.
-          </p>
-        </div>
+        <EmptyState
+          className="compact"
+          title="Intake rules not available for your role"
+        >
+          Your account does not have permission to view intake configuration.
+        </EmptyState>
       ) : rules.isError ? (
         <ErrorPanel error={rules.error} retry={() => void rules.refetch()} />
       ) : sorted.length === 0 ? (
-        <div className="empty-state compact">
-          <h3>No intake rules for {year}</h3>
-          <p>No DEMO intake rules are configured for this academic year.</p>
-        </div>
+        <EmptyState className="compact" title={`No intake rules for ${year}`}>
+          No DEMO intake rules are configured for this academic year.
+        </EmptyState>
       ) : (
         <ScrollTable label={`DEMO intake rules for ${year}`}>
           <thead>
@@ -257,65 +253,67 @@ export function IntakeRulesPanel({
         </ScrollTable>
       )}
       {canEdit && (
-        <div className="panel-padding">
-          <h3>Change history</h3>
-          {changes.isPending ? (
-            <Loading label="Loading change history…" />
-          ) : changes.isError ? (
-            <ErrorPanel
-              error={changes.error}
-              retry={() => void changes.refetch()}
-            />
-          ) : changes.data.data.length === 0 ? (
-            <p className="form-help">No rule changes have been recorded.</p>
-          ) : (
-            <>
-              <ScrollTable label="DEMO intake rule change history">
-                <thead>
-                  <tr>
-                    <th scope="col">When</th>
-                    <th scope="col">Rule</th>
-                    <th scope="col">Seats</th>
-                    <th scope="col">Reason</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {changes.data.data.map((change) => {
-                    const rule = ruleById.get(change.intake_rule_id);
-                    return (
-                      <tr key={change.id}>
-                        <td>{when(change.created_at)}</td>
-                        <td>
-                          {rule
-                            ? `${names.get(rule.programme_id) ?? "Programme"} · ${categoryLabel(rule.category)}`
-                            : "Rule in another academic year"}
-                        </td>
-                        <td>
-                          {change.old_approved_seats} →{" "}
-                          {change.new_approved_seats}
-                          <small>
-                            {" "}
-                            version {change.new_rule_version} ·{" "}
-                            {change.source_label}
-                          </small>
-                        </td>
-                        <td>{change.reason}</td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </ScrollTable>
-              <Pagination
-                page={historyPage}
-                pageSize={5}
-                total={changes.data.pagination.total}
-                busy={changes.isFetching}
-                change={setHistoryPage}
-                label="Change history pagination"
+        <details className="institution-rule-history">
+          <summary>Change history</summary>
+          <div className="panel-padding">
+            {changes.isPending ? (
+              <Loading label="Loading change history…" />
+            ) : changes.isError ? (
+              <ErrorPanel
+                error={changes.error}
+                retry={() => void changes.refetch()}
               />
-            </>
-          )}
-        </div>
+            ) : changes.data.data.length === 0 ? (
+              <p className="form-help">No rule changes have been recorded.</p>
+            ) : (
+              <>
+                <ScrollTable label="DEMO intake rule change history">
+                  <thead>
+                    <tr>
+                      <th scope="col">When</th>
+                      <th scope="col">Rule</th>
+                      <th scope="col">Seats</th>
+                      <th scope="col">Reason</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {changes.data.data.map((change) => {
+                      const rule = ruleById.get(change.intake_rule_id);
+                      return (
+                        <tr key={change.id}>
+                          <td>{when(change.created_at)}</td>
+                          <td>
+                            {rule
+                              ? `${names.get(rule.programme_id) ?? "Programme"} · ${categoryLabel(rule.category)}`
+                              : "Rule in another academic year"}
+                          </td>
+                          <td>
+                            {change.old_approved_seats} →{" "}
+                            {change.new_approved_seats}
+                            <small>
+                              {" "}
+                              version {change.new_rule_version} ·{" "}
+                              {change.source_label}
+                            </small>
+                          </td>
+                          <td>{change.reason}</td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </ScrollTable>
+                <Pagination
+                  page={historyPage}
+                  pageSize={5}
+                  total={changes.data.pagination.total}
+                  busy={changes.isFetching}
+                  change={setHistoryPage}
+                  label="Change history pagination"
+                />
+              </>
+            )}
+          </div>
+        </details>
       )}
       {editing && (
         <EditRuleDialog

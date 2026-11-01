@@ -1,0 +1,2928 @@
+{
+ "url": "http://127.0.0.1:3002",
+ "at": "2026-11-01T05:05:23.675Z",
+ "allow": [
+  "eyebrow",
+  "numbering",
+  "outlined-box",
+  "pill-nav",
+  "palette-cream",
+  "few-pictures",
+  "no-footage",
+  "small-text",
+  "size-count",
+  "grey-body",
+  "gradient"
+ ],
+ "viewports": [
+  {
+   "width": 1440,
+   "height": 900,
+   "load": "load",
+   "screens": 8,
+   "filled": [
+    0.84,
+    0.81,
+    0.89,
+    1,
+    0.79,
+    0.56,
+    0.63,
+    0.99
+   ],
+   "motion": {
+    "elements": 42,
+    "css": 1,
+    "transitions": 24,
+    "scripted": 17,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "page": {
+     "height": 7082,
+     "screens": 7.9,
+     "words": 853,
+     "img": 0,
+     "video": 0,
+     "canvas": 0,
+     "svg": 23,
+     "sections": 8,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 1,
+     "uiAbuse": false,
+     "realPictures": 0,
+     "videoCount": 0,
+     "uiPictures": 1,
+     "pictureSamples": [],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Admissions, with clarity.",
+     "words": 3,
+     "chars": 25,
+     "lines": 2,
+     "size": 80,
+     "vw": 5.6,
+     "font": "Inter",
+     "weight": 750,
+     "tracking": -0.055,
+     "leading": 1.08,
+     "upper": false,
+     "italic": false,
+     "mono": false,
+     "align": "center",
+     "position": "center",
+     "widthRatio": 0.67,
+     "top": 218,
+     "tag": "h1",
+     "kind": "heading"
+    },
+    "h1": {
+     "text": "Admissions, with clarity.",
+     "words": 3,
+     "lines": 2,
+     "size": 80,
+     "font": "Inter"
+    },
+    "headings": [
+     {
+      "text": "Admissions, with clarity.",
+      "words": 3,
+      "chars": 25,
+      "lines": 2,
+      "size": 80,
+      "vw": 5.6,
+      "font": "Inter",
+      "weight": 750,
+      "tracking": -0.055,
+      "leading": 1.08,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.67,
+      "top": 218,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "One Workspace. Clearer Decisions.",
+      "words": 4,
+      "chars": 33,
+      "lines": 1,
+      "size": 50,
+      "vw": 3.5,
+      "font": "Inter",
+      "weight": 750,
+      "tracking": -0.045,
+      "leading": 1.12,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.56,
+      "top": 1721,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Built around evidence, not assumptions",
+      "words": 5,
+      "chars": 38,
+      "lines": 1,
+      "size": 50,
+      "vw": 3.5,
+      "font": "Inter",
+      "weight": 750,
+      "tracking": -0.045,
+      "leading": 1.12,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.78,
+      "top": 2421,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "What the workspace looks like",
+      "words": 5,
+      "chars": 29,
+      "lines": 1,
+      "size": 50,
+      "vw": 3.5,
+      "font": "Inter",
+      "weight": 750,
+      "tracking": -0.045,
+      "leading": 1.12,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.56,
+      "top": 3472,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "—",
+      "words": 1,
+      "chars": 1,
+      "lines": 1,
+      "size": 33.6,
+      "vw": 2.3,
+      "font": "Inter",
+      "weight": 650,
+      "tracking": -0.035,
+      "leading": 1.15,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.2,
+      "top": 3765,
+      "tag": "strong",
+      "kind": "heading"
+     },
+     {
+      "text": "—",
+      "words": 1,
+      "chars": 1,
+      "lines": 1,
+      "size": 33.6,
+      "vw": 2.3,
+      "font": "Inter",
+      "weight": 650,
+      "tracking": -0.035,
+      "leading": 1.15,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.2,
+      "top": 3771,
+      "tag": "strong",
+      "kind": "heading"
+     },
+     {
+      "text": "—",
+      "words": 1,
+      "chars": 1,
+      "lines": 1,
+      "size": 33.6,
+      "vw": 2.3,
+      "font": "Inter",
+      "weight": 650,
+      "tracking": -0.035,
+      "leading": 1.15,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "right",
+      "widthRatio": 0.2,
+      "top": 3771,
+      "tag": "strong",
+      "kind": "heading"
+     },
+     {
+      "text": "Designed around the work each role actually does",
+      "words": 8,
+      "chars": 48,
+      "lines": 2,
+      "size": 50,
+      "vw": 3.5,
+      "font": "Inter",
+      "weight": 750,
+      "tracking": -0.045,
+      "leading": 1.12,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.56,
+      "top": 4469,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Built to be accountable, not just functional",
+      "words": 7,
+      "chars": 44,
+      "lines": 2,
+      "size": 50,
+      "vw": 3.5,
+      "font": "Inter",
+      "weight": 750,
+      "tracking": -0.045,
+      "leading": 1.12,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.56,
+      "top": 5419,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Bring Clarity to Every Admission.",
+      "words": 5,
+      "chars": 33,
+      "lines": 2,
+      "size": 56,
+      "vw": 3.9,
+      "font": "Inter",
+      "weight": 750,
+      "tracking": -0.045,
+      "leading": 1.15,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.56,
+      "top": 6503,
+      "tag": "h2",
+      "kind": "heading"
+     }
+    ],
+    "headingSummary": {
+     "count": 10,
+     "maxLines": 2,
+     "over2Lines": 0,
+     "statements": 0,
+     "centered": 7,
+     "medianWords": 5,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Inter",
+       "share": 1,
+       "mono": false
+      }
+     ],
+     "familyCount": 1,
+     "sizes": [
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      18,
+      19,
+      21,
+      24,
+      28,
+      34,
+      50,
+      56,
+      80
+     ],
+     "sizeCount": 15,
+     "notLoaded": [],
+     "body": {
+      "font": "Inter",
+      "size": 16,
+      "leading": 1.7,
+      "weight": 400,
+      "tracking": 0,
+      "contrast": 5.2
+     },
+     "measureChars": 61,
+     "max": {
+      "size": 80,
+      "vw": 5.6,
+      "font": "Inter",
+      "text": "Admissions,"
+     },
+     "monoShare": 0,
+     "monoProseShare": 0,
+     "monoFamilies": [],
+     "monoSamples": [],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0.08,
+     "centerShare": 0.29,
+     "smallText": 23
+    },
+    "eyebrows": [
+     {
+      "text": "CLARITY AT EVERY STEP",
+      "above": "Admissions, with clarity.",
+      "upper": true,
+      "tracked": false,
+      "mono": false,
+      "pill": true,
+      "size": 12,
+      "top": 144
+     },
+     {
+      "text": "OVERVIEW",
+      "above": "One Workspace. Clearer Decisions.",
+      "upper": true,
+      "tracked": false,
+      "mono": false,
+      "pill": true,
+      "size": 11,
+      "top": 1667
+     },
+     {
+      "text": "CAPABILITIES",
+      "above": "Built around evidence, not assumptions",
+      "upper": true,
+      "tracked": false,
+      "mono": false,
+      "pill": true,
+      "size": 11,
+      "top": 2368
+     },
+     {
+      "text": "PLATFORM PREVIEW",
+      "above": "What the workspace looks like",
+      "upper": true,
+      "tracked": false,
+      "mono": false,
+      "pill": true,
+      "size": 11,
+      "top": 3419
+     },
+     {
+      "text": "Current declared records",
+      "above": "—",
+      "upper": false,
+      "tracked": false,
+      "mono": false,
+      "pill": false,
+      "size": 14,
+      "top": 3734
+     },
+     {
+      "text": "Active enrolments",
+      "above": "—",
+      "upper": false,
+      "tracked": false,
+      "mono": false,
+      "pill": false,
+      "size": 14,
+      "top": 3734
+     },
+     {
+      "text": "Programme coverage",
+      "above": "—",
+      "upper": false,
+      "tracked": false,
+      "mono": false,
+      "pill": false,
+      "size": 14,
+      "top": 3734
+     },
+     {
+      "text": "ONE PLATFORM · DIFFERENT VIEWS",
+      "above": "Designed around the work each role actua",
+      "upper": true,
+      "tracked": false,
+      "mono": false,
+      "pill": true,
+      "size": 11,
+      "top": 4415
+     },
+     {
+      "text": "SECURITY & TRUST",
+      "above": "Built to be accountable, not just functi",
+      "upper": true,
+      "tracked": false,
+      "mono": false,
+      "pill": true,
+      "size": 11,
+      "top": 5366
+     }
+    ],
+    "numbered": [
+     {
+      "text": "01",
+      "size": 12,
+      "top": 1397
+     },
+     {
+      "text": "02",
+      "size": 12,
+      "top": 1397
+     },
+     {
+      "text": "03",
+      "size": 12,
+      "top": 1397
+     },
+     {
+      "text": "04",
+      "size": 12,
+      "top": 1397
+     },
+     {
+      "text": "01 / THE PRINCIPLE",
+      "size": 11,
+      "top": 1940
+     },
+     {
+      "text": "02 / THE PRINCIPLE",
+      "size": 11,
+      "top": 1940
+     },
+     {
+      "text": "03 / THE PRINCIPLE",
+      "size": 11,
+      "top": 1940
+     },
+     {
+      "text": "01",
+      "size": 11,
+      "top": 2651
+     },
+     {
+      "text": "02",
+      "size": 11,
+      "top": 2651
+     },
+     {
+      "text": "03",
+      "size": 11,
+      "top": 2651
+     },
+     {
+      "text": "04",
+      "size": 11,
+      "top": 2975
+     },
+     {
+      "text": "05",
+      "size": 11,
+      "top": 2975
+     }
+    ],
+    "color": {
+     "bodyBg": "#ffffff",
+     "bodyBgHsl": {
+      "h": 0,
+      "s": 0,
+      "l": 1
+     },
+     "dark": false,
+     "sectionBgs": [
+      {
+       "color": "#f6f3ec",
+       "top": 0,
+       "hsl": {
+        "h": 42,
+        "s": 0.36,
+        "l": 0.95
+       }
+      },
+      {
+       "color": "#ffffff",
+       "top": 677,
+       "hsl": {
+        "h": 0,
+        "s": 0,
+        "l": 1
+       }
+      },
+      {
+       "color": "#222223",
+       "top": 2264,
+       "hsl": {
+        "h": 240,
+        "s": 0.01,
+        "l": 0.14
+       }
+      },
+      {
+       "color": "#efeee8",
+       "top": 3315,
+       "hsl": {
+        "h": 51,
+        "s": 0.18,
+        "l": 0.92
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#63666b",
+       "share": 0.6
+      },
+      {
+       "color": "#c2c2c5",
+       "share": 0.15
+      },
+      {
+       "color": "#2d2d2f",
+       "share": 0.1
+      },
+      {
+       "color": "#ffffff",
+       "share": 0.06
+      },
+      {
+       "color": "#100904",
+       "share": 0.03
+      }
+     ],
+     "button": {
+      "bg": "#ffffff",
+      "hsl": {
+       "h": 0,
+       "s": 0,
+       "l": 1
+      },
+      "fg": "#2d2d2f"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 8,
+     "inHero": 6,
+     "radius": "pill",
+     "height": 48,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Sign In",
+      "Open workspace",
+      "How It Works",
+      "Upload 01",
+      "Validate 02"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 2,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 0,
+     "hairlineSamples": [],
+     "outlinedBoxes": 20,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 25,
+     "boxRadius": 24,
+     "squareMedia": 0,
+     "roundedMedia": 0,
+     "mediaRadius": 0,
+     "textShadow": 0,
+     "cardRows": [
+      {
+       "count": 3,
+       "iconTopped": false,
+       "rounded": true,
+       "top": 3709
+      }
+     ]
+    },
+    "heroMedia": [],
+    "nav": {
+     "links": 7,
+     "fixed": true,
+     "height": 56,
+     "floatingPill": true,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "inter",
+     "inter fallback"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "pageH": 7082,
+    "margins": {
+     "left": 191,
+     "right": 191
+    },
+    "sections": [
+     {
+      "sel": "section.landing-hero",
+      "tag": "section",
+      "top": 0,
+      "height": 1343,
+      "words": 124,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Admissions,",
+       "size": 80,
+       "tag": "h1"
+      },
+      "left": 227,
+      "right": 237,
+      "textLeft": 237,
+      "textRight": 237,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "div.landing-process-strip",
+      "tag": "div",
+      "top": 1343,
+      "height": 128,
+      "words": 9,
+      "media": 0,
+      "middle": 115,
+      "heading": null,
+      "left": 347,
+      "right": 350,
+      "textLeft": 347,
+      "textRight": 350,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "section#overview.landing-section",
+      "tag": "section",
+      "top": 1563,
+      "height": 700,
+      "words": 107,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "One Workspace. Clearer Decisions.",
+       "size": 50,
+       "tag": "h2"
+      },
+      "left": 191,
+      "right": 213,
+      "textLeft": 191,
+      "textRight": 213,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "section#features.landing-section",
+      "tag": "section",
+      "top": 2264,
+      "height": 1051,
+      "words": 172,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Built around evidence, not assumptions",
+       "size": 50,
+       "tag": "h2"
+      },
+      "left": 191,
+      "right": 198,
+      "textLeft": 191,
+      "textRight": 198,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "section#preview.landing-section",
+      "tag": "section",
+      "top": 3315,
+      "height": 996,
+      "words": 76,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "What the workspace looks like",
+       "size": 50,
+       "tag": "h2"
+      },
+      "left": 208,
+      "right": 339,
+      "textLeft": 208,
+      "textRight": 339,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "section#roles.landing-section.roles-section",
+      "tag": "section",
+      "top": 4311,
+      "height": 951,
+      "words": 113,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Designed around the work each role actually does",
+       "size": 50,
+       "tag": "h2"
+      },
+      "left": 191,
+      "right": 191,
+      "textLeft": 191,
+      "textRight": 191,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "section#security.landing-section",
+      "tag": "section",
+      "top": 5262,
+      "height": 811,
+      "words": 114,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Built to be accountable, not just functional",
+       "size": 50,
+       "tag": "h2"
+      },
+      "left": 191,
+      "right": 212,
+      "textLeft": 191,
+      "textRight": 212,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "section.landing-final-cta",
+      "tag": "section",
+      "top": 6409,
+      "height": 441,
+      "words": 24,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Bring Clarity to Every Admission.",
+       "size": 56,
+       "tag": "h2"
+      },
+      "left": 462,
+      "right": 462,
+      "textLeft": 462,
+      "textRight": 462,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "footer.landing-footer",
+      "tag": "footer",
+      "top": 6850,
+      "height": 232,
+      "words": 29,
+      "media": 0,
+      "middle": 178,
+      "heading": {
+       "text": "PRAVYA",
+       "size": 24,
+       "tag": "strong"
+      },
+      "left": 160,
+      "right": 326,
+      "textLeft": 160,
+      "textRight": 326,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [
+     {
+      "top": 4140,
+      "height": 280
+     }
+    ],
+    "h1s": [
+     {
+      "text": "Admissions, with clarity.",
+      "size": 80,
+      "top": 218,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 191,
+      "n": 14
+     },
+     {
+      "x": 761,
+      "n": 8
+     },
+     {
+      "x": 571,
+      "n": 6
+     },
+     {
+      "x": 951,
+      "n": 6
+     }
+    ],
+    "leftBlocks": 34,
+    "bodySize": 16,
+    "stage": false,
+    "explains": true,
+    "slivers": [],
+    "voidShare": 0.15,
+    "voidBox": {
+     "x": 0,
+     "y": 120,
+     "w": 360,
+     "h": 540
+    }
+   },
+   "app": null,
+   "consoleErrors": []
+  },
+  {
+   "width": 768,
+   "height": 1024,
+   "load": "load",
+   "screens": 8,
+   "filled": [
+    0.79,
+    0.83,
+    0.81,
+    1,
+    0.84,
+    0.46,
+    0.88,
+    0.91
+   ],
+   "motion": {
+    "elements": 33,
+    "css": 1,
+    "transitions": 18,
+    "scripted": 14,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "page": {
+     "height": 7441,
+     "screens": 7.3,
+     "words": 838,
+     "img": 0,
+     "video": 0,
+     "canvas": 0,
+     "svg": 23,
+     "sections": 8,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 1,
+     "uiAbuse": false,
+     "realPictures": 0,
+     "videoCount": 0,
+     "uiPictures": 1,
+     "pictureSamples": [],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Admissions, with clarity.",
+     "words": 3,
+     "chars": 25,
+     "lines": 2,
+     "size": 56,
+     "vw": 7.3,
+     "font": "Inter",
+     "weight": 750,
+     "tracking": -0.055,
+     "leading": 1.08,
+     "upper": false,
+     "italic": false,
+     "mono": false,
+     "align": "center",
+     "position": "center",
+     "widthRatio": 0.81,
+     "top": 218,
+     "tag": "h1",
+     "kind": "heading"
+    },
+    "h1": {
+     "text": "Admissions, with clarity.",
+     "words": 3,
+     "lines": 2,
+     "size": 56,
+     "font": "Inter"
+    },
+    "headings": [
+     {
+      "text": "Admissions, with clarity.",
+      "words": 3,
+      "chars": 25,
+      "lines": 2,
+      "size": 56,
+      "vw": 7.3,
+      "font": "Inter",
+      "weight": 750,
+      "tracking": -0.055,
+      "leading": 1.08,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.81,
+      "top": 218,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "Every record has a journey.",
+      "words": 5,
+      "chars": 27,
+      "lines": 1,
+      "size": 27,
+      "vw": 3.5,
+      "font": "Inter",
+      "weight": 700,
+      "tracking": -0.045,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "right",
+      "widthRatio": 0.57,
+      "top": 756,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "One Workspace. Clearer Decisions.",
+      "words": 4,
+      "chars": 33,
+      "lines": 1,
+      "size": 32,
+      "vw": 4.2,
+      "font": "Inter",
+      "weight": 750,
+      "tracking": -0.045,
+      "leading": 1.12,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.93,
+      "top": 1755,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Built around evidence, not assumptions",
+      "words": 5,
+      "chars": 38,
+      "lines": 1,
+      "size": 32,
+      "vw": 4.2,
+      "font": "Inter",
+      "weight": 750,
+      "tracking": -0.045,
+      "leading": 1.12,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.93,
+      "top": 2605,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "What the workspace looks like",
+      "words": 5,
+      "chars": 29,
+      "lines": 1,
+      "size": 32,
+      "vw": 4.2,
+      "font": "Inter",
+      "weight": 750,
+      "tracking": -0.045,
+      "leading": 1.12,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.93,
+      "top": 3939,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Designed around the work each role actually does",
+      "words": 8,
+      "chars": 48,
+      "lines": 2,
+      "size": 32,
+      "vw": 4.2,
+      "font": "Inter",
+      "weight": 750,
+      "tracking": -0.045,
+      "leading": 1.12,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.93,
+      "top": 4941,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Built to be accountable, not just functional",
+      "words": 7,
+      "chars": 44,
+      "lines": 1,
+      "size": 32,
+      "vw": 4.2,
+      "font": "Inter",
+      "weight": 750,
+      "tracking": -0.045,
+      "leading": 1.12,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.93,
+      "top": 5856,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Bring Clarity to Every Admission.",
+      "words": 5,
+      "chars": 33,
+      "lines": 1,
+      "size": 34,
+      "vw": 4.4,
+      "font": "Inter",
+      "weight": 750,
+      "tracking": -0.045,
+      "leading": 1.15,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.94,
+      "top": 6951,
+      "tag": "h2",
+      "kind": "heading"
+     }
+    ],
+    "headingSummary": {
+     "count": 8,
+     "maxLines": 2,
+     "over2Lines": 0,
+     "statements": 0,
+     "centered": 7,
+     "medianWords": 5,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Inter",
+       "share": 1,
+       "mono": false
+      }
+     ],
+     "familyCount": 1,
+     "sizes": [
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      18,
+      19,
+      21,
+      23,
+      24,
+      25,
+      32,
+      34,
+      56
+     ],
+     "sizeCount": 15,
+     "notLoaded": [],
+     "body": {
+      "font": "Inter",
+      "size": 16,
+      "leading": 1.7,
+      "weight": 400,
+      "tracking": 0,
+      "contrast": 5.2
+     },
+     "measureChars": 63,
+     "max": {
+      "size": 56,
+      "vw": 7.3,
+      "font": "Inter",
+      "text": "Admissions,"
+     },
+     "monoShare": 0,
+     "monoProseShare": 0,
+     "monoFamilies": [],
+     "monoSamples": [],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0.08,
+     "centerShare": 0.29,
+     "smallText": 19
+    },
+    "eyebrows": [
+     {
+      "text": "CLARITY AT EVERY STEP",
+      "above": "Admissions, with clarity.",
+      "upper": true,
+      "tracked": false,
+      "mono": false,
+      "pill": true,
+      "size": 12,
+      "top": 144
+     },
+     {
+      "text": "OVERVIEW",
+      "above": "One Workspace. Clearer Decisions.",
+      "upper": true,
+      "tracked": false,
+      "mono": false,
+      "pill": true,
+      "size": 11,
+      "top": 1702
+     },
+     {
+      "text": "CAPABILITIES",
+      "above": "Built around evidence, not assumptions",
+      "upper": true,
+      "tracked": false,
+      "mono": false,
+      "pill": true,
+      "size": 11,
+      "top": 2552
+     },
+     {
+      "text": "PLATFORM PREVIEW",
+      "above": "What the workspace looks like",
+      "upper": true,
+      "tracked": false,
+      "mono": false,
+      "pill": true,
+      "size": 11,
+      "top": 3885
+     },
+     {
+      "text": "ONE PLATFORM · DIFFERENT VIEWS",
+      "above": "Designed around the work each role actua",
+      "upper": true,
+      "tracked": false,
+      "mono": false,
+      "pill": true,
+      "size": 11,
+      "top": 4887
+     },
+     {
+      "text": "SECURITY & TRUST",
+      "above": "Built to be accountable, not just functi",
+      "upper": true,
+      "tracked": false,
+      "mono": false,
+      "pill": true,
+      "size": 11,
+      "top": 5802
+     }
+    ],
+    "numbered": [
+     {
+      "text": "01",
+      "size": 12,
+      "top": 1367
+     },
+     {
+      "text": "02",
+      "size": 12,
+      "top": 1367
+     },
+     {
+      "text": "03",
+      "size": 12,
+      "top": 1456
+     },
+     {
+      "text": "04",
+      "size": 12,
+      "top": 1456
+     },
+     {
+      "text": "01 / THE PRINCIPLE",
+      "size": 11,
+      "top": 1955
+     },
+     {
+      "text": "02 / THE PRINCIPLE",
+      "size": 11,
+      "top": 1955
+     },
+     {
+      "text": "03 / THE PRINCIPLE",
+      "size": 11,
+      "top": 2225
+     },
+     {
+      "text": "01",
+      "size": 11,
+      "top": 2815
+     },
+     {
+      "text": "02",
+      "size": 11,
+      "top": 2815
+     },
+     {
+      "text": "03",
+      "size": 11,
+      "top": 3139
+     },
+     {
+      "text": "04",
+      "size": 11,
+      "top": 3139
+     },
+     {
+      "text": "05",
+      "size": 11,
+      "top": 3462
+     }
+    ],
+    "color": {
+     "bodyBg": "#ffffff",
+     "bodyBgHsl": {
+      "h": 0,
+      "s": 0,
+      "l": 1
+     },
+     "dark": false,
+     "sectionBgs": [
+      {
+       "color": "#f6f3ec",
+       "top": 0,
+       "hsl": {
+        "h": 42,
+        "s": 0.36,
+        "l": 0.95
+       }
+      },
+      {
+       "color": "#ffffff",
+       "top": 633,
+       "hsl": {
+        "h": 0,
+        "s": 0,
+        "l": 1
+       }
+      },
+      {
+       "color": "#222223",
+       "top": 2472,
+       "hsl": {
+        "h": 240,
+        "s": 0.01,
+        "l": 0.14
+       }
+      },
+      {
+       "color": "#efeee8",
+       "top": 3805,
+       "hsl": {
+        "h": 51,
+        "s": 0.18,
+        "l": 0.92
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#63666b",
+       "share": 0.61
+      },
+      {
+       "color": "#c2c2c5",
+       "share": 0.15
+      },
+      {
+       "color": "#2d2d2f",
+       "share": 0.1
+      },
+      {
+       "color": "#ffffff",
+       "share": 0.05
+      },
+      {
+       "color": "#100904",
+       "share": 0.03
+      }
+     ],
+     "button": {
+      "bg": "#ffffff",
+      "hsl": {
+       "h": 0,
+       "s": 0,
+       "l": 1
+      },
+      "fg": "#2d2d2f"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 7,
+     "inHero": 6,
+     "radius": 12,
+     "height": 48,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Open workspace",
+      "How It Works",
+      "Upload 01",
+      "Validate 02",
+      "Review 03"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 2,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 0,
+     "hairlineSamples": [],
+     "outlinedBoxes": 20,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 25,
+     "boxRadius": 24,
+     "squareMedia": 0,
+     "roundedMedia": 0,
+     "mediaRadius": 0,
+     "textShadow": 0,
+     "cardRows": [
+      {
+       "count": 3,
+       "iconTopped": false,
+       "rounded": true,
+       "top": 4155
+      }
+     ]
+    },
+    "heroMedia": [],
+    "nav": {
+     "links": 1,
+     "fixed": true,
+     "height": 58,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "inter",
+     "inter fallback"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "pageH": 7441,
+    "margins": {
+     "left": 31,
+     "right": 31
+    },
+    "sections": [
+     {
+      "sel": "section.landing-hero",
+      "tag": "section",
+      "top": 0,
+      "height": 1313,
+      "words": 124,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Admissions,",
+       "size": 56,
+       "tag": "h1"
+      },
+      "left": 55,
+      "right": 65,
+      "textLeft": 65,
+      "textRight": 65,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "div.landing-process-strip",
+      "tag": "div",
+      "top": 1313,
+      "height": 216,
+      "words": 9,
+      "media": 0,
+      "middle": 104,
+      "heading": null,
+      "left": 219,
+      "right": 221,
+      "textLeft": 219,
+      "textRight": 221,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "section#overview.landing-section",
+      "tag": "section",
+      "top": 1622,
+      "height": 850,
+      "words": 107,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "One Workspace. Clearer Decisions.",
+       "size": 32,
+       "tag": "h2"
+      },
+      "left": 59,
+      "right": 79,
+      "textLeft": 59,
+      "textRight": 79,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "section#features.landing-section",
+      "tag": "section",
+      "top": 2472,
+      "height": 1333,
+      "words": 172,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Built around evidence, not assumptions",
+       "size": 32,
+       "tag": "h2"
+      },
+      "left": 59,
+      "right": 70,
+      "textLeft": 59,
+      "textRight": 70,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "section#preview.landing-section",
+      "tag": "section",
+      "top": 3805,
+      "height": 1002,
+      "words": 76,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "What the workspace looks like",
+       "size": 32,
+       "tag": "h2"
+      },
+      "left": 64,
+      "right": 64,
+      "textLeft": 64,
+      "textRight": 64,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "section#roles.landing-section.roles-section",
+      "tag": "section",
+      "top": 4807,
+      "height": 915,
+      "words": 113,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Designed around the work each role actually does",
+       "size": 32,
+       "tag": "h2"
+      },
+      "left": 59,
+      "right": 59,
+      "textLeft": 59,
+      "textRight": 59,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "section#security.landing-section",
+      "tag": "section",
+      "top": 5722,
+      "height": 819,
+      "words": 114,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Built to be accountable, not just functional",
+       "size": 32,
+       "tag": "h2"
+      },
+      "left": 59,
+      "right": 63,
+      "textLeft": 59,
+      "textRight": 63,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "section.landing-quote",
+      "tag": "section",
+      "top": 6542,
+      "height": 316,
+      "words": 39,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "“A finding is a lead for review, never a verdict. ",
+       "size": 23,
+       "tag": "p"
+      },
+      "left": 31,
+      "right": 31,
+      "textLeft": 31,
+      "textRight": 31,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "section.landing-final-cta",
+      "tag": "section",
+      "top": 6857,
+      "height": 351,
+      "words": 24,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Bring Clarity to Every Admission.",
+       "size": 34,
+       "tag": "h2"
+      },
+      "left": 126,
+      "right": 126,
+      "textLeft": 126,
+      "textRight": 126,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "footer.landing-footer",
+      "tag": "footer",
+      "top": 7209,
+      "height": 232,
+      "words": 29,
+      "media": 0,
+      "middle": 27,
+      "heading": {
+       "text": "PRAVYA",
+       "size": 24,
+       "tag": "strong"
+      },
+      "left": 24,
+      "right": 24,
+      "textLeft": 24,
+      "textRight": 24,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Admissions, with clarity.",
+      "size": 56,
+      "top": 218,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 59,
+      "n": 18
+     },
+     {
+      "x": 425,
+      "n": 16
+     }
+    ],
+    "leftBlocks": 34,
+    "bodySize": 16,
+    "stage": false,
+    "explains": true,
+    "slivers": [],
+    "voidShare": 0,
+    "voidBox": null
+   },
+   "app": null,
+   "consoleErrors": []
+  },
+  {
+   "width": 390,
+   "height": 844,
+   "load": "load",
+   "screens": 12,
+   "filled": [
+    0.93,
+    0.69,
+    0.77,
+    0.91,
+    1,
+    1,
+    0.69,
+    0.75,
+    0.4,
+    0.85,
+    0.92,
+    0.99
+   ],
+   "motion": {
+    "elements": 36,
+    "css": 2,
+    "transitions": 18,
+    "scripted": 16,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "page": {
+     "height": 9673,
+     "screens": 11.5,
+     "words": 832,
+     "img": 0,
+     "video": 0,
+     "canvas": 0,
+     "svg": 23,
+     "sections": 8,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 1,
+     "uiAbuse": false,
+     "realPictures": 0,
+     "videoCount": 0,
+     "uiPictures": 1,
+     "pictureSamples": [],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Admissions, with clarity.",
+     "words": 3,
+     "chars": 25,
+     "lines": 2,
+     "size": 46,
+     "vw": 11.8,
+     "font": "Inter",
+     "weight": 750,
+     "tracking": -0.055,
+     "leading": 1.08,
+     "upper": false,
+     "italic": false,
+     "mono": false,
+     "align": "center",
+     "position": "center",
+     "widthRatio": 0.9,
+     "top": 186,
+     "tag": "h1",
+     "kind": "heading"
+    },
+    "h1": {
+     "text": "Admissions, with clarity.",
+     "words": 3,
+     "lines": 2,
+     "size": 46,
+     "font": "Inter"
+    },
+    "headings": [
+     {
+      "text": "Admissions, with clarity.",
+      "words": 3,
+      "chars": 25,
+      "lines": 2,
+      "size": 46,
+      "vw": 11.8,
+      "font": "Inter",
+      "weight": 750,
+      "tracking": -0.055,
+      "leading": 1.08,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.9,
+      "top": 186,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "Every record has a journey.",
+      "words": 5,
+      "chars": 27,
+      "lines": 1,
+      "size": 24,
+      "vw": 6.2,
+      "font": "Inter",
+      "weight": 700,
+      "tracking": -0.045,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.77,
+      "top": 777,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "A new version. A clear starting point.",
+      "words": 7,
+      "chars": 38,
+      "lines": 2,
+      "size": 22,
+      "vw": 5.6,
+      "font": "Inter",
+      "weight": 650,
+      "tracking": -0.035,
+      "leading": 1.2,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.77,
+      "top": 1030,
+      "tag": "h3",
+      "kind": "heading"
+     },
+     {
+      "text": "One Workspace. Clearer Decisions.",
+      "words": 4,
+      "chars": 33,
+      "lines": 2,
+      "size": 29,
+      "vw": 7.4,
+      "font": "Inter",
+      "weight": 750,
+      "tracking": -0.045,
+      "leading": 1.12,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.9,
+      "top": 1797,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Built around evidence, not assumptions",
+      "words": 5,
+      "chars": 38,
+      "lines": 2,
+      "size": 29,
+      "vw": 7.4,
+      "font": "Inter",
+      "weight": 750,
+      "tracking": -0.045,
+      "leading": 1.12,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.9,
+      "top": 2917,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "What the workspace looks like",
+      "words": 5,
+      "chars": 29,
+      "lines": 2,
+      "size": 29,
+      "vw": 7.4,
+      "font": "Inter",
+      "weight": 750,
+      "tracking": -0.045,
+      "leading": 1.12,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.9,
+      "top": 5007,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "—",
+      "words": 1,
+      "chars": 1,
+      "lines": 1,
+      "size": 24.5,
+      "vw": 6.3,
+      "font": "Inter",
+      "weight": 650,
+      "tracking": -0.035,
+      "leading": 1.15,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "right",
+      "widthRatio": 0.06,
+      "top": 5252,
+      "tag": "strong",
+      "kind": "heading"
+     },
+     {
+      "text": "—",
+      "words": 1,
+      "chars": 1,
+      "lines": 1,
+      "size": 24.5,
+      "vw": 6.3,
+      "font": "Inter",
+      "weight": 650,
+      "tracking": -0.035,
+      "leading": 1.15,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "right",
+      "widthRatio": 0.06,
+      "top": 5374,
+      "tag": "strong",
+      "kind": "heading"
+     },
+     {
+      "text": "—",
+      "words": 1,
+      "chars": 1,
+      "lines": 1,
+      "size": 24.5,
+      "vw": 6.3,
+      "font": "Inter",
+      "weight": 650,
+      "tracking": -0.035,
+      "leading": 1.15,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "right",
+      "widthRatio": 0.06,
+      "top": 5479,
+      "tag": "strong",
+      "kind": "heading"
+     },
+     {
+      "text": "Designed around the work each role actually does",
+      "words": 8,
+      "chars": 48,
+      "lines": 2,
+      "size": 26,
+      "vw": 6.7,
+      "font": "Inter",
+      "weight": 750,
+      "tracking": -0.045,
+      "leading": 1.12,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.9,
+      "top": 6221,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Built to be accountable, not just functional",
+      "words": 7,
+      "chars": 44,
+      "lines": 2,
+      "size": 29,
+      "vw": 7.4,
+      "font": "Inter",
+      "weight": 750,
+      "tracking": -0.045,
+      "leading": 1.12,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.9,
+      "top": 7488,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Bring Clarity to Every Admission.",
+      "words": 5,
+      "chars": 33,
+      "lines": 2,
+      "size": 34,
+      "vw": 8.7,
+      "font": "Inter",
+      "weight": 750,
+      "tracking": -0.045,
+      "leading": 1.15,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.88,
+      "top": 9057,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "PRAVYA",
+      "words": 1,
+      "chars": 6,
+      "lines": 1,
+      "size": 24,
+      "vw": 6.2,
+      "font": "Inter",
+      "weight": 700,
+      "tracking": -0.04,
+      "leading": 1.6,
+      "upper": true,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.24,
+      "top": 9416,
+      "tag": "strong",
+      "kind": "heading"
+     }
+    ],
+    "headingSummary": {
+     "count": 13,
+     "maxLines": 2,
+     "over2Lines": 0,
+     "statements": 0,
+     "centered": 8,
+     "medianWords": 5,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Inter",
+       "share": 1,
+       "mono": false
+      }
+     ],
+     "familyCount": 1,
+     "sizes": [
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      18,
+      19,
+      21,
+      23,
+      24,
+      25,
+      26,
+      29,
+      34,
+      46
+     ],
+     "sizeCount": 17,
+     "notLoaded": [],
+     "body": {
+      "font": "Inter",
+      "size": 16,
+      "leading": 1.65,
+      "weight": 400,
+      "tracking": 0,
+      "contrast": 5.8
+     },
+     "measureChars": 30,
+     "max": {
+      "size": 46,
+      "vw": 11.8,
+      "font": "Inter",
+      "text": "Admissions,"
+     },
+     "monoShare": 0,
+     "monoProseShare": 0,
+     "monoFamilies": [],
+     "monoSamples": [],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0.08,
+     "centerShare": 0.3,
+     "smallText": 23
+    },
+    "eyebrows": [
+     {
+      "text": "CLARITY AT EVERY STEP",
+      "above": "Admissions, with clarity.",
+      "upper": true,
+      "tracked": false,
+      "mono": false,
+      "pill": true,
+      "size": 11,
+      "top": 122
+     },
+     {
+      "text": "OVERVIEW",
+      "above": "One Workspace. Clearer Decisions.",
+      "upper": true,
+      "tracked": false,
+      "mono": false,
+      "pill": true,
+      "size": 11,
+      "top": 1744
+     },
+     {
+      "text": "CAPABILITIES",
+      "above": "Built around evidence, not assumptions",
+      "upper": true,
+      "tracked": false,
+      "mono": false,
+      "pill": true,
+      "size": 11,
+      "top": 2863
+     },
+     {
+      "text": "PLATFORM PREVIEW",
+      "above": "What the workspace looks like",
+      "upper": true,
+      "tracked": false,
+      "mono": false,
+      "pill": true,
+      "size": 11,
+      "top": 4953
+     },
+     {
+      "text": "ONE PLATFORM · DIFFERENT VIEWS",
+      "above": "Designed around the work each role actua",
+      "upper": true,
+      "tracked": false,
+      "mono": false,
+      "pill": true,
+      "size": 11,
+      "top": 6168
+     },
+     {
+      "text": "SECURITY & TRUST",
+      "above": "Built to be accountable, not just functi",
+      "upper": true,
+      "tracked": false,
+      "mono": false,
+      "pill": true,
+      "size": 11,
+      "top": 7435
+     }
+    ],
+    "numbered": [
+     {
+      "text": "01",
+      "size": 12,
+      "top": 1492
+     },
+     {
+      "text": "02",
+      "size": 12,
+      "top": 1492
+     },
+     {
+      "text": "03",
+      "size": 12,
+      "top": 1541
+     },
+     {
+      "text": "04",
+      "size": 12,
+      "top": 1541
+     },
+     {
+      "text": "01 / THE PRINCIPLE",
+      "size": 11,
+      "top": 2043
+     },
+     {
+      "text": "02 / THE PRINCIPLE",
+      "size": 11,
+      "top": 2296
+     },
+     {
+      "text": "03 / THE PRINCIPLE",
+      "size": 11,
+      "top": 2522
+     },
+     {
+      "text": "01",
+      "size": 11,
+      "top": 3148
+     },
+     {
+      "text": "02",
+      "size": 11,
+      "top": 3426
+     },
+     {
+      "text": "03",
+      "size": 11,
+      "top": 3733
+     },
+     {
+      "text": "04",
+      "size": 11,
+      "top": 4038
+     },
+     {
+      "text": "05",
+      "size": 11,
+      "top": 4317
+     }
+    ],
+    "color": {
+     "bodyBg": "#ffffff",
+     "bodyBgHsl": {
+      "h": 0,
+      "s": 0,
+      "l": 1
+     },
+     "dark": false,
+     "sectionBgs": [
+      {
+       "color": "#f6f3ec",
+       "top": 0,
+       "hsl": {
+        "h": 42,
+        "s": 0.36,
+        "l": 0.95
+       }
+      },
+      {
+       "color": "#ffffff",
+       "top": 671,
+       "hsl": {
+        "h": 0,
+        "s": 0,
+        "l": 1
+       }
+      },
+      {
+       "color": "#222223",
+       "top": 2799,
+       "hsl": {
+        "h": 240,
+        "s": 0.01,
+        "l": 0.14
+       }
+      },
+      {
+       "color": "#2d2d2f",
+       "top": 3391,
+       "hsl": {
+        "h": 240,
+        "s": 0.02,
+        "l": 0.18
+       }
+      },
+      {
+       "color": "#efeee8",
+       "top": 4889,
+       "hsl": {
+        "h": 51,
+        "s": 0.18,
+        "l": 0.92
+       }
+      },
+      {
+       "color": "#fbfcfa",
+       "top": 5570,
+       "hsl": {
+        "h": 90,
+        "s": 0.25,
+        "l": 0.98
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#63666b",
+       "share": 0.6
+      },
+      {
+       "color": "#c2c2c5",
+       "share": 0.16
+      },
+      {
+       "color": "#2d2d2f",
+       "share": 0.11
+      },
+      {
+       "color": "#ffffff",
+       "share": 0.05
+      },
+      {
+       "color": "#100904",
+       "share": 0.03
+      }
+     ],
+     "button": {
+      "bg": "#ffffff",
+      "hsl": {
+       "h": 0,
+       "s": 0,
+       "l": 1
+      },
+      "fg": "#2d2d2f"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 9,
+     "inHero": 2,
+     "radius": 12,
+     "height": 46,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Open workspace",
+      "How It Works"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 2,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 0,
+     "hairlineSamples": [],
+     "outlinedBoxes": 20,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 25,
+     "boxRadius": 24,
+     "squareMedia": 0,
+     "roundedMedia": 0,
+     "mediaRadius": 0,
+     "textShadow": 0,
+     "cardRows": [
+      {
+       "count": 3,
+       "iconTopped": false,
+       "rounded": true,
+       "top": 5233
+      }
+     ]
+    },
+    "heroMedia": [],
+    "nav": {
+     "links": 1,
+     "fixed": true,
+     "height": 58,
+     "floatingPill": true,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "inter",
+     "inter fallback"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "pageH": 9673,
+    "margins": {
+     "left": 20,
+     "right": 27
+    },
+    "sections": [
+     {
+      "sel": "div.landing-hero-content",
+      "tag": "div",
+      "top": 122,
+      "height": 508,
+      "words": 48,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Admissions,",
+       "size": 46,
+       "tag": "h1"
+      },
+      "left": 27,
+      "right": 27,
+      "textLeft": 27,
+      "textRight": 27,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "div#how-it-works.hero-visual.hero-journey-shell",
+      "tag": "div",
+      "top": 666,
+      "height": 744,
+      "words": 74,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Every record has a journey.",
+       "size": 24,
+       "tag": "h2"
+      },
+      "left": 38,
+      "right": 38,
+      "textLeft": 44,
+      "textRight": 56,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "div.landing-process-strip",
+      "tag": "div",
+      "top": 1466,
+      "height": 121,
+      "words": 9,
+      "media": 0,
+      "middle": 90,
+      "heading": null,
+      "left": 42,
+      "right": 65,
+      "textLeft": 42,
+      "textRight": 65,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "section#overview.landing-section",
+      "tag": "section",
+      "top": 1680,
+      "height": 1120,
+      "words": 107,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "One Workspace. Clearer Decisions.",
+       "size": 29,
+       "tag": "h2"
+      },
+      "left": 27,
+      "right": 27,
+      "textLeft": 27,
+      "textRight": 27,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "div.fx-reveal.fx-reveal-in",
+      "tag": "div",
+      "top": 2863,
+      "height": 217,
+      "words": 28,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Built around evidence, not assumptions",
+       "size": 29,
+       "tag": "h2"
+      },
+      "left": 44,
+      "right": 44,
+      "textLeft": 44,
+      "textRight": 44,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "div",
+      "tag": "div",
+      "top": 3112,
+      "height": 265,
+      "words": 27,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "APAAR format validation",
+       "size": 21,
+       "tag": "h3"
+      },
+      "left": 45,
+      "right": 64,
+      "textLeft": 45,
+      "textRight": 64,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "div",
+      "tag": "div",
+      "top": 3391,
+      "height": 292,
+      "words": 24,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Admission record management",
+       "size": 21,
+       "tag": "h3"
+      },
+      "left": 45,
+      "right": 51,
+      "textLeft": 45,
+      "textRight": 51,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "div",
+      "tag": "div",
+      "top": 3697,
+      "height": 291,
+      "words": 24,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Intake rule checks",
+       "size": 21,
+       "tag": "h3"
+      },
+      "left": 45,
+      "right": 55,
+      "textLeft": 45,
+      "textRight": 55,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "div",
+      "tag": "div",
+      "top": 4003,
+      "height": 265,
+      "words": 22,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Evidence-linked review",
+       "size": 21,
+       "tag": "h3"
+      },
+      "left": 45,
+      "right": 48,
+      "textLeft": 45,
+      "textRight": 48,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "div",
+      "tag": "div",
+      "top": 4282,
+      "height": 265,
+      "words": 23,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Exception tracking",
+       "size": 21,
+       "tag": "h3"
+      },
+      "left": 45,
+      "right": 57,
+      "textLeft": 45,
+      "textRight": 57,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "div",
+      "tag": "div",
+      "top": 4560,
+      "height": 265,
+      "words": 24,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Audit trails and accountability",
+       "size": 21,
+       "tag": "h3"
+      },
+      "left": 45,
+      "right": 54,
+      "textLeft": 45,
+      "textRight": 54,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": true,
+      "pinned": false
+     },
+     {
+      "sel": "section#preview.landing-section",
+      "tag": "section",
+      "top": 4889,
+      "height": 1215,
+      "words": 76,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "What the workspace looks like",
+       "size": 29,
+       "tag": "h2"
+      },
+      "left": 26,
+      "right": 26,
+      "textLeft": 26,
+      "textRight": 26,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "section#roles.landing-section.roles-section",
+      "tag": "section",
+      "top": 6104,
+      "height": 1267,
+      "words": 113,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Designed around the work each role actually does",
+       "size": 26,
+       "tag": "h2"
+      },
+      "left": 25,
+      "right": 25,
+      "textLeft": 25,
+      "textRight": 25,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "section#security.landing-section",
+      "tag": "section",
+      "top": 7371,
+      "height": 1180,
+      "words": 114,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Built to be accountable, not just functional",
+       "size": 29,
+       "tag": "h2"
+      },
+      "left": 43,
+      "right": 43,
+      "textLeft": 43,
+      "textRight": 43,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "section.landing-quote",
+      "tag": "section",
+      "top": 8551,
+      "height": 412,
+      "words": 39,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "“A finding is a lead for review, never a verdict. ",
+       "size": 23,
+       "tag": "p"
+      },
+      "left": 28,
+      "right": 28,
+      "textLeft": 28,
+      "textRight": 28,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "section.landing-final-cta",
+      "tag": "section",
+      "top": 8963,
+      "height": 413,
+      "words": 24,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Bring Clarity to Every Admission.",
+       "size": 34,
+       "tag": "h2"
+      },
+      "left": 28,
+      "right": 28,
+      "textLeft": 28,
+      "textRight": 28,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "footer.landing-footer",
+      "tag": "footer",
+      "top": 9376,
+      "height": 297,
+      "words": 29,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "PRAVYA",
+       "size": 24,
+       "tag": "strong"
+      },
+      "left": 20,
+      "right": 29,
+      "textLeft": 20,
+      "textRight": 29,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Admissions, with clarity.",
+      "size": 46,
+      "top": 186,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 45,
+      "n": 34
+     }
+    ],
+    "leftBlocks": 34,
+    "bodySize": 16,
+    "stage": false,
+    "explains": true,
+    "slivers": [],
+    "voidShare": 0,
+    "voidBox": null
+   },
+   "app": null,
+   "consoleErrors": []
+  }
+ ],
+ "findings": [],
+ "images": [
+  {
+   "viewport": "desktop",
+   "width": 1440,
+   "fold": "C:\\Users\\Rhushikesh\\OneDrive\\Desktop\\New folder (10)\\PS-3\\.taste-skill\\production\\desktop-fold.jpg",
+   "pages": [
+    "C:\\Users\\Rhushikesh\\OneDrive\\Desktop\\New folder (10)\\PS-3\\.taste-skill\\production\\desktop-page-01.jpg",
+    "C:\\Users\\Rhushikesh\\OneDrive\\Desktop\\New folder (10)\\PS-3\\.taste-skill\\production\\desktop-page-02.jpg"
+   ],
+   "film": []
+  },
+  {
+   "viewport": "tablet",
+   "width": 768,
+   "fold": "C:\\Users\\Rhushikesh\\OneDrive\\Desktop\\New folder (10)\\PS-3\\.taste-skill\\production\\tablet-fold.jpg",
+   "pages": [
+    "C:\\Users\\Rhushikesh\\OneDrive\\Desktop\\New folder (10)\\PS-3\\.taste-skill\\production\\tablet-page-01.jpg",
+    "C:\\Users\\Rhushikesh\\OneDrive\\Desktop\\New folder (10)\\PS-3\\.taste-skill\\production\\tablet-page-02.jpg"
+   ],
+   "film": []
+  },
+  {
+   "viewport": "mobile",
+   "width": 390,
+   "fold": "C:\\Users\\Rhushikesh\\OneDrive\\Desktop\\New folder (10)\\PS-3\\.taste-skill\\production\\mobile-fold.jpg",
+   "pages": [
+    "C:\\Users\\Rhushikesh\\OneDrive\\Desktop\\New folder (10)\\PS-3\\.taste-skill\\production\\mobile-page-01.jpg",
+    "C:\\Users\\Rhushikesh\\OneDrive\\Desktop\\New folder (10)\\PS-3\\.taste-skill\\production\\mobile-page-02.jpg"
+   ],
+   "film": []
+  }
+ ]
+}

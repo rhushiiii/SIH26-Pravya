@@ -14,6 +14,11 @@ from app.modules.auth.dependencies import (
     require_metadata_role,
 )
 from app.modules.auth.models import Role
+from app.modules.institutions.categories import (
+    LEGACY_CATEGORIES,
+    RESERVATION_GROUPS,
+    CategoryScheme,
+)
 from app.modules.institutions.models import Institution, IntakeRule, Programme
 from app.modules.institutions.schemas import (
     AcademicYear,
@@ -47,9 +52,17 @@ def summary(
     programme_id: UUID | None = None,
     page: PageNumber = 1,
     page_size: PageSize = 20,
+    category_scheme: CategoryScheme = "LEGACY",
 ) -> InstitutionSummary:
     result = current_summary(
-        session, user, institution_id, academic_year, programme_id, page, page_size
+        session,
+        user,
+        institution_id,
+        academic_year,
+        programme_id,
+        page,
+        page_size,
+        category_scheme,
     )
     no_store(response)
     return result
@@ -110,6 +123,7 @@ def intake(
     programme_id: UUID | None = None,
     page: PageNumber = 1,
     page_size: PageSize = 20,
+    category_scheme: CategoryScheme | None = None,
 ) -> Page[IntakeRuleResponse]:
     scoped_institution(session, user, institution_id)
     if programme_id is not None:
@@ -124,4 +138,12 @@ def intake(
     )
     if programme_id is not None:
         statement = statement.where(IntakeRule.programme_id == programme_id)
+    if category_scheme is not None:
+        statement = statement.where(
+            IntakeRule.category.in_(
+                RESERVATION_GROUPS
+                if category_scheme == "RESERVATION"
+                else LEGACY_CATEGORIES
+            )
+        )
     return paginate(session, statement, IntakeRuleResponse, page, page_size)

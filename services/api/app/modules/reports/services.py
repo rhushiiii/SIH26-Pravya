@@ -38,7 +38,6 @@ from app.modules.reports.schemas import (
 )
 from app.modules.submissions.models import ProcessingStatus, SubmissionBatch
 from app.modules.validation.models import ValidationFinding
-from app.modules.validation.rules import CATEGORIES
 from app.modules.validation.services import selected_runs_bulk
 from app.modules.verification.models import ApaarVerification
 
@@ -53,7 +52,13 @@ KIND_ROLES: dict[str, set[Role]] = {
     "open-cases": {Role.AICTE_OFFICER, Role.INSTITUTION_ADMIN},
     "verification-activity": {Role.AICTE_OFFICER},
 }
-YEAR_FILTERS = ("academic_year", "institution_id", "region", "programme_code")
+YEAR_FILTERS = (
+    "academic_year",
+    "institution_id",
+    "region",
+    "programme_code",
+    "category_scheme",
+)
 CASE_FILTERS = ("institution_id", "region", "priority", "severity")
 FILTER_NAMES: dict[str, tuple[str, ...]] = {
     "enrolment-summary": YEAR_FILTERS,
@@ -99,6 +104,7 @@ def authorize(user: User, kind: str, params: ReportParams) -> ReportParams:
             forced,
             params.filters.region,
             params.filters.programme_code,
+            params.filters.category_scheme,
         ),
         params.priority,
         params.severity,
@@ -149,7 +155,12 @@ def document(
         generated_by=f"{user.role.value} ({user.demo_alias or 'UNNAMED_USER'})",
         filters=params.applied(kind),
         academic_year_context=context,
-        coverage=coverage,
+        coverage=coverage
+        + (
+            " " + analytics.RESERVATION_NOTE
+            if params.filters.category_scheme == "RESERVATION"
+            else ""
+        ),
         totals=totals,
         data=data,
     )
@@ -164,7 +175,9 @@ def enrolment_summary(
     f = params.filters
     meta, programme_rows = analytics.enrolment_trends(session, f, "programme", now)
     _, year_rows = analytics.enrolment_trends(session, f, "academic_year", now)
-    category_columns = [f"active_{c}" for c in CATEGORIES]
+    category_columns = [
+        f"active_{c}" for c in analytics.category_names(f.category_scheme)
+    ]
     counts = ["programmes_total", "programmes_with_current_snapshot"]
     values = ["declared_records", "active_records"]
     tail = [*category_columns, "unclassified_active_records"]
@@ -172,7 +185,7 @@ def enrolment_summary(
     def measures(row: TrendRow) -> list[Cell]:
         by_category: list[Cell] = [
             row.categories[c].active_records if row.categories is not None else None
-            for c in CATEGORIES
+            for c in analytics.category_names(f.category_scheme)
         ]
         return [
             row.programmes_total,
@@ -261,7 +274,8 @@ def intake_utilisation(
         params,
         year_context(params.filters),
         coverage_line(meta)
-        + f" Rule version {settings.validation_intake_rule_version} (DEMO values). "
+        + f" Rule version {analytics.rule_version(params.filters, settings)} "
+        "(DEMO values). "
         "Seat categories are reported separately and never pooled.",
         table(
             "Totals by academic year and seat category (rows with known counts)",

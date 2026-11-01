@@ -1,9 +1,11 @@
 import { motion } from "framer-motion";
-import { humanize } from "@/lib/format";
+import { usePrefersReducedMotion as useReducedMotion } from "@/components/fx/use-fx";
 
 export { valueObject, countValue, displayCount } from "@/lib/format";
 
-export const prettyLabel = humanize;
+import { categoryLabel } from "@/features/intake/shared";
+
+export const prettyLabel = categoryLabel;
 
 export function MetricCard({
   label,
@@ -15,18 +17,13 @@ export function MetricCard({
   note: string;
 }) {
   return (
-    <motion.article
-      className="dashboard-metric"
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.35, ease: "easeOut" }}
-    >
+    <article className="dashboard-metric">
       <span>{label}</span>
       <strong>
         {typeof value === "number" ? value.toLocaleString() : value}
       </strong>
       <small>{note}</small>
-    </motion.article>
+    </article>
   );
 }
 
@@ -38,7 +35,7 @@ export function CategoryBars({
   emptyLabel?: string;
 }) {
   const max = Math.max(0, ...categories.map((item) => item.value ?? 0));
-  if (!categories.some((item) => item.value !== null)) {
+  if (categories.length === 0) {
     return <p className="chart-empty">{emptyLabel}</p>;
   }
   return (
@@ -55,13 +52,9 @@ export function CategoryBars({
             <div
               className="category-bar-track"
               role="img"
-              aria-label={`${item.label}: ${value === null ? "no current declaration" : value.toLocaleString()}`}
+              aria-label={`${item.label}: ${value === null ? "unavailable classification" : value.toLocaleString()}`}
             >
-              <motion.span
-                initial={{ width: 0 }}
-                animate={{ width: `${width}%` }}
-                transition={{ duration: 0.6, ease: "easeOut" }}
-              />
+              <span style={{ width: `${width}%` }} />
             </div>
             <strong>{value === null ? "—" : value.toLocaleString()}</strong>
           </div>
@@ -76,7 +69,7 @@ const statusTone: Record<string, string> = {
   INACTIVE: "#926c30",
   UNSUPPORTED: "#9a978c",
 };
-const donutPalette = ["#536239", "#8d8c59", "#926c30", "#c17a3a", "#9a978c"];
+const donutPalette = ["#d95720", "#3976a8", "#b77a2f", "#765b9b", "#858078"];
 
 export function StatusDonut({
   statuses,
@@ -85,6 +78,7 @@ export function StatusDonut({
   statuses: Array<{ label: string; value: number }>;
   total: number;
 }) {
+  const reduceMotion = useReducedMotion();
   const nonZero = statuses.filter((item) => item.value > 0);
   if (total <= 0 || nonZero.length === 0)
     return <p className="chart-empty">No current records to chart.</p>;
@@ -102,6 +96,8 @@ export function StatusDonut({
       statusTone[item.label.toUpperCase()] ??
       donutPalette[index % donutPalette.length],
   }));
+  // Segments draw in once when the chart scrolls into view; reduced motion
+  // renders the finished donut immediately (no draw animation).
   return (
     <div className="status-donut">
       <svg
@@ -119,7 +115,7 @@ export function StatusDonut({
           stroke="#eceae3"
           strokeWidth="16"
         />
-        {segments.map((segment) => (
+        {segments.map((segment, index) => (
           <motion.circle
             key={segment.label}
             cx="70"
@@ -129,12 +125,21 @@ export function StatusDonut({
             stroke={segment.color}
             strokeWidth="16"
             strokeDasharray={`${segment.length} ${circumference - segment.length}`}
-            initial={{ strokeDashoffset: circumference, opacity: 0 }}
-            animate={{
-              strokeDashoffset: circumference - segment.offset,
-              opacity: 1,
-            }}
-            transition={{ duration: 0.7, ease: "easeOut" }}
+            initial={
+              reduceMotion
+                ? false
+                : { strokeDashoffset: circumference, opacity: 0 }
+            }
+            whileInView={
+              reduceMotion
+                ? undefined
+                : {
+                    strokeDashoffset: circumference - segment.offset,
+                    opacity: 1,
+                  }
+            }
+            viewport={{ once: true, amount: 0.4 }}
+            transition={{ duration: 0.7, ease: "easeOut", delay: index * 0.08 }}
             transform="rotate(-90 70 70)"
             strokeLinecap="butt"
           />
@@ -209,14 +214,16 @@ export function DashboardFilters({
 
 export function DashboardTable({
   label,
+  className,
   children,
 }: {
   label: string;
+  className?: string;
   children: React.ReactNode;
 }) {
   return (
     <div
-      className="table-scroll dashboard-table"
+      className={`table-scroll dashboard-table${className ? ` ${className}` : ""}`}
       role="region"
       tabIndex={0}
       aria-label={label}
