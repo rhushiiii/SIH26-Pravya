@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/feedback";
 import { Pagination } from "@/components/ui/pagination";
 import { useApiQuery, useScope } from "@/lib/api/hooks";
+import { AcademicYearSelect } from "@/components/academic-year-select";
 import { validAcademicYear } from "@/lib/academic-year";
 import { ScrollTable } from "@/features/intake/shared";
 import type { components } from "@/lib/api/generated";
@@ -80,10 +81,11 @@ export function InstitutionsRequiringReview({
         >
           <label>
             Academic year
-            <input
+            <AcademicYearSelect
               value={yearDraft}
-              placeholder="2026-27"
-              onChange={(e) => setYearDraft(e.target.value)}
+              allowEmpty
+              emptyLabel="All years"
+              onChange={setYearDraft}
             />
           </label>
           <label>

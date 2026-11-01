@@ -4,6 +4,7 @@ import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { useSession, type Role } from "@/features/auth/session";
+import { AcademicYearSelect } from "@/components/academic-year-select";
 import { validAcademicYear } from "@/features/submissions/data";
 import { CASE_PRIORITIES, CASE_SEVERITIES } from "@/features/cases/shared";
 import {
@@ -250,11 +251,9 @@ function ReportCard({
         </label>
         <label>
           Academic year
-          <input
+          <AcademicYearSelect
             value={filters.year}
-            onChange={(e) => set("year", e.target.value)}
-            placeholder="2026-27"
-            aria-required="true"
+            onChange={(year) => set("year", year)}
           />
         </label>
         {!fixedInstitution && (

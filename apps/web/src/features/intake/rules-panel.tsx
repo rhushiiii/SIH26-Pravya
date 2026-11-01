@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { AcademicYearSelect } from "@/components/academic-year-select";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { EmptyState, ErrorPanel, Loading } from "@/components/ui/feedback";
 import { Pagination } from "@/components/ui/pagination";
@@ -173,10 +174,7 @@ export function IntakeRulesPanel({
         >
           <label>
             Academic year
-            <input
-              value={yearDraft}
-              onChange={(e) => setYearDraft(e.target.value)}
-            />
+            <AcademicYearSelect value={yearDraft} onChange={setYearDraft} />
           </label>
           <button className="button secondary" type="submit">
             Show rules

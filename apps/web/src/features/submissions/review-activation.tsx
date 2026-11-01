@@ -2,7 +2,10 @@
 
 import Link from "next/link";
 import { categoryLabel } from "@/features/intake/shared";
-import { ruleCodeGuidance } from "@/features/validation/guidance";
+import {
+  findingReason,
+  ruleCodeGuidance,
+} from "@/features/validation/guidance";
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ErrorPanel, Loading } from "@/components/ui/feedback";
@@ -161,10 +164,7 @@ function CountComparison({
           aria-label="Enrolment status differences"
         >
           <table className="review-table">
-            <caption>
-              Declared enrolment status counts · not official regulatory
-              accounting
-            </caption>
+            <caption>Declared enrolment status counts</caption>
             <thead>
               <tr>
                 <th scope="col">Status</th>
@@ -592,12 +592,10 @@ export function ReviewActivation({
         <div>
           <span>Institution</span>
           <strong>{institutionName}</strong>
-          <small>{data.institution_id}</small>
         </div>
         <div>
           <span>Programme</span>
           <strong>{programmeName}</strong>
-          <small>{data.programme_id}</small>
         </div>
         <div>
           <span>Academic year</span>
@@ -606,7 +604,6 @@ export function ReviewActivation({
         <div>
           <span>Candidate</span>
           <strong>Complete replacement snapshot</strong>
-          <small>{data.batch_id}</small>
         </div>
         <div>
           <span>Selected validation run</span>
@@ -615,21 +612,19 @@ export function ReviewActivation({
               ? "Matches selected run"
               : "Pinned to a different run"}
           </strong>
-          <small>{data.validation_run_id}</small>
         </div>
         <div>
           <span>Scope revision reviewed</span>
           <strong>{data.expected_scope_revision}</strong>
           <small>
             {data.expected_current_batch_id
-              ? `Current candidate ${data.expected_current_batch_id}`
+              ? "Compared with the current snapshot"
               : "No current snapshot at review time"}
           </small>
         </div>
         <div>
           <span>Review created</span>
           <strong>{when(data.created_at)}</strong>
-          <small>Reviewer {data.reviewed_by}</small>
         </div>
         <div>
           <span>Current assessment</span>
@@ -650,16 +645,46 @@ export function ReviewActivation({
         </div>
       </div>
 
+      <details className="disclosure">
+        <summary>Identifiers</summary>
+        <div className="disclosure-body">
+          <dl className="pinned-settings">
+            <div>
+              <dt>Institution</dt>
+              <dd>{data.institution_id}</dd>
+            </div>
+            <div>
+              <dt>Programme</dt>
+              <dd>{data.programme_id}</dd>
+            </div>
+            <div>
+              <dt>Candidate</dt>
+              <dd>{data.batch_id}</dd>
+            </div>
+            <div>
+              <dt>Selected validation run</dt>
+              <dd>{data.validation_run_id}</dd>
+            </div>
+            {data.expected_current_batch_id && (
+              <div>
+                <dt>Current candidate</dt>
+                <dd>{data.expected_current_batch_id}</dd>
+              </div>
+            )}
+            <div>
+              <dt>Reviewer</dt>
+              <dd>{data.reviewed_by}</dd>
+            </div>
+          </dl>
+        </div>
+      </details>
+
       <div className="review-callout">
         <strong>Candidate totals are separate from current enrolment.</strong>
         <span>
           Only activation changes the current reference. Omitted records mean
           absent from this replacement; they are not automatically withdrawals
           or transfers.
-        </span>
-        <span>
-          All capacities and active-status counts shown here are configured
-          local comparisons, not official AICTE policy.
         </span>
       </div>
 
@@ -682,7 +707,7 @@ export function ReviewActivation({
         <CountCard
           title="Candidate active enrolments"
           value={candidate?.demo_active_records}
-          note="Internal status rule; not official policy"
+          note="Configured enrolment status"
         />
         <CountCard
           title="Added identifiers"
@@ -704,8 +729,9 @@ export function ReviewActivation({
         />
       </div>
 
-      <div className="review-subsection">
-        <h3>Category and status comparison</h3>
+      <details className="disclosure review-subsection">
+        <summary>Category and status comparison</summary>
+        <div className="disclosure-body">
         <CountComparison
           current={current}
           candidate={candidate}
@@ -745,7 +771,8 @@ export function ReviewActivation({
             )}
           </div>
         </div>
-      </div>
+        </div>
+      </details>
 
       <div className="review-subsection">
         <div className="section-inline-heading">
@@ -893,11 +920,6 @@ export function ReviewActivation({
               {displayCount(snapshot.reviewable_finding_count)} findings pinned
               to this run
             </span>
-            <p>
-              Missing or malformed APAAR, possible overlaps, and comparisons
-              against configured intake rules are not official identity
-              verification, proof of fraud, or official AICTE violations.
-            </p>
           </div>
         </div>
         {runFindings.isError && (
@@ -920,8 +942,9 @@ export function ReviewActivation({
                     ? "Activation-blocking"
                     : "Reviewable"}
                 </span>
+                <strong>{ruleCodeGuidance(finding.rule_code).title}</strong>
                 <code>{finding.rule_code}</code>
-                <span>{finding.explanation}</span>
+                <span>{findingReason(finding.explanation)}</span>
               </article>
             ))}
             {runFindings.data.pagination.total >
@@ -1003,9 +1026,8 @@ export function ReviewActivation({
                   checked={reviewWarnings}
                   onChange={(event) => setReviewWarnings(event.target.checked)}
                 />
-                I reviewed the APAAR, possible duplicate and configured local
-                intake findings. I understand these are review signals, not
-                official verification or fraud determinations.
+                I reviewed the APAAR, possible duplicate, and configured intake
+                findings for this run.
               </label>
               {hasOmissions && (
                 <label>

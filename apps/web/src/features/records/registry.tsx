@@ -1,5 +1,6 @@
 "use client";
 
+import { AcademicYearSelect } from "@/components/academic-year-select";
 import { categoryLabel } from "@/features/intake/shared";
 
 import Link from "next/link";
@@ -16,8 +17,10 @@ import { useApiQuery, useFilterState, useScope } from "@/lib/api/hooks";
 import { DEMO_TAG } from "@/lib/format";
 import type { components } from "@/lib/api/generated";
 import {
+  ENROLLMENT_STATUSES,
   StatusBadges,
   VALIDATION_STATUSES,
+  enrollmentLabel,
   validationLabel,
   type RecordRow,
   type ValidationStatus,
@@ -78,8 +81,8 @@ export function RecordRegistry() {
       params.set("institution_id", filters.institution);
     if (filters.programme) params.set("programme_id", filters.programme);
     if (filters.year.trim()) params.set("academic_year", filters.year.trim());
-    if (filters.enrollment.trim())
-      params.set("enrollment_status", filters.enrollment.trim());
+    if (filters.enrollment)
+      params.set("enrollment_status", filters.enrollment);
     if (filters.validation) params.set("validation_status", filters.validation);
     if (filters.candidates) params.set("include_candidates", "true");
     return `/records?${params}`;
@@ -161,20 +164,26 @@ export function RecordRegistry() {
           </label>
           <label className="inline-filter">
             Academic year
-            <input
+            <AcademicYearSelect
               value={filters.year}
-              maxLength={20}
-              placeholder="e.g. 2025-26"
-              onChange={(e) => update("year", e.target.value)}
+              allowEmpty
+              emptyLabel="All years"
+              onChange={(year) => update("year", year)}
             />
           </label>
           <label className="inline-filter">
             Enrollment status
-            <input
+            <select
               value={filters.enrollment}
-              maxLength={40}
               onChange={(e) => update("enrollment", e.target.value)}
-            />
+            >
+              <option value="">All statuses</option>
+              {ENROLLMENT_STATUSES.map((status) => (
+                <option key={status} value={status}>
+                  {enrollmentLabel(status)}
+                </option>
+              ))}
+            </select>
           </label>
           <label className="inline-filter">
             Validation status

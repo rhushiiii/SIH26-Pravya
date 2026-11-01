@@ -30,6 +30,8 @@ import { countValue, plain, valueObject, when } from "@/lib/format";
 import {
   FINDING_CATEGORY_LABEL,
   findingGuidance,
+  findingReason,
+  ruleCodeGuidance,
   safeEvidence,
   type FindingCategory,
 } from "./guidance";
@@ -57,6 +59,15 @@ type QueryState = {
 
 const pageSize = 10;
 const severityOptions = ["ERROR", "WARNING", "INFO"] as const;
+
+function nextStep(batch: Batch): { index: number; label: string } {
+  if (batch.snapshot_state === "CURRENT")
+    return { index: 5, label: "Current snapshot" };
+  if (batch.activation_review_id)
+    return { index: 4, label: "Explicit activation" };
+  if (batch.validation_performed) return { index: 3, label: "Review evidence" };
+  return { index: 2, label: "Run validation" };
+}
 
 type IntakeRuleSnapshot = {
   category: string;
@@ -172,7 +183,7 @@ export function ValidationWorkspace({
   const admin = role === "INSTITUTION_ADMIN";
   const officer = role === "AICTE_OFFICER";
   const [announcement, setAnnouncement] = useState("");
-  const [filterError, setFilterError] = useState("");
+
 
   const runId = query.run_id ?? "";
   const comparisonRunId = query.compare_run_id ?? "";
@@ -271,6 +282,11 @@ export function ValidationWorkspace({
   const findings = useApiQuery<FindingPage>(
     [...baseKey, "findings", runId, findingFilters],
     findingsPath,
+    { enabled: isUUID(batchId) && isUUID(runId) },
+  );
+  const findingCatalog = useApiQuery<FindingPage>(
+    [...baseKey, "finding-catalog", runId],
+    `/submissions/${batchId}/findings?run_id=${runId}&page=1&page_size=100`,
     { enabled: isUUID(batchId) && isUUID(runId) },
   );
   const findingCategoryOrder: FindingCategory[] = [
@@ -494,6 +510,22 @@ export function ValidationWorkspace({
       incomplete: countValue(counts?.INCOMPLETE),
     };
   }, [selectedRun.data]);
+  const capacityWarnings = useMemo(
+    () =>
+      (findingCatalog.data?.data ?? []).filter(
+        (item) => findingGuidance(item).category === "capacity",
+      ).length,
+    [findingCatalog.data],
+  );
+  const ruleOptions = useMemo(() => {
+    const codes = new Set(
+      (findingCatalog.data?.data ?? []).map((item) => item.rule_code),
+    );
+    if (query.finding_rule) codes.add(query.finding_rule);
+    return [...codes].sort((left, right) =>
+      ruleCodeGuidance(left).title.localeCompare(ruleCodeGuidance(right).title),
+    );
+  }, [findingCatalog.data, query.finding_rule]);
   const submissionContext = useSubmissionContext(
     batchQuery.data?.institution_id ?? "",
   );
@@ -538,6 +570,7 @@ export function ValidationWorkspace({
       />
     );
   const batch = batchQuery.data;
+  const progress = nextStep(batch);
   const hasInitial = batch.validation_performed;
   const isBusy = validate.isPending || revalidate.isPending;
 
@@ -572,28 +605,41 @@ export function ValidationWorkspace({
       </div>
 
       <ol className="submission-lifecycle" aria-label="Submission lifecycle">
-        <li className="complete">
-          <span>01</span> Upload saved
-        </li>
-        <li aria-current="step">
-          <span>02</span> Validate findings
-        </li>
-        <li>
-          <span>03</span> Review evidence
-        </li>
-        <li>
-          <span>04</span> Explicit activation
-        </li>
+        {(
+          [
+            [1, "Upload saved"],
+            [2, "Validate findings"],
+            [3, "Review evidence"],
+            [4, "Explicit activation"],
+          ] as const
+        ).map(([step, label]) => (
+          <li
+            key={step}
+            className={step < progress.index ? "complete" : undefined}
+            aria-current={step === progress.index ? "step" : undefined}
+          >
+            <span>0{step}</span> {label}
+          </li>
+        ))}
       </ol>
-      <section className="validation-notice" aria-label="Validation meaning">
-        <strong>Local rule checks only</strong>
-        <p>
-          APAAR format checks are local syntax checks, not government identity
-          verification. Findings are review signals, not fraud decisions.
-          Candidate rows cannot be edited; corrections use a new complete
-          submission through file upload or direct entry.
-        </p>
-      </section>
+      <p className="validation-outcome">
+        {batch.row_count.toLocaleString()} records
+        {isUUID(runId) && (
+          <>
+            {" · "}
+            {findingCounts.flagged ?? "—"} flagged
+            {capacityWarnings > 0 && (
+              <>
+                {" · "}
+                {capacityWarnings} capacity warning
+                {capacityWarnings === 1 ? "" : "s"}
+              </>
+            )}
+          </>
+        )}
+        {" · "}
+        {progress.index === 5 ? "Current snapshot" : `Next: ${progress.label}`}
+      </p>
 
       <section
         className="panel validation-action"
@@ -768,7 +814,6 @@ export function ValidationWorkspace({
                   SELECTED RUN · {selectedRun.data.kind}
                 </p>
                 <h2 id="run-summary-heading">Run summary</h2>
-                <p className="cell-note">{selectedRun.data.validity_label}</p>
               </div>
               <button
                 className="button secondary small"
@@ -782,6 +827,9 @@ export function ValidationWorkspace({
                   : "Download masked feedback CSV"}
               </button>
             </header>
+            <details className="disclosure">
+              <summary>Run Insights</summary>
+              <div className="disclosure-body">
             <div className="validation-metrics">
               <div>
                 <span>Ruleset</span>
@@ -864,8 +912,7 @@ export function ValidationWorkspace({
               </div>
               <p className="cell-note">
                 These are the saved values used when this immutable run was
-                evaluated. Later rule edits do not change this snapshot; this is
-                not a new evaluation or an official capacity decision.
+                evaluated. Later rule edits do not change this snapshot.
               </p>
               {intakeCategories.length > 0 ? (
                 <ul className="historical-rule-list">
@@ -906,6 +953,8 @@ export function ValidationWorkspace({
                 </p>
               )}
             </section>
+              </div>
+            </details>
           </section>
 
           <section
@@ -1257,39 +1306,30 @@ export function ValidationWorkspace({
                 <p className="eyebrow">EVIDENCE-LINKED REVIEW SIGNALS</p>
                 <h2 id="findings-heading">Findings</h2>
               </div>
-              <span className="quiet-label">Not fraud determinations</span>
             </header>
             <form
               className="validation-filters"
-              onSubmit={(event) => {
-                event.preventDefault();
-                const ruleInput = String(
-                  new FormData(event.currentTarget).get("rule_code") ?? "",
-                )
-                  .trim()
-                  .toUpperCase();
-                if (ruleInput && !/^[A-Z0-9_]{1,64}$/.test(ruleInput)) {
-                  setFilterError(
-                    "Use an exact rule code with uppercase letters, digits or underscores.",
-                  );
-                  return;
-                }
-                setFilterError("");
-                navigate({
-                  finding_rule: ruleInput || undefined,
-                  finding_page: undefined,
-                });
-              }}
+              aria-label="Filter findings"
+              onSubmit={(event) => event.preventDefault()}
             >
               <label>
-                Rule code
-                <input
-                  key={query.finding_rule ?? "all"}
-                  name="rule_code"
-                  defaultValue={query.finding_rule ?? ""}
-                  placeholder="All rule codes"
-                  aria-label="Filter by rule code"
-                />
+                Rule
+                <select
+                  value={query.finding_rule ?? ""}
+                  onChange={(event) =>
+                    navigate({
+                      finding_rule: event.target.value || undefined,
+                      finding_page: undefined,
+                    })
+                  }
+                >
+                  <option value="">All rules</option>
+                  {ruleOptions.map((code) => (
+                    <option key={code} value={code}>
+                      {ruleCodeGuidance(code).title}
+                    </option>
+                  ))}
+                </select>
               </label>
               <label>
                 Severity
@@ -1326,9 +1366,6 @@ export function ValidationWorkspace({
                   <option value="REVIEWABLE">Reviewable</option>
                 </select>
               </label>
-              <button className="button secondary" type="submit">
-                Apply rule filter
-              </button>
               {(query.finding_rule ||
                 query.finding_severity ||
                 query.finding_classification) && (
@@ -1349,11 +1386,6 @@ export function ValidationWorkspace({
                 </button>
               )}
             </form>
-            {filterError && (
-              <p className="form-error" role="alert">
-                {filterError}
-              </p>
-            )}
             {caseError && (
               <p className="form-error" role="alert">
                 {caseError}
@@ -1368,9 +1400,7 @@ export function ValidationWorkspace({
               />
             ) : findings.data.data.length === 0 ? (
               <EmptyState title="No findings match these filters">
-                This means no findings were returned for the selected run and
-                filters. Valid means local checks only, never official
-                verification.
+                No findings were returned for the selected run and filters.
               </EmptyState>
             ) : (
               <>
@@ -1407,7 +1437,10 @@ export function ValidationWorkspace({
                                   </span>
                                 )}
                               </div>
-                              <code>{finding.rule_code}</code>
+                              <div className="finding-identity">
+                                <strong>{copy.title}</strong>
+                                <code>{finding.rule_code}</code>
+                              </div>
                             </header>
                             {finding.rule_code ===
                               "POTENTIAL_CROSS_INSTITUTION_DUPLICATE" && (
@@ -1458,7 +1491,7 @@ export function ValidationWorkspace({
                               <h3>What went wrong</h3>
                               <p>{copy.what}</p>
                               <h3>Why it was flagged</h3>
-                              <p>{finding.explanation}</p>
+                              <p>{findingReason(finding.explanation)}</p>
                               <h3>What to do next</h3>
                               <p>{copy.next}</p>
                             </div>
@@ -1510,7 +1543,6 @@ export function ValidationWorkspace({
         </>
       )}
       <p className="data-note">
-        All candidate records and validation evidence are synthetic data.
         Historical uploads and previous validation runs remain preserved. A
         finding does not edit or remove the source row.
       </p>

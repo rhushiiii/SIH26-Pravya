@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
+import { AcademicYearSelect } from "@/components/academic-year-select";
 import { useSession } from "@/features/auth/session";
 import {
   useSubmissionContext,
@@ -30,7 +31,6 @@ type Line = {
   remaining_capacity: number | null;
   would_exceed: boolean;
   excess: number;
-  calculation: string;
 };
 type Row = { id: number; category: Category; count: string };
 
@@ -142,7 +142,7 @@ export function SimulatorPanel({ institutionId }: { institutionId: string }) {
             </label>
             <label>
               Academic year
-              <input value={year} onChange={(e) => setYear(e.target.value)} />
+              <AcademicYearSelect value={year} onChange={setYear} />
             </label>
           </div>
           <fieldset className="intake-additions">
@@ -243,7 +243,6 @@ export function SimulatorPanel({ institutionId }: { institutionId: string }) {
                 <th scope="col">Approved</th>
                 <th scope="col">Remaining</th>
                 <th scope="col">Outcome</th>
-                <th scope="col">Calculation</th>
               </tr>
             </thead>
             <tbody>
@@ -269,9 +268,6 @@ export function SimulatorPanel({ institutionId }: { institutionId: string }) {
                         Within capacity
                       </span>
                     )}
-                  </td>
-                  <td>
-                    <code>{l.calculation}</code>
                   </td>
                 </tr>
               ))}

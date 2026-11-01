@@ -11,6 +11,7 @@ import {
 import { Pagination } from "@/components/ui/pagination";
 import { useSession } from "@/features/auth/session";
 import { useApiQuery, useDraftFilters, useScope } from "@/lib/api/hooks";
+import { AcademicYearSelect } from "@/components/academic-year-select";
 import { validAcademicYear } from "@/features/submissions/data";
 import type { components } from "@/lib/api/generated";
 import { displayCount, when } from "@/lib/format";
@@ -270,10 +271,11 @@ export function AnalyticsExplorer() {
           {tab !== "cases" && (
             <label>
               Academic year
-              <input
+              <AcademicYearSelect
                 value={draft.year}
-                onChange={(e) => setDraft({ ...draft, year: e.target.value })}
-                placeholder="All years, or 2026-27"
+                allowEmpty
+                emptyLabel="All years"
+                onChange={(year) => setDraft({ ...draft, year })}
               />
             </label>
           )}
@@ -677,7 +679,6 @@ function UtilisationView({
               <th scope="col">Utilisation</th>
               <th scope="col">Remaining</th>
               <th scope="col">Exceeded</th>
-              <th scope="col">Calculation</th>
             </tr>
           </thead>
           <tbody>
@@ -718,7 +719,6 @@ function UtilisationView({
                     <span className="status-badge active">Within capacity</span>
                   )}
                 </td>
-                <td>{row.calculation}</td>
               </tr>
             ))}
           </tbody>

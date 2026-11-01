@@ -8,8 +8,8 @@ import { useSession } from "@/features/auth/session";
 import { useApiQuery, useScope } from "@/lib/api/hooks";
 import type { components } from "@/lib/api/generated";
 import { when } from "@/lib/format";
+import { ruleCodeGuidance } from "@/features/validation/guidance";
 import {
-  DemoRuleNotice,
   ScrollTable,
   categoryLabel,
   intakeMessage,
@@ -126,94 +126,120 @@ function AssessmentDetail({ assessment }: { assessment: Assessment }) {
           ))}
         </tbody>
       </ScrollTable>
-      <p className="form-help">
-        The four main categories are compared separately. The PwD row overlaps
-        those categories and is reported independently; it is not added to the
-        main-category total. Historical assessments retain the category scheme
-        and counts captured when each assessment was created.
-      </p>
-
-      <h4>Snapshot difference</h4>
-      {diff.status !== "COMPARED" ? (
-        <p>
-          {diffUnavailable[diff.status] ?? "Snapshot comparison unavailable."}
-        </p>
-      ) : (
-        <>
-          <p>
-            Added {diff.added_count} · Removed {diff.removed_count} · Changed{" "}
-            {diff.changed_count} · Unchanged {diff.retained_unchanged_count}
+      {result.findings.length > 0 && (
+        <div className="finding-highlights">
+          {result.findings.map((finding, index) => {
+            const line = result.categories.find(
+              (category) => category.category === finding.category,
+            );
+            const outcome = !line
+              ? "See the category table for the captured result."
+              : line.approved_seats == null
+                ? "No approved intake was captured for this category."
+                : line.exceeded
+                  ? `Exceeded by ${line.excess}.`
+                  : `Within approved intake. Remaining ${line.remaining_capacity ?? "—"}.`;
+            return (
+              <article
+                className={`finding-highlight ${severityClass(finding.severity)}`}
+                key={`${finding.rule_id}-${index}`}
+              >
+                <p>
+                  <span
+                    className={`status-badge ${severityClass(finding.severity)}`}
+                  >
+                    {finding.severity}
+                  </span>{" "}
+                  <strong>{ruleCodeGuidance(finding.rule_id).title}</strong>
+                  {finding.category
+                    ? ` · ${categoryLabel(finding.category)}`
+                    : ""}
+                </p>
+                <p>{outcome}</p>
+              </article>
+            );
+          })}
+        </div>
+      )}
+      <details className="disclosure">
+        <summary>More Details</summary>
+        <div className="disclosure-body">
+          <p className="form-help">
+            The four main categories are compared separately. The PwD row
+            overlaps those categories and is reported independently; it is not
+            added to the main-category total. Historical assessments retain the
+            category scheme and counts captured when each assessment was
+            created.
           </p>
-          {diff.omission_meaning && (
-            <p className="form-help">{diff.omission_meaning}</p>
-          )}
-          {(diff.changes ?? []).length === 0 ? (
-            <p className="form-help">No added, removed or changed records.</p>
+          <h4>Snapshot difference</h4>
+          {diff.status !== "COMPARED" ? (
+            <p>
+              {diffUnavailable[diff.status] ??
+                "Snapshot comparison unavailable."}
+            </p>
           ) : (
             <>
-              <p className="form-help">
-                Showing {(diff.changes ?? []).length} of {diff.changes_total}{" "}
-                differences{diff.changes_truncated ? " (list capped)" : ""}.
-                Field names only; no personal values are shown.
+              <p>
+                Added {diff.added_count} · Removed {diff.removed_count} ·
+                Changed {diff.changed_count} · Unchanged{" "}
+                {diff.retained_unchanged_count}
               </p>
-              <div className="intake-diff-list">
-                <ScrollTable label="Snapshot differences by college student ID">
-                  <thead>
-                    <tr>
-                      <th scope="col">College student ID</th>
-                      <th scope="col">Change</th>
-                      <th scope="col">Changed fields</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {(diff.changes ?? []).map((c) => (
-                      <tr key={c.college_student_id}>
-                        <td>{c.college_student_id}</td>
-                        <td>{categoryLabel(c.change_type)}</td>
-                        <td>{c.changed_fields.join(", ") || "—"}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </ScrollTable>
-              </div>
+              {diff.omission_meaning && (
+                <p className="form-help">{diff.omission_meaning}</p>
+              )}
+              {(diff.changes ?? []).length === 0 ? (
+                <p className="form-help">
+                  No added, removed or changed records.
+                </p>
+              ) : (
+                <>
+                  <p className="form-help">
+                    Showing {(diff.changes ?? []).length} of{" "}
+                    {diff.changes_total} differences
+                    {diff.changes_truncated ? " (list capped)" : ""}. Field
+                    names only; no personal values are shown.
+                  </p>
+                  <div className="intake-diff-list">
+                    <ScrollTable label="Snapshot differences by college student ID">
+                      <thead>
+                        <tr>
+                          <th scope="col">College student ID</th>
+                          <th scope="col">Change</th>
+                          <th scope="col">Changed fields</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {(diff.changes ?? []).map((change) => (
+                          <tr key={change.college_student_id}>
+                            <td>{change.college_student_id}</td>
+                            <td>{categoryLabel(change.change_type)}</td>
+                            <td>{change.changed_fields.join(", ") || "—"}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </ScrollTable>
+                  </div>
+                </>
+              )}
             </>
           )}
-        </>
-      )}
-
-      <h4>Missing population</h4>
-      {population.status === "NO_REFERENCE" ? (
-        <p>No reference total declared — no conclusion.</p>
-      ) : (
-        <p>
-          {population.discrepancy ? (
-            <span className="status-badge warning">Discrepancy</span>
+          <h4>Missing population</h4>
+          {population.status === "NO_REFERENCE" ? (
+            <p>No reference total declared — no conclusion.</p>
           ) : (
-            <span className="status-badge active">No shortfall</span>
-          )}{" "}
-          <code>{population.calculation}</code>
-        </p>
-      )}
-
-      <h4>Findings</h4>
-      {result.findings.length === 0 ? (
-        <p>No findings raised by the DEMO rules.</p>
-      ) : (
-        <ul className="intake-findings">
-          {result.findings.map((f, index) => (
-            <li key={`${f.rule_id}-${index}`}>
-              <span className={`status-badge ${severityClass(f.severity)}`}>
-                {f.severity}
-              </span>{" "}
-              <strong>{f.rule_id}</strong>
-              {f.category ? ` · ${categoryLabel(f.category)}` : ""}
-              <br />
-              <code>{f.calculation}</code>
-            </li>
-          ))}
-        </ul>
-      )}
-      <p className="data-note">{result.notice}</p>
+            <p>
+              {population.discrepancy ? (
+                <span className="status-badge warning">Discrepancy</span>
+              ) : (
+                <span className="status-badge active">No shortfall</span>
+              )}
+              {typeof population.shortfall === "number"
+                ? ` Shortfall ${population.shortfall}.`
+                : ""}
+            </p>
+          )}
+        </div>
+      </details>
     </div>
   );
 }
@@ -292,7 +318,6 @@ export function IntakeAssessmentPanel({
         </button>
       </header>
       <div className="panel-padding">
-        <DemoRuleNotice />
         {!processed && (
           <p className="form-help">
             This submission has not finished processing, so it cannot be

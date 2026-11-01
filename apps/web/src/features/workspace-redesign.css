@@ -68,6 +68,26 @@
 .portal-layout .simulator-page > .page-heading {
   display: block;
 }
+/* Bare headings list eyebrow, title, and description as direct children.
+   Keep them in one left stack. Action rows and dashboards stay a flex pair. */
+.portal-layout .page-heading:not(.heading-actions):not(.dashboard-heading) {
+  display: block;
+  text-align: left;
+}
+.portal-layout .heading-actions > :first-child,
+.portal-layout .dashboard-heading > :first-child {
+  text-align: left;
+  min-width: 0;
+}
+.portal-layout .portal-footer {
+  box-sizing: border-box;
+  width: min(100%, 1320px);
+  margin-inline: auto;
+  justify-content: flex-start;
+  align-items: baseline;
+  gap: 16px;
+  padding: 17px 34px;
+}
 .portal-layout :is(h1, h2, h3) {
   color: var(--ui-text);
   letter-spacing: -0.025em;
@@ -174,12 +194,36 @@
   font-size: 12px;
   line-height: 1.6;
 }
-.portal-layout
-  :is(
-    .dashboard-grid .dashboard-table,
-    .dashboard-page > .panel > .table-scroll
-  ) {
-  margin-inline: clamp(14px, 2.2vw, 24px);
+.portal-layout .dashboard-metrics {
+  align-items: stretch;
+}
+.portal-layout .dashboard-metric {
+  align-content: start;
+  justify-items: start;
+  min-height: 148px;
+  padding: 18px 18px 16px;
+  border-radius: 16px;
+  background: #fffdf9;
+  text-align: left;
+}
+.portal-layout .dashboard-metric > span {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.portal-layout .dashboard-metric > strong {
+  margin: 10px 0 6px;
+}
+.portal-layout .dashboard-grid {
+  gap: 18px;
+}
+.portal-layout .dashboard-grid > .panel > :is(.category-bars, .status-donut) {
+  padding: 8px 20px 22px;
+}
+.portal-layout .dashboard-grid > .panel > .chart-empty,
+.portal-layout .dashboard-grid > .panel > .partial-note {
+  margin: 0 20px 20px;
 }
 .portal-layout .institution-coverage-table table {
   min-width: 0;
@@ -211,9 +255,14 @@
   position: relative;
   padding: 20px;
   border: 1px solid var(--ui-line);
-  border-radius: 20px;
-  background: #ffffff;
+  border-radius: 16px;
+  background: #fffdf9;
   box-shadow: none;
+}
+.portal-layout .dashboard-metric {
+  align-content: start;
+  justify-items: start;
+  text-align: left;
 }
 .portal-layout .dashboard-metric::after {
   content: none;
@@ -225,13 +274,19 @@
   margin-top: 0;
 }
 .portal-layout .dashboard-grid > .panel > .partial-note {
-  margin: 16px 24px 0;
+  margin: 0 20px 20px;
   font-size: 11px;
   line-height: 1.6;
+}
+.portal-layout .dashboard-metric {
+  border-top: 3px solid var(--pravya-orange, #d95720);
 }
 .portal-layout .dashboard-metric > span {
   color: var(--ui-muted);
   font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 .portal-layout .dashboard-metric strong {
   display: block;
@@ -334,6 +389,7 @@
 }
 
 .portal-layout .table-scroll {
+  box-sizing: border-box;
   max-width: 100%;
   overflow: auto;
   overscroll-behavior-inline: contain;
@@ -341,14 +397,32 @@
   border-radius: 12px;
   background: #fff;
 }
+/* Inset tables inside cards. width/max-width 100% plus a side margin
+   overflows the rounded card and gets clipped by overflow:hidden. */
 .portal-layout
   :is(
-    .analytics-results .dashboard-table,
-    .registry-table,
-    .credentials-list .table-scroll,
-    .submission-history-panel .table-scroll
-  ) {
-  margin-inline: clamp(14px, 2.2vw, 24px);
+    .panel,
+    .profile-card,
+    .report-card,
+    .intake-assessment,
+    .review-subsection,
+    .finding-card
+  )
+  .table-scroll {
+  width: auto;
+  max-width: calc(100% - 40px);
+  margin: 16px 20px 20px;
+}
+.portal-layout .panel-padding > .table-scroll,
+.portal-layout .intake-sim-form > .table-scroll {
+  width: auto;
+  max-width: 100%;
+  margin: 8px 0 12px;
+}
+.portal-layout .intake-assessment .table-scroll {
+  width: auto;
+  max-width: calc(100% - 32px);
+  margin: 12px 16px 16px;
 }
 .portal-layout table {
   width: 100%;
@@ -571,5 +645,247 @@
   }
   .portal-layout :is(th, td) {
     padding: 10px;
+  }
+}
+
+/* Keep the pager and numeric columns on the same inset as the table. */
+.portal-layout .panel > .pagination,
+.portal-layout .analytics-stack > .pagination {
+  box-sizing: border-box;
+  width: auto;
+  max-width: calc(100% - 40px);
+  margin: 0 20px 16px;
+  padding: 12px 0 0;
+}
+.portal-layout .panel-padding > .pagination {
+  width: auto;
+  max-width: 100%;
+  margin: 12px 0 0;
+  padding: 12px 0 0;
+}
+.portal-layout .analytics-results .tab-list,
+.portal-layout .analytics-context {
+  padding-inline: 20px;
+}
+.portal-layout .analytics-stack > .category-bars,
+.portal-layout .analytics-stack > .data-note,
+.portal-layout .analytics-stack > h3,
+.portal-layout .analytics-stack > .dashboard-metrics {
+  padding-inline: 20px;
+}
+.portal-layout .institution-coverage-table :is(th, td):last-child {
+  min-width: 0;
+}
+.portal-layout
+  .analytics-results-utilisation
+  .dashboard-table
+  :is(th, td):nth-child(n + 4):not(:last-child) {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+@media (max-width: 1050px) {
+  .portal-layout .portal-footer {
+    padding-inline: 24px;
+  }
+}
+@media (max-width: 760px) {
+  .portal-layout .portal-footer {
+    padding-inline: 20px;
+    flex-wrap: wrap;
+  }
+  .portal-layout .portal-footer > span {
+    width: 100%;
+  }
+}
+@media (max-width: 600px) {
+  .portal-layout .panel > .pagination,
+  .portal-layout .analytics-stack > .pagination {
+    max-width: calc(100% - 28px);
+    margin-inline: 14px;
+  }
+  .portal-layout .portal-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    padding-inline: 20px;
+  }
+}
+
+.portal-layout .disclosure {
+  border: 1px solid var(--ui-line);
+  border-radius: 12px;
+  background: #fff;
+}
+.portal-layout .panel > .disclosure {
+  margin: 0 20px 20px;
+}
+.portal-layout .review-workspace > .disclosure {
+  margin: 0 20px;
+}
+.portal-layout .intake-assessment > .disclosure {
+  margin: 16px 0 0;
+}
+.portal-layout .disclosure > summary {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  list-style: none;
+}
+.portal-layout .disclosure > summary::-webkit-details-marker {
+  display: none;
+}
+.portal-layout .disclosure > summary::after {
+  content: "▸";
+  margin-left: auto;
+  color: var(--ui-muted);
+}
+.portal-layout .disclosure[open] > summary::after {
+  content: "▾";
+}
+.portal-layout .disclosure-body {
+  display: grid;
+  gap: 14px;
+  padding: 0 16px 16px;
+}
+.portal-layout .disclosure .validation-metrics,
+.portal-layout .disclosure .pinned-settings {
+  margin: 0;
+  padding-inline: 0;
+}
+.portal-layout .disclosure .historical-rule-snapshot {
+  margin: 0;
+  padding: 18px 20px 20px;
+}
+.portal-layout .validation-metrics > div,
+.portal-layout .historical-rule-list li {
+  box-sizing: border-box;
+  padding: 16px 18px;
+}
+.portal-layout .pinned-settings > div {
+  box-sizing: border-box;
+  padding: 12px 16px;
+}
+.portal-layout .disclosure .validation-metrics {
+  padding-bottom: 0;
+}
+.portal-layout .disclosure .table-scroll {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+}
+.portal-layout .finding-highlights {
+  display: grid;
+  gap: 10px;
+}
+.portal-layout .finding-highlight {
+  display: grid;
+  gap: 6px;
+  padding: 12px 14px;
+  border: 1px solid #f0d3bf;
+  border-left: 4px solid #d95720;
+  border-radius: 12px;
+  background: #fff7f1;
+}
+.portal-layout .finding-highlight.danger {
+  border-color: #f0c2bc;
+  border-left-color: #a33b32;
+  background: #fff5f3;
+}
+.portal-layout .finding-highlight.neutral {
+  border-color: var(--ui-line);
+  border-left-color: #8a8d86;
+  background: #fafaf8;
+}
+.portal-layout .finding-highlight p {
+  margin: 0;
+}
+.portal-layout .review-workspace > .review-scope-grid {
+  margin-inline: 20px;
+  gap: 16px;
+}
+.portal-layout .validation-page > .submission-lifecycle {
+  margin-bottom: 0;
+}
+.portal-layout .validation-outcome {
+  margin: 0;
+  padding: 14px 18px;
+  border: 1px solid var(--ui-line);
+  border-radius: 14px;
+  background: #fff;
+  color: var(--ui-text);
+  font-size: 15px;
+  line-height: 1.5;
+}
+.portal-layout .intake-assessment .finding-highlights {
+  margin: 12px 16px 0;
+}
+.portal-layout .finding-card .finding-identity {
+  display: grid;
+  justify-items: end;
+  gap: 2px;
+  min-width: 0;
+  text-align: right;
+}
+.portal-layout .finding-card .finding-identity strong {
+  font-size: 14px;
+}
+.portal-layout .review-scope-grid > div {
+  box-sizing: border-box;
+  min-height: 120px;
+  padding: 16px 18px;
+  align-content: start;
+}
+.portal-layout .review-scope-grid small {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.portal-layout .panel > form.validation-filters {
+  box-sizing: border-box;
+  width: auto;
+  margin: 4px 20px 8px;
+  display: flex;
+  align-items: end;
+  gap: 16px;
+}
+.portal-layout .panel > form.validation-filters > label {
+  flex: 1 1 0;
+  min-width: 0;
+}
+.portal-layout .panel > form.validation-filters > button {
+  flex: 0 0 auto;
+  min-height: 42px;
+}
+.portal-layout .finding-group-heading {
+  padding: 18px 20px 0;
+}
+.portal-layout .finding-group .finding-list {
+  padding: 12px 20px 20px;
+  gap: 16px;
+}
+.portal-layout .finding-card {
+  box-sizing: border-box;
+  padding: 20px;
+}
+.portal-layout .finding-card .evidence-list {
+  gap: 12px;
+}
+.portal-layout .finding-card .evidence-list > * {
+  box-sizing: border-box;
+  flex: 1 1 180px;
+  min-height: 72px;
+  margin: 0;
+}
+@media (max-width: 900px) {
+  .portal-layout .panel > form.validation-filters {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .portal-layout .panel > form.validation-filters > label,
+  .portal-layout .panel > form.validation-filters > button {
+    flex: 1 1 auto;
+    width: 100%;
   }
 }

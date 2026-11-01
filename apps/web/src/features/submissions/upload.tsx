@@ -21,6 +21,7 @@ import { useApiQuery, useScope } from "@/lib/api/hooks";
 import { ApiError, isUUID, wasReplayed } from "@/lib/api/client";
 import { saveBlob } from "@/lib/download";
 import type { components } from "@/lib/api/generated";
+import { AcademicYearSelect } from "@/components/academic-year-select";
 import { useSubmissionContext, validAcademicYear } from "./data";
 import {
   StudentEntry,
@@ -401,19 +402,17 @@ export function CandidateUpload() {
                 </label>
                 <label>
                   Academic year
-                  <input
+                  <AcademicYearSelect
                     value={year}
-                    onChange={(event) => {
+                    onChange={(next) => {
                       draftChanged();
-                      setYear(event.target.value);
+                      setYear(next);
                     }}
-                    placeholder="2026-27"
-                    maxLength={7}
-                    aria-describedby="upload-year-help"
+                    describedBy="upload-year-help"
                   />
                   <span id="upload-year-help" className="form-help">
-                    Consecutive years, YYYY-YY. Applied to entered rows; must
-                    match uploaded file records.
+                    Consecutive years, such as 2026-27. Applied to entered
+                    rows; must match uploaded file records.
                   </span>
                 </label>
                 <fieldset className="upload-input-modes">

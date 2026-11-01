@@ -5,3 +5,8 @@ export function validAcademicYear(value: string): boolean {
     Number(value.slice(-2)) === (Number(value.slice(0, 4)) + 1) % 100
   );
 }
+
+/** Demo window, with the seeded year 2026-27 first. */
+export function academicYearChoices(): string[] {
+  return ["2026-27", "2024-25", "2025-26", "2027-28", "2028-29"];
+}

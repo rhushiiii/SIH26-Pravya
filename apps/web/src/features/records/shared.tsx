@@ -13,6 +13,20 @@ export const VALIDATION_STATUSES: ValidationStatus[] = [
   "INCOMPLETE",
 ];
 
+export const ENROLLMENT_STATUSES = [
+  "ACTIVE",
+  "WITHDRAWN",
+  "TRANSFERRED",
+  "COMPLETED",
+] as const;
+
+export function enrollmentLabel(status: (typeof ENROLLMENT_STATUSES)[number]) {
+  if (status === "ACTIVE") return "Active";
+  if (status === "WITHDRAWN") return "Withdrawn";
+  if (status === "TRANSFERRED") return "Transferred";
+  return "Completed";
+}
+
 export { snapshotLabel };
 
 export function validationTone(status: RecordRow["validation_status"]) {

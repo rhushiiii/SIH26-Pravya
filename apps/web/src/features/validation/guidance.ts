@@ -14,11 +14,11 @@ export const FINDING_CATEGORY_LABEL: Record<
   },
   anomaly: {
     title: "Possible duplicates & anomalies",
-    hint: "Records that may overlap with another row or another institution's data. These are review signals, not fraud determinations.",
+    hint: "Records that may overlap with another row or another institution's data.",
   },
   capacity: {
     title: "Capacity & intake issues",
-    hint: "Candidate counts compared against configured DEMO intake rules, not official AICTE policy.",
+    hint: "Candidate counts compared with the configured intake for this year and category.",
   },
 };
 
@@ -66,7 +66,7 @@ const guidance: Record<
     title: "APAAR format issue",
     category: "data_quality",
     what: "The nonempty APAAR value does not match the configured local format.",
-    next: "Check the source value and correct it if appropriate. This local syntax check does not verify identity.",
+    next: "Check the source value and correct it in a new complete submission if appropriate.",
   },
   DUPLICATE_COLLEGE_STUDENT_ID: {
     title: "Duplicate student ID in this file",
@@ -78,7 +78,7 @@ const guidance: Record<
     title: "Possible duplicate within this file",
     category: "anomaly",
     what: "A structurally matching APAAR token appears on another row in this candidate.",
-    next: "Review both source records. This is a possible overlap, not proof of fraud or identity verification.",
+    next: "Review both source records before deciding whether they refer to the same person.",
   },
   POTENTIAL_CROSS_INSTITUTION_DUPLICATE: {
     title: "Possible match at another institution",
@@ -86,17 +86,23 @@ const guidance: Record<
     what: "A matching token was found in another institution's records.",
     next: "Treat this as a possible overlap; transfers or withdrawals may explain it. Officer review may be needed.",
   },
+  INTAKE_CATEGORY_EXCEEDED: {
+    title: "Over configured capacity",
+    category: "capacity",
+    what: "The candidate count is over the approved intake for this category.",
+    next: "Compare the candidate with the configured intake rule.",
+  },
   INTAKE_EXCEEDED: {
     title: "Over configured capacity",
     category: "capacity",
     what: "The candidate count exceeds the configured capacity for this year and category.",
-    next: "Compare the candidate with the institution's configured intake rule. This is not an official AICTE violation.",
+    next: "Compare the candidate with the institution's configured intake rule.",
   },
   MISSING_INTAKE_RULE: {
     title: "No capacity configured",
     category: "capacity",
     what: "No configured capacity was available for this year and category.",
-    next: "Ask an administrator to review the intake configuration; no official capacity conclusion is implied.",
+    next: "Ask an administrator to review the intake configuration.",
   },
 };
 
@@ -105,6 +111,14 @@ const fallbackGuidance = {
   category: "data_quality" as FindingCategory,
   next: "Review the evidence with your data administrator. Submitted rows are immutable; corrections use a new complete CSV.",
 };
+
+/** Drop a repeated official-check tail. The page banner already says this. */
+export function findingReason(explanation: string): string {
+  return explanation
+    .replace(/;\s*not official policy$/i, "")
+    .replace(/;\s*no regulatory violation inferred$/i, "")
+    .replace(/;\s*not official APAAR verification$/i, "");
+}
 
 export function findingGuidance(finding: Finding) {
   const entry = guidance[finding.rule_code];

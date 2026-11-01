@@ -13,6 +13,7 @@ import { Pagination } from "@/components/ui/pagination";
 import { isUUID } from "@/lib/api/client";
 import { useDraftFilters } from "@/lib/api/hooks";
 import { snapshotLabel, snapshotTone, when } from "@/lib/format";
+import { AcademicYearSelect } from "@/components/academic-year-select";
 import { useSubmissionContext, validAcademicYear, type History } from "./data";
 
 export function SubmissionHistory({
@@ -151,14 +152,12 @@ export function SubmissionHistory({
                 </label>
                 <label>
                   Academic year
-                  <input
+                  <AcademicYearSelect
                     value={draft.year}
-                    onChange={(event) =>
-                      setDraft({ ...draft, year: event.target.value })
-                    }
-                    placeholder="All years"
-                    maxLength={7}
-                    aria-describedby="history-year-help"
+                    allowEmpty
+                    emptyLabel="All years"
+                    describedBy="history-year-help"
+                    onChange={(year) => setDraft({ ...draft, year })}
                   />
                 </label>
                 <button className="button secondary" type="submit">
@@ -172,7 +171,7 @@ export function SubmissionHistory({
                   Clear filters
                 </button>
                 <p id="history-year-help" className="form-help">
-                  Year format: YYYY-YY, for example 2026-27.
+                  Choose a consecutive academic year, or all years.
                 </p>
                 {formError && (
                   <p className="form-error" role="alert">

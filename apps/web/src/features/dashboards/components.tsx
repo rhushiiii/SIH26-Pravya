@@ -4,6 +4,7 @@ import { usePrefersReducedMotion as useReducedMotion } from "@/components/fx/use
 export { valueObject, countValue, displayCount } from "@/lib/format";
 import { displayCount } from "@/lib/format";
 
+import { AcademicYearSelect } from "@/components/academic-year-select";
 import { categoryLabel } from "@/features/intake/shared";
 
 export const prettyLabel = categoryLabel;
@@ -232,14 +233,7 @@ export function DashboardFilters({
     >
       <label>
         Academic year
-        <input
-          value={year}
-          onChange={(event) => setYear(event.target.value)}
-          aria-label="Academic year"
-          placeholder="2026-27"
-          inputMode="numeric"
-          pattern="[0-9]{4}-[0-9]{2}"
-        />
+        <AcademicYearSelect value={year} onChange={setYear} />
       </label>
       {children}
       <button className="button secondary" type="submit">
