@@ -117,7 +117,7 @@ export function CredentialList() {
           are never listed. Issue or revoke from a record&apos;s detail page.
         </p>
       </div>
-      <section className="panel" aria-labelledby="cred-title">
+      <section className="panel credentials-list" aria-labelledby="cred-title">
         <header className="panel-heading">
           <div>
             <p className="eyebrow">ISSUED</p>

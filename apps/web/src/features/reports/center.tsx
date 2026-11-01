@@ -31,7 +31,7 @@ type Kind =
   | "open-cases"
   | "verification-activity";
 type Filters = {
-  categoryScheme: "RESERVATION" | "LEGACY";
+  categoryScheme: "RESERVATION" | "LEGACY" | "";
   year: string;
   institution: string;
   region: string;
@@ -105,7 +105,7 @@ const REPORTS: {
 ];
 
 const EMPTY: Filters = {
-  categoryScheme: "RESERVATION",
+  categoryScheme: "",
   year: "",
   institution: "",
   region: "",
@@ -137,14 +137,15 @@ function ReportCard({
   const set = (key: keyof Filters, value: string) => {
     setFilters((f) => ({ ...f, [key]: value }));
     setPreview(null);
+    setStatus("");
+    setValidation("");
   };
 
   const buildQuery = (overrideFormat: Format) => {
-    const query = new URLSearchParams({
-      format: overrideFormat,
-      category_scheme: filters.categoryScheme,
-    });
-    if (filters.year) query.set("academic_year", filters.year);
+    const query = new URLSearchParams({ format: overrideFormat });
+    if (filters.categoryScheme)
+      query.set("category_scheme", filters.categoryScheme);
+    if (filters.year.trim()) query.set("academic_year", filters.year.trim());
     if (!fixedInstitution && filters.institution)
       query.set("institution_id", filters.institution);
     if (filters.region) query.set("region", filters.region);
@@ -194,7 +195,13 @@ function ReportCard({
   });
 
   function validateFilters(): boolean {
-    if (filters.year && !validAcademicYear(filters.year)) {
+    if (!filters.categoryScheme) {
+      setValidation(
+        "Choose a category scheme before previewing or downloading.",
+      );
+      return false;
+    }
+    if (!validAcademicYear(filters.year.trim())) {
       setValidation("Enter a consecutive academic year, for example 2026-27.");
       return false;
     }
@@ -219,6 +226,9 @@ function ReportCard({
         not sum groups as headcount. Unknown legacy classifications are
         unavailable.
       </p>
+      <p className="form-help">
+        Choose a category scheme and academic year to preview or download.
+      </p>
       <form
         className="dashboard-filters"
         onSubmit={(event) => {
@@ -231,7 +241,9 @@ function ReportCard({
           <select
             value={filters.categoryScheme}
             onChange={(e) => set("categoryScheme", e.target.value)}
+            aria-required="true"
           >
+            <option value="">Choose category scheme</option>
             <option value="RESERVATION">Reservation categories</option>
             <option value="LEGACY">Legacy admission categories</option>
           </select>
@@ -241,7 +253,8 @@ function ReportCard({
           <input
             value={filters.year}
             onChange={(e) => set("year", e.target.value)}
-            placeholder="All years, or 2026-27"
+            placeholder="2026-27"
+            aria-required="true"
           />
         </label>
         {!fixedInstitution && (
@@ -401,10 +414,13 @@ export function ReportCenter() {
   const regions = regionsOf(list);
   const year = search.get("academic_year") ?? "";
   const institution = search.get("institution_id") ?? "";
+  const categoryScheme = search.get("category_scheme");
   const initial: Filters = {
     ...EMPTY,
     categoryScheme:
-      search.get("category_scheme") === "LEGACY" ? "LEGACY" : "RESERVATION",
+      categoryScheme === "LEGACY" || categoryScheme === "RESERVATION"
+        ? categoryScheme
+        : "",
     year: validAcademicYear(year) ? year : "",
     institution: list.some((i) => i.id === institution) ? institution : "",
     region: regions.includes(search.get("region") ?? "")

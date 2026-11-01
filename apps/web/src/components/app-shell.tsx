@@ -81,6 +81,16 @@ export function AppShell({ children }: { children: ReactNode }) {
                 label: "Upload candidate",
                 icon: "upload" as const,
               },
+              {
+                href: "/institution/simulator",
+                label: "What-if simulator",
+                icon: "grid" as const,
+              },
+              {
+                href: "/institution/integrity",
+                label: "Integrity signals",
+                icon: "flag" as const,
+              },
             ]
           : [
               {
@@ -177,6 +187,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         [
           destination,
           "/institution/upload",
+          "/institution/simulator",
           "/aicte/institutions",
           "/analytics",
         ].includes(link.href),
@@ -194,6 +205,7 @@ export function AppShell({ children }: { children: ReactNode }) {
             "/verify",
             "/verify/log",
             "/cases",
+            "/institution/integrity",
           ].includes(link.href) && link.href !== destination,
       ),
     },

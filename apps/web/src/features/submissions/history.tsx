@@ -107,7 +107,10 @@ export function SubmissionHistory({
                 enrolment totals.
               </span>
             </div>
-            <section className="panel" aria-labelledby="history-title">
+            <section
+              className="panel submission-history-panel"
+              aria-labelledby="history-title"
+            >
               <header className="panel-heading">
                 <div>
                   <p className="eyebrow">SUBMISSION REGISTER</p>

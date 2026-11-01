@@ -234,7 +234,7 @@ export function RecordRegistry() {
               )
             ) : (
               <div
-                className="table-scroll"
+                className="table-scroll registry-table"
                 tabIndex={0}
                 role="region"
                 aria-label="Student records"

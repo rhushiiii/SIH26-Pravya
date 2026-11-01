@@ -65,6 +65,9 @@
   gap: 16px;
   flex-wrap: wrap;
 }
+.portal-layout .simulator-page > .page-heading {
+  display: block;
+}
 .portal-layout :is(h1, h2, h3) {
   color: var(--ui-text);
   letter-spacing: -0.025em;
@@ -158,9 +161,51 @@
 }
 .portal-layout .dashboard-grid > * {
   grid-column: span 6;
+  align-self: start;
 }
 .portal-layout .dashboard-grid > .dashboard-coverage-panel {
   grid-column: 1 / -1;
+}
+.portal-layout .dashboard-grid .institution-category-note {
+  max-width: none;
+  margin: 0;
+  padding: 16px 20px;
+  color: var(--ui-muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
+.portal-layout
+  :is(
+    .dashboard-grid .dashboard-table,
+    .dashboard-page > .panel > .table-scroll
+  ) {
+  margin-inline: clamp(14px, 2.2vw, 24px);
+}
+.portal-layout .institution-coverage-table table {
+  min-width: 0;
+  table-layout: fixed;
+}
+.portal-layout .institution-coverage-table :is(th, td) {
+  min-width: 0;
+  padding-inline: 12px;
+  overflow-wrap: anywhere;
+}
+.portal-layout .institution-coverage-table :is(th, td):nth-child(1) {
+  width: 32%;
+}
+.portal-layout .institution-coverage-table :is(th, td):nth-child(2) {
+  width: 36%;
+}
+.portal-layout .institution-coverage-table :is(th, td):nth-child(n + 3) {
+  width: 16%;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.portal-layout .institution-intake-table table {
+  min-width: 860px;
+}
+.portal-layout .institution-recent-table table {
+  min-width: 720px;
 }
 .portal-layout :is(.dashboard-metric, .review-count-card) {
   position: relative;
@@ -295,6 +340,15 @@
   border: 1px solid var(--ui-line);
   border-radius: 12px;
   background: #fff;
+}
+.portal-layout
+  :is(
+    .analytics-results .dashboard-table,
+    .registry-table,
+    .credentials-list .table-scroll,
+    .submission-history-panel .table-scroll
+  ) {
+  margin-inline: clamp(14px, 2.2vw, 24px);
 }
 .portal-layout table {
   width: 100%;
@@ -472,6 +526,9 @@
   }
 }
 @media (max-width: 600px) {
+  .portal-layout .institution-coverage-table table {
+    min-width: 480px;
+  }
   .portal-layout
     :is(
       .dashboard-page,

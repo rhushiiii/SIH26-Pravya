@@ -7,8 +7,6 @@ import { EmptyState, ErrorPanel, Loading } from "@/components/ui/feedback";
 import { useSession } from "@/features/auth/session";
 import { useApiQuery, useScope } from "@/lib/api/hooks";
 import { DeclaredTotalsPanel } from "@/features/intake/declarations-panel";
-import { IntegritySignalsPanel } from "@/features/integrity/panel";
-import { SimulatorPanel } from "@/features/intake/simulator-panel";
 import {
   History,
   Programmes,
@@ -347,6 +345,7 @@ export function InstitutionDashboard({
               note="Illustrative category rules; not official AICTE compliance"
             />
           </section>
+          <DeclaredTotalsPanel institutionId={institutionId} />
           <div className="dashboard-grid">
             <section
               className="panel"
@@ -361,7 +360,7 @@ export function InstitutionDashboard({
                 </div>
                 <span className="status-badge neutral">Local accounting</span>
               </header>
-              <p className="data-note">
+              <p className="data-note institution-category-note">
                 PwD overlaps the primary reservation categories; do not add it
                 to the student total. Legacy classifications may be unavailable.
               </p>
@@ -393,11 +392,13 @@ export function InstitutionDashboard({
                 </div>
                 <CoverageBadge status={coverageStatus} />
               </header>
-              <DashboardTable label="Programme declaration coverage">
+              <DashboardTable
+                label="Programme declaration coverage"
+                className="institution-coverage-table"
+              >
                 <thead>
                   <tr>
                     <th scope="col">Programme</th>
-                    <th scope="col">Programme code</th>
                     <th scope="col">Status</th>
                     <th scope="col">Declared</th>
                     <th scope="col">Active</th>
@@ -411,8 +412,8 @@ export function InstitutionDashboard({
                         <th scope="row">
                           {programmeNames.get(item.programme_id) ??
                             item.programme_code}
+                          <small>{item.programme_code}</small>
                         </th>
-                        <td>{item.programme_code}</td>
                         <td>
                           {item.has_current_snapshot ? (
                             <span className="status-badge active">
@@ -439,7 +440,7 @@ export function InstitutionDashboard({
                   })}
                   {summaryPrograms.length === 0 && (
                     <tr>
-                      <td colSpan={5}>No programmes match this filter.</td>
+                      <td colSpan={4}>No programmes match this filter.</td>
                     </tr>
                   )}
                 </tbody>
@@ -471,7 +472,10 @@ export function InstitutionDashboard({
                 programme selection.
               </EmptyState>
             ) : (
-              <DashboardTable label="Current category records compared with configured intake">
+              <DashboardTable
+                label="Current category records compared with configured intake"
+                className="institution-intake-table"
+              >
                 <thead>
                   <tr>
                     <th scope="col">Programme</th>
@@ -521,11 +525,6 @@ export function InstitutionDashboard({
                 </tbody>
               </DashboardTable>
             )}
-            <p className="data-note">
-              These comparisons show declared records against configured
-              capacities by programme and category. They do not establish an
-              official AICTE violation.
-            </p>
           </section>
           <section className="panel" aria-labelledby="recent-submissions-title">
             <header className="panel-heading">
@@ -556,7 +555,10 @@ export function InstitutionDashboard({
                 year.
               </EmptyState>
             ) : (
-              <DashboardTable label="Recent institution submissions">
+              <DashboardTable
+                label="Recent institution submissions"
+                className="institution-recent-table"
+              >
                 <thead>
                   <tr>
                     <th scope="col">Received</th>
@@ -598,16 +600,6 @@ export function InstitutionDashboard({
               </DashboardTable>
             )}
           </section>
-        </>
-      )}
-      {valid && (
-        <>
-          <IntegritySignalsPanel
-            institutionId={institutionId}
-            canDecide={false}
-          />
-          <DeclaredTotalsPanel institutionId={institutionId} />
-          <SimulatorPanel institutionId={institutionId} />
         </>
       )}
       <p className="data-note">

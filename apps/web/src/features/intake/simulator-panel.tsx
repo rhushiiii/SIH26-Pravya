@@ -75,14 +75,9 @@ export function SimulatorPanel({ institutionId }: { institutionId: string }) {
           <p className="eyebrow">WHAT-IF · DEMO RULES</p>
           <h2 id="simulator-title">What-if simulator</h2>
         </div>
-        <span className="quiet-label">Simulation only</span>
       </header>
       <div className="panel-padding">
         <DemoRuleNotice />
-        <p className="form-help">
-          Simulation only — no data was changed. Enter hypothetical additions to
-          see them against the current snapshot and the DEMO rules.
-        </p>
         <form
           className="intake-sim-form"
           onSubmit={(e) => {
@@ -221,11 +216,6 @@ export function SimulatorPanel({ institutionId }: { institutionId: string }) {
                 onChange={(e) => setPwdCount(e.target.value)}
               />
             </label>
-            <p className="form-help">
-              PwD is reported as an overlapping count and is not added as a
-              separate reservation category. It cannot exceed the total
-              main-category additions.
-            </p>
           </fieldset>
         </form>
         {error && (
@@ -238,8 +228,7 @@ export function SimulatorPanel({ institutionId }: { institutionId: string }) {
         <div className="panel-padding" aria-live="polite">
           <h3>Simulation result</h3>
           <p className="form-help">
-            Simulation only — no data was changed. Rule version{" "}
-            {run.data.rule_version} · {run.data.source_label}.{" "}
+            Rule version {run.data.rule_version} · {run.data.source_label}.{" "}
             {run.data.has_current_snapshot
               ? "“Before” counts are ACTIVE records in the current snapshot."
               : "No current snapshot exists, so “before” counts are 0."}
@@ -289,10 +278,6 @@ export function SimulatorPanel({ institutionId }: { institutionId: string }) {
             </tbody>
           </ScrollTable>
           <p className="data-note">{run.data.notice}</p>
-          <p className="form-help">
-            The PwD reporting row overlaps the four main categories and is
-            excluded from their sum.
-          </p>
         </div>
       )}
     </section>

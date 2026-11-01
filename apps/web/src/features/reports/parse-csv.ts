@@ -7,13 +7,17 @@ function parseRows(text: string): string[][] {
   let field = "";
   let inQuotes = false;
   let index = 0;
+  let recordStart = 0;
   const push = () => {
     row.push(field);
     field = "";
   };
   const endRow = () => {
     push();
-    rows.push(row);
+    // Keep physical blank records as separators; quoted empty cells are data.
+    const isBlank =
+      index === recordStart || text.slice(recordStart, index) === "\r";
+    rows.push(isBlank ? [] : row);
     row = [];
   };
   while (index < text.length) {
@@ -50,13 +54,14 @@ function parseRows(text: string): string[][] {
     if (char === "\n") {
       endRow();
       index += 1;
+      recordStart = index;
       continue;
     }
     field += char;
     index += 1;
   }
   if (field !== "" || row.length > 0) endRow();
-  return rows.filter((r) => !(r.length === 1 && r[0] === ""));
+  return rows;
 }
 
 export type ReportTable = {
