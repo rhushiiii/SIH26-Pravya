@@ -18,6 +18,8 @@ import {
   useInstitutionOptions,
   type InstitutionPage,
 } from "@/features/institutions/options";
+import { DashboardTable } from "@/features/dashboards/components";
+import { parseReportCsv, type ParsedReport } from "./parse-csv";
 
 type Format = "csv" | "xlsx" | "pdf";
 type Kind =
@@ -77,14 +79,14 @@ const REPORTS: {
     kind: "resolution-times",
     title: "Resolution times",
     description: "How long cases take to resolve, by priority.",
-    roles: ["INSTITUTION_ADMIN", "AICTE_OFFICER", "AICTE_MANAGER"],
+    roles: ["INSTITUTION_ADMIN", "AICTE_OFFICER"],
     cases: true,
   },
   {
     kind: "validation-findings",
     title: "Validation findings",
     description: "Counts of validation findings by rule and severity.",
-    roles: ["INSTITUTION_ADMIN", "AICTE_OFFICER", "AICTE_MANAGER"],
+    roles: ["INSTITUTION_ADMIN", "AICTE_OFFICER"],
     cases: true,
   },
   {
@@ -130,26 +132,34 @@ function ReportCard({
   const [format, setFormat] = useState<Format>("csv");
   const [validation, setValidation] = useState("");
   const [status, setStatus] = useState("");
+  const [preview, setPreview] = useState<ParsedReport | null>(null);
   const id = `report-${report.kind}`;
-  const set = (key: keyof Filters, value: string) =>
+  const set = (key: keyof Filters, value: string) => {
     setFilters((f) => ({ ...f, [key]: value }));
+    setPreview(null);
+  };
+
+  const buildQuery = (overrideFormat: Format) => {
+    const query = new URLSearchParams({
+      format: overrideFormat,
+      category_scheme: filters.categoryScheme,
+    });
+    if (filters.year) query.set("academic_year", filters.year);
+    if (!fixedInstitution && filters.institution)
+      query.set("institution_id", filters.institution);
+    if (filters.region) query.set("region", filters.region);
+    if (filters.programme.trim())
+      query.set("programme_code", filters.programme.trim());
+    if (report.cases) {
+      if (filters.priority) query.set("priority", filters.priority);
+      if (filters.severity) query.set("severity", filters.severity);
+    }
+    return query;
+  };
 
   const exportReport = useMutation({
     mutationFn: () => {
-      const query = new URLSearchParams({
-        format,
-        category_scheme: filters.categoryScheme,
-      });
-      if (filters.year) query.set("academic_year", filters.year);
-      if (!fixedInstitution && filters.institution)
-        query.set("institution_id", filters.institution);
-      if (filters.region) query.set("region", filters.region);
-      if (filters.programme.trim())
-        query.set("programme_code", filters.programme.trim());
-      if (report.cases) {
-        if (filters.priority) query.set("priority", filters.priority);
-        if (filters.severity) query.set("severity", filters.severity);
-      }
+      const query = buildQuery(format);
       return download(`/reports/${report.kind}?${query}`, undefined, {
         accept: FORMATS[format].accept,
         fallbackName: `${report.kind}.${format}`,
@@ -163,12 +173,37 @@ function ReportCard({
     },
   });
 
-  function submit() {
+  const previewReport = useMutation({
+    mutationFn: async () => {
+      // Preview always reads the CSV structure, regardless of the selected
+      // download format, since it is the one text-based, parseable format.
+      const query = buildQuery("csv");
+      const { blob } = await download(
+        `/reports/${report.kind}?${query}`,
+        undefined,
+        {
+          accept: FORMATS.csv.accept,
+          fallbackName: `${report.kind}.csv`,
+        },
+      );
+      return parseReportCsv(await blob.text());
+    },
+    retry: false,
+    onMutate: () => setStatus(""),
+    onSuccess: (parsed) => setPreview(parsed),
+  });
+
+  function validateFilters(): boolean {
     if (filters.year && !validAcademicYear(filters.year)) {
       setValidation("Enter a consecutive academic year, for example 2026-27.");
-      return;
+      return false;
     }
     setValidation("");
+    return true;
+  }
+
+  function submit() {
+    if (!validateFilters()) return;
     exportReport.mutate();
   }
 
@@ -262,6 +297,17 @@ function ReportCard({
           </select>
         </label>
         <button
+          className="button secondary"
+          type="button"
+          disabled={previewReport.isPending}
+          aria-describedby={`${id}-status`}
+          onClick={() => {
+            if (validateFilters()) previewReport.mutate();
+          }}
+        >
+          {previewReport.isPending ? "Loading preview…" : "Preview report"}
+        </button>
+        <button
           className="button"
           type="submit"
           disabled={exportReport.isPending}
@@ -283,9 +329,63 @@ function ReportCard({
             ` Request reference: ${exportReport.error.requestId}`}
         </p>
       )}
+      {previewReport.isError && (
+        <p className="form-error" role="alert">
+          Preview could not be loaded. {errorMessage(previewReport.error)}
+        </p>
+      )}
       <p id={`${id}-status`} aria-live="polite" className="data-note">
-        {exportReport.isPending ? "Preparing report…" : status}
+        {exportReport.isPending
+          ? "Preparing report…"
+          : previewReport.isPending
+            ? "Loading preview…"
+            : status}
       </p>
+      {preview && (
+        <div className="report-preview">
+          <p className="data-note">
+            Preview of the report data (CSV structure). The downloaded file will
+            match this content in your selected format.
+          </p>
+          <div className="metadata-grid report-preview-meta">
+            {preview.metadata.map(([key, value]) => (
+              <div className="metadata-item" key={key}>
+                <span className="tiny-label">{key}</span>
+                <strong>{value || "—"}</strong>
+              </div>
+            ))}
+          </div>
+          {preview.tables.map((table) => (
+            <div key={table.title} className="report-preview-table">
+              <h3>{table.title}</h3>
+              {table.rows.length === 0 ? (
+                <p className="data-note">No data.</p>
+              ) : (
+                <DashboardTable label={table.title}>
+                  <thead>
+                    <tr>
+                      {table.columns.map((column) => (
+                        <th scope="col" key={column}>
+                          {column.replaceAll("_", " ")}
+                        </th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {table.rows.map((row, rowIndex) => (
+                      <tr key={rowIndex}>
+                        {row.map((cell, cellIndex) => (
+                          <td key={cellIndex}>{cell || "—"}</td>
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </DashboardTable>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
     </section>
   );
 }
@@ -323,6 +423,8 @@ export function ReportCenter() {
           reconcile with the analytics views for the same filters. Every report
           is labelled <strong>{DEMO_TAG}</strong>: all records are synthetic.
           {fixedInstitution && " Reports are limited to your institution."}
+          {role === "AICTE_MANAGER" &&
+            " As manager, you see coverage and trend reports only; case-by-case detail (resolution times, validation findings) is an officer function."}
         </p>
       </header>
       {institutions.isError && (

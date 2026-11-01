@@ -68,6 +68,16 @@ def seed_demo(session: Session, settings: Settings) -> dict[str, int]:
     if settings.app_env != "local" or not settings.demo_auth:
         raise ValueError("Seeding requires explicitly enabled local demo mode")
     created = 0
+    institution_names = {
+        "cedar": "Cedarbrook Institute of Technology",
+        "maple": "Maplewood College of Engineering",
+        "willow": "Willowgate Polytechnic",
+    }
+    institution_regions = {
+        "cedar": "Northern Zone",
+        "maple": "Western Zone",
+        "willow": "Southern Zone",
+    }
     for index, slug in enumerate(("cedar", "maple", "willow"), start=1):
         institution_id = seed_id("institutions", slug)
         created += ensure_fixture(
@@ -75,9 +85,9 @@ def seed_demo(session: Session, settings: Settings) -> dict[str, int]:
             Institution,
             slug,
             {
-                "permanent_id": f"DEMO-INST-{index:03d}",
-                "name": f"Demo {slug.title()} Institute",
-                "region": f"DEMO_REGION_{index}",
+                "permanent_id": f"INST-2026-{index:03d}",
+                "name": institution_names[slug],
+                "region": institution_regions[slug],
                 "active": True,
             },
             institution_id,

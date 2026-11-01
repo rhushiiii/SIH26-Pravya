@@ -120,7 +120,7 @@ def test_issue_and_verify_valid(
     assert payload["jti"] == body["credential"]["id"]
     assert payload["exp"] - payload["iat"] == 365 * 86400
     assert payload["claims"] == {
-        "institution_name": "Demo Cedar Institute",
+        "institution_name": "Cedarbrook Institute of Technology",
         "programme_code": "DEMO-COMP",
         "academic_year": "2026-27",
         "admission_category": "REGULAR",
@@ -144,7 +144,7 @@ def test_issue_and_verify_valid(
         "issued_at",
         "expires_at",
     }
-    assert outcome["claims"]["institution_name"] == "Demo Cedar Institute"
+    assert outcome["claims"]["institution_name"] == "Cedarbrook Institute of Technology"
     # Officers may verify too.
     assert verify(client, auth_headers("demo_officer_2"), token).json()["outcome"] == (
         "VALID"
@@ -310,7 +310,10 @@ def test_expired_credential(
     application.dependency_overrides[utc_now] = lambda: later
     result = verify(client, auth_headers("demo_verifier"), token)
     assert result.json()["outcome"] == "EXPIRED"
-    assert result.json()["claims"]["institution_name"] == "Demo Cedar Institute"
+    assert (
+        result.json()["claims"]["institution_name"]
+        == "Cedarbrook Institute of Technology"
+    )
 
 
 def test_ttl_setting_controls_expiry(

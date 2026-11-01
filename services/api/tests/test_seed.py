@@ -42,9 +42,9 @@ def test_seed_conflict_rolls_back_partial_work(
     db_session.add(
         Institution(
             id=seed_id("institutions", "maple"),
-            permanent_id="DEMO-INST-002",
+            permanent_id="INST-2026-002",
             name="Conflicting synthetic name",
-            region="DEMO_REGION_2",
+            region="Western Zone",
             active=True,
         )
     )

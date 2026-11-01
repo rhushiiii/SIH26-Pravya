@@ -119,7 +119,7 @@ export function InstitutionProfile({
               aria-labelledby="institution-name"
             >
               <div className="institution-emblem" aria-hidden="true">
-                {data.name.replace("Demo ", "").slice(0, 2).toUpperCase()}
+                {data.name.slice(0, 2).toUpperCase()}
               </div>
               <div className="profile-identity">
                 <p className="tiny-label">SYNTHETIC INSTITUTION</p>

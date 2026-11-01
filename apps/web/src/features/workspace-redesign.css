@@ -127,7 +127,8 @@
     .review-subsection,
     .intake-assessment,
     .intake-history,
-    .intake-sim-form
+    .intake-sim-form,
+    .validation-action
   ) {
   padding: clamp(16px, 2.2vw, 24px);
 }
@@ -263,21 +264,14 @@
   :is(
     .button.primary,
     .button:not(.secondary):not(.ghost):not(.danger),
-    .activation-button,
-    .validation-action
+    .activation-button
   ) {
   border-color: var(--ui-accent);
   background: var(--ui-accent-action);
   color: #fff;
 }
 .portal-layout
-  :is(
-    .button,
-    .activation-button,
-    .validation-action,
-    .tab-list button,
-    .institution-tabs button
-  ) {
+  :is(.button, .activation-button, .tab-list button, .institution-tabs button) {
   border-radius: 10px;
   transition:
     background-color 180ms var(--ui-ease),
@@ -289,7 +283,7 @@
   background: #fff;
   color: var(--ui-text);
 }
-.portal-layout :is(.button, .activation-button, .validation-action) {
+.portal-layout :is(.button, .activation-button) {
   min-height: 40px;
   padding: 9px 14px;
 }

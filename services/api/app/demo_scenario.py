@@ -135,7 +135,9 @@ def parse_report_csv(
         if row[0].startswith("# ") and len(row) == 2:
             metadata[row[0][2:]] = row[1]
         elif row[0].startswith("# "):
-            header = rows[index]
+            # Header cells are display text ("declared records"); callers key
+            # rows by the underlying column name ("declared_records").
+            header = [cell.replace(" ", "_") for cell in rows[index]]
             index += 1
             body: list[dict[str, str]] = []
             while index < len(rows) and rows[index]:
@@ -560,7 +562,9 @@ class Scenario:
             )["pagination"]["total"]
             self.fresh = self.fresh and total == 0
         self.ctx["fresh"] = self.fresh
-        policy = self.get("cedar_admin", f"{API}/submissions/upload-policy")
+        policy = self.get(
+            "cedar_admin", f"{API}/submissions/upload-policy", schema_version="v1"
+        )
         self.expect_eq(
             "upload policy lists strict v1 headers",
             policy["required_headers"],
@@ -1238,7 +1242,7 @@ class Scenario:
         self.expect_eq(
             "report echoes the applied filters",
             meta["Filters applied"],
-            f"academic_year={YEAR}; institution_id={cedar}",
+            f"academic_year={YEAR}; institution_id={cedar}; category_scheme=LEGACY",
         )
         _, tables = self.export("intake-utilisation", **filters)
         detail = [

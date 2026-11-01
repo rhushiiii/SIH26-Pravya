@@ -27,7 +27,12 @@ import {
 import { saveBlob } from "@/lib/download";
 import type { components } from "@/lib/api/generated";
 import { countValue, plain, valueObject, when } from "@/lib/format";
-import { findingGuidance, safeEvidence } from "./guidance";
+import {
+  FINDING_CATEGORY_LABEL,
+  findingGuidance,
+  safeEvidence,
+  type FindingCategory,
+} from "./guidance";
 
 type Run = components["schemas"]["RunResponse"];
 type RunPage = components["schemas"]["Page_RunResponse_"];
@@ -206,7 +211,9 @@ export function ValidationWorkspace({
           review_id: query.review_id,
           omission_page: query.omission_page,
         };
-    router.push(buildUrl(batchId, { ...current, ...changes }));
+    router.push(buildUrl(batchId, { ...current, ...changes }), {
+      scroll: false,
+    });
   };
 
   const baseKey = useScope("validation", batchId);
@@ -266,6 +273,19 @@ export function ValidationWorkspace({
     findingsPath,
     { enabled: isUUID(batchId) && isUUID(runId) },
   );
+  const findingCategoryOrder: FindingCategory[] = [
+    "data_quality",
+    "anomaly",
+    "capacity",
+  ];
+  const groupedFindings = findingCategoryOrder
+    .map((category) => ({
+      category,
+      items: (findings.data?.data ?? []).filter(
+        (finding) => findingGuidance(finding).category === category,
+      ),
+    }))
+    .filter((group) => group.items.length > 0);
 
   const validate = useMutation({
     mutationFn: () =>
@@ -1353,114 +1373,127 @@ export function ValidationWorkspace({
                 verification.
               </EmptyState>
             ) : (
-              <div className="finding-list">
-                {findings.data.data.map((finding: Finding) => {
-                  const copy = findingGuidance(finding);
-                  const evidence = safeEvidence(finding.evidence);
-                  const matchContext = finding.evidence.match_context;
-                  return (
-                    <article className="finding-card" key={finding.id}>
-                      <header>
-                        <div>
-                          <span
-                            className={`status-badge ${finding.classification === "ACTIVATION_BLOCKING" ? "warning" : "neutral"}`}
-                          >
-                            {finding.classification === "ACTIVATION_BLOCKING"
-                              ? "Activation-blocking"
-                              : "Reviewable"}
-                          </span>
-                          <span className="status-badge neutral">
-                            {finding.severity}
-                          </span>
-                          {finding.cross_current_freshness === "STALE" && (
-                            <span className="status-badge warning">
-                              Assessment stale
-                            </span>
-                          )}
-                        </div>
-                        <code>{finding.rule_code}</code>
-                      </header>
-                      {finding.rule_code ===
-                        "POTENTIAL_CROSS_INSTITUTION_DUPLICATE" && (
-                        <p
-                          className={`match-context ${matchContext === "CURRENT_ACTIVE" ? "current" : "informational"}`}
-                        >
-                          {crossLabel(
-                            matchContext,
-                            finding.cross_current_freshness,
-                          )}
-                        </p>
-                      )}
-                      {officer &&
-                        finding.rule_code ===
-                          "POTENTIAL_CROSS_INSTITUTION_DUPLICATE" && (
-                          <div className="finding-actions">
-                            {matchContext === "CURRENT_ACTIVE" &&
-                              finding.cross_current_freshness === "FRESH" && (
-                                <button
-                                  className="button primary small"
-                                  disabled={openReconciliation.isPending}
-                                  onClick={() => {
-                                    setCaseError("");
-                                    openReconciliation.mutate(finding);
-                                  }}
+              <>
+                {groupedFindings.map((group) => (
+                  <div className="finding-group" key={group.category}>
+                    <div className="finding-group-heading">
+                      <h3>{FINDING_CATEGORY_LABEL[group.category].title}</h3>
+                      <p>{FINDING_CATEGORY_LABEL[group.category].hint}</p>
+                    </div>
+                    <div className="finding-list">
+                      {group.items.map((finding: Finding) => {
+                        const copy = findingGuidance(finding);
+                        const evidence = safeEvidence(finding.evidence);
+                        const matchContext = finding.evidence.match_context;
+                        return (
+                          <article className="finding-card" key={finding.id}>
+                            <header>
+                              <div>
+                                <span
+                                  className={`status-badge ${finding.classification === "ACTIVATION_BLOCKING" ? "warning" : "neutral"}`}
                                 >
-                                  {openReconciliation.isPending
-                                    ? "Opening reconciliation…"
-                                    : "Investigate transfer or overlap"}
-                                </button>
+                                  {finding.classification ===
+                                  "ACTIVATION_BLOCKING"
+                                    ? "Activation-blocking"
+                                    : "Reviewable"}
+                                </span>
+                                <span className="status-badge neutral">
+                                  {finding.severity}
+                                </span>
+                                {finding.cross_current_freshness ===
+                                  "STALE" && (
+                                  <span className="status-badge warning">
+                                    Assessment stale
+                                  </span>
+                                )}
+                              </div>
+                              <code>{finding.rule_code}</code>
+                            </header>
+                            {finding.rule_code ===
+                              "POTENTIAL_CROSS_INSTITUTION_DUPLICATE" && (
+                              <p
+                                className={`match-context ${matchContext === "CURRENT_ACTIVE" ? "current" : "informational"}`}
+                              >
+                                {crossLabel(
+                                  matchContext,
+                                  finding.cross_current_freshness,
+                                )}
+                              </p>
+                            )}
+                            {officer &&
+                              finding.rule_code ===
+                                "POTENTIAL_CROSS_INSTITUTION_DUPLICATE" && (
+                                <div className="finding-actions">
+                                  {matchContext === "CURRENT_ACTIVE" &&
+                                    finding.cross_current_freshness ===
+                                      "FRESH" && (
+                                      <button
+                                        className="button primary small"
+                                        disabled={openReconciliation.isPending}
+                                        onClick={() => {
+                                          setCaseError("");
+                                          openReconciliation.mutate(finding);
+                                        }}
+                                      >
+                                        {openReconciliation.isPending
+                                          ? "Opening reconciliation…"
+                                          : "Investigate transfer or overlap"}
+                                      </button>
+                                    )}
+                                  <button
+                                    className="button secondary small"
+                                    disabled={openCase.isPending}
+                                    onClick={() => {
+                                      setCaseError("");
+                                      openCase.mutate(finding);
+                                    }}
+                                  >
+                                    {openCase.isPending
+                                      ? "Opening case…"
+                                      : "Open institution case"}
+                                  </button>
+                                </div>
                               )}
-                            <button
-                              className="button secondary small"
-                              disabled={openCase.isPending}
-                              onClick={() => {
-                                setCaseError("");
-                                openCase.mutate(finding);
-                              }}
-                            >
-                              {openCase.isPending
-                                ? "Opening case…"
-                                : "Open institution case"}
-                            </button>
-                          </div>
-                        )}
-                      <div className="finding-explanation">
-                        <h3>What went wrong</h3>
-                        <p>{copy.what}</p>
-                        <h3>Why it was flagged</h3>
-                        <p>{finding.explanation}</p>
-                        <h3>What to do next</h3>
-                        <p>{copy.next}</p>
-                      </div>
-                      {evidence.length > 0 && (
-                        <dl className="evidence-list">
-                          {evidence.map(([label, value]) => (
-                            <div key={label}>
-                              <dt>{label}</dt>
-                              <dd>{value}</dd>
+                            <div className="finding-explanation">
+                              <h3>What went wrong</h3>
+                              <p>{copy.what}</p>
+                              <h3>Why it was flagged</h3>
+                              <p>{finding.explanation}</p>
+                              <h3>What to do next</h3>
+                              <p>{copy.next}</p>
                             </div>
-                          ))}
-                        </dl>
-                      )}
-                      <footer>
-                        <span>
-                          {finding.field_name
-                            ? `Field: ${finding.field_name}`
-                            : "Batch-level evidence"}
-                        </span>
-                        <span>
-                          CSV record{" "}
-                          {typeof finding.evidence.source_row_number ===
-                          "number"
-                            ? finding.evidence.source_row_number
-                            : "grouped"}
-                        </span>
-                        {when(finding.evaluated_at)}
-                      </footer>
-                    </article>
-                  );
-                })}
-              </div>
+                            {evidence.length > 0 && (
+                              <dl className="evidence-list">
+                                {evidence.map(([label, value]) => (
+                                  <div key={label}>
+                                    <dt>{label}</dt>
+                                    <dd>{value}</dd>
+                                  </div>
+                                ))}
+                              </dl>
+                            )}
+                            <footer>
+                              <span>
+                                {finding.field_name
+                                  ? `Field: ${finding.field_name}`
+                                  : "Batch-level evidence"}
+                              </span>
+                              <span>
+                                CSV record{" "}
+                                {typeof finding.evidence.source_row_number ===
+                                "number"
+                                  ? finding.evidence.source_row_number
+                                  : "grouped"}
+                              </span>
+                              {when(finding.evaluated_at)}
+                            </footer>
+                          </article>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ))}
+              </>
             )}
             <QueryPagination
               query={findings}

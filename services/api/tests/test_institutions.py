@@ -37,7 +37,9 @@ def test_directory_and_filters(
     assert filtered["data"][0]["id"] == CEDAR
     assert client.get("/api/v1/institutions?q=%", headers=headers).json()["data"] == []
     assert (
-        client.get("/api/v1/institutions?region=DEMO_REGION_2", headers=headers).json()[
+        client.get(
+            "/api/v1/institutions?region=Western%20Zone", headers=headers
+        ).json()[
             "data"
         ][0]["id"]
         == MAPLE
@@ -64,7 +66,7 @@ def test_own_institution_programmes_and_intake(
     headers = auth_headers("cedar_admin")
     assert (
         client.get(f"/api/v1/institutions/{CEDAR}", headers=headers).json()["name"]
-        == "Demo Cedar Institute"
+        == "Cedarbrook Institute of Technology"
     )
     programmes = client.get(
         f"/api/v1/institutions/{CEDAR}/programmes", headers=headers
@@ -232,6 +234,10 @@ def test_openapi_is_limited_to_implemented_milestones(client: TestClient) -> Non
         "/api/v1/notifications/unread-count",
         "/api/v1/notifications/read-all",
         "/api/v1/notifications/{notification_id}/read",
+        "/api/v1/reconciliations",
+        "/api/v1/reconciliations/{reconciliation_id}",
+        "/api/v1/reconciliations/{reconciliation_id}/evidence",
+        "/api/v1/reconciliations/{reconciliation_id}/actions",
         "/api/v1/analytics/enrolment-trends",
         "/api/v1/analytics/submission-completeness",
         "/api/v1/analytics/intake-utilisation",

@@ -135,7 +135,7 @@ def test_case_workflow_migration_downgrade_guard(
                     id=institution,
                     permanent_id=f"DEMO-MIG-{institution.hex[:8]}",
                     name="Demo Migration Institute",
-                    region="DEMO_REGION_1",
+                    region="Northern Zone",
                 )
             )
             session.add(

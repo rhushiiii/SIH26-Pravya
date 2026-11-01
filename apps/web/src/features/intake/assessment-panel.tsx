@@ -103,7 +103,6 @@ function AssessmentDetail({ assessment }: { assessment: Assessment }) {
             <th scope="col">Candidate active</th>
             <th scope="col">Remaining</th>
             <th scope="col">Excess</th>
-            <th scope="col">Calculation</th>
             <th scope="col">Rule version</th>
           </tr>
         </thead>
@@ -121,9 +120,6 @@ function AssessmentDetail({ assessment }: { assessment: Assessment }) {
                 ) : (
                   c.excess
                 )}
-              </td>
-              <td>
-                <code>{c.calculation}</code>
               </td>
               <td>{c.rule_version ?? "—"}</td>
             </tr>

@@ -286,11 +286,14 @@ def test_manager_report_kinds_match_the_declared_rules(
         "enrolment-summary",
         "intake-utilisation",
         "submission-completeness",
-        "resolution-times",
-        "validation-findings",
     ):
         assert client.get(f"/api/v1/reports/{kind}", headers=manager).status_code == 200
-    for kind in ("open-cases", "verification-activity"):
+    for kind in (
+        "resolution-times",
+        "validation-findings",
+        "open-cases",
+        "verification-activity",
+    ):
         assert client.get(f"/api/v1/reports/{kind}", headers=manager).status_code == 403
 
 

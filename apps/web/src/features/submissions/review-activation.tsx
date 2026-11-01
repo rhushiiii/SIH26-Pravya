@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { categoryLabel } from "@/features/intake/shared";
+import { ruleCodeGuidance } from "@/features/validation/guidance";
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ErrorPanel, Loading } from "@/components/ui/feedback";
@@ -572,6 +573,12 @@ export function ReviewActivation({
             IMMUTABLE REVIEW RECEIPT · {data.review_policy_version}
           </p>
           <h2 id="review-title">Review replacement snapshot</h2>
+          <p>
+            <strong>
+              This review would replace {institutionName}&rsquo;s current{" "}
+              {programmeName} snapshot for {data.academic_year}.
+            </strong>
+          </p>
           <p>{data.receipt_label}</p>
         </div>
         <span
@@ -598,17 +605,17 @@ export function ReviewActivation({
         </div>
         <div>
           <span>Candidate</span>
-          <strong>{data.batch_id}</strong>
-          <small>Complete replacement snapshot</small>
+          <strong>Complete replacement snapshot</strong>
+          <small>{data.batch_id}</small>
         </div>
         <div>
           <span>Selected validation run</span>
-          <strong>{data.validation_run_id}</strong>
-          <small>
+          <strong>
             {data.validation_run_id === run.id
               ? "Matches selected run"
-              : "Receipt is pinned to a different run"}
-          </small>
+              : "Pinned to a different run"}
+          </strong>
+          <small>{data.validation_run_id}</small>
         </div>
         <div>
           <span>Scope revision reviewed</span>
@@ -860,10 +867,17 @@ export function ReviewActivation({
               {blockingRules.length === 1 ? "" : "s"}
             </span>
             {blockingRules.length > 0 ? (
-              <ul>
-                {blockingRules.map((rule) => (
-                  <li key={rule}>{rule}</li>
-                ))}
+              <ul className="blocking-reason-list">
+                {blockingRules.map((rule) => {
+                  const info = ruleCodeGuidance(rule);
+                  return (
+                    <li key={rule}>
+                      <strong>{info.title}</strong>
+                      <span>{info.what}</span>
+                      <code>{rule}</code>
+                    </li>
+                  );
+                })}
               </ul>
             ) : (
               <p>

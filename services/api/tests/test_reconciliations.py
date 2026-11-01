@@ -125,7 +125,10 @@ def test_reconciliation_reads_are_scoped_and_peer_data_is_hidden(
     assert cedar.status_code == 200
     assert len(cedar.json()["records"]) == 1
     assert cedar.json()["records"][0]["record_version_id"] == ids["cedar"]
-    assert "Demo Maple Institute" not in cedar.text and ids["maple"] not in cedar.text
+    assert (
+        "Maplewood College of Engineering" not in cedar.text
+        and ids["maple"] not in cedar.text
+    )
 
     maple = client.get(
         f"/api/v1/reconciliations/{body['id']}",
@@ -182,7 +185,10 @@ def test_transfer_evidence_and_officer_decision_are_audited_and_scoped(
         },
     )
     assert requested.status_code == 201
-    assert requested.json()["requested_institution_name"] == "Demo Maple Institute"
+    assert (
+        requested.json()["requested_institution_name"]
+        == "Maplewood College of Engineering"
+    )
     assert requested.json()["evidence_requested_for_you"] is False
 
     evidence = {

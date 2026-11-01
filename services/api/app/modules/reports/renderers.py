@@ -54,6 +54,11 @@ def text_of(value: Cell) -> str:
     return "" if value is None else str(value)
 
 
+def pretty_column(name: str) -> str:
+    """Header display text only; the underlying column key is unchanged."""
+    return name.replace("_", " ")
+
+
 # ------------------------------------------------------------------------ CSV
 
 
@@ -72,7 +77,7 @@ def to_csv(report: ReportDocument) -> bytes:
     for section in (report.totals, report.data):
         row([])
         row([f"# {section.title}"])
-        row(list(section.columns))
+        row([pretty_column(c) for c in section.columns])
         for cells in section.rows:
             row(cells)
     return buffer.getvalue().encode("utf-8")
@@ -112,7 +117,9 @@ def to_xlsx(report: ReportDocument) -> bytes:
     number = 1
     for section in (report.totals, report.data):
         write_row(data, number, [section.title], head=True)
-        write_row(data, number + 1, list(section.columns), head=True)
+        write_row(
+            data, number + 1, [pretty_column(c) for c in section.columns], head=True
+        )
         number += 2
         for cells in section.rows:
             write_row(data, number, cells, head=False)
@@ -162,7 +169,7 @@ def column_weights(section: ReportTable) -> tuple[int, ...]:
     """Relative widths from the longest word per column, so no word is forced narrow."""
     weights = []
     for index, column in enumerate(section.columns):
-        words = column.replace("_", " ").split()
+        words = pretty_column(column).split()
         words += [w for r in section.rows for w in text_of(r[index]).split()]
         weights.append(min(max((len(w) for w in words), default=4) + 2, 30))
     return tuple(weights)
@@ -184,7 +191,7 @@ def pdf_table(pdf: ReportPDF, section: ReportTable) -> None:
     ) as table:
         header = table.row()
         for column in section.columns:
-            header.cell(latin1(column.replace("_", " ")))
+            header.cell(latin1(pretty_column(column)))
         for cells in section.rows:
             row = table.row()
             for value in cells:

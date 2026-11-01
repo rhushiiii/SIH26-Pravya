@@ -214,7 +214,7 @@ def test_totals_reconcile_with_institution_summaries(
     )["data"][0]
     assert one["active_records"] == expected[CEDAR]["demo_active_records"]
     regional = get(
-        client, "enrolment-trends", officer, academic_year=YEAR, region="DEMO_REGION_2"
+        client, "enrolment-trends", officer, academic_year=YEAR, region="Western Zone"
     )["data"][0]
     assert regional["active_records"] == expected[MAPLE]["demo_active_records"]
     by_programme = get(
@@ -336,11 +336,11 @@ def test_declaration_shortfall_pending_and_region_rollup(
             "rollups_by_region"
         ]
     }
-    cedar = rollups["DEMO_REGION_1"]
+    cedar = rollups["Northern Zone"]
     assert cedar["institutions_total"] == 1 and cedar["programme_years_total"] == 2
     assert cedar["with_current_snapshot"] == 1 and cedar["with_declaration"] == 1
     assert cedar["with_shortfall"] == 1 and cedar["pending_candidates"] == 1
-    assert rollups["DEMO_REGION_2"]["with_current_snapshot"] == 0
+    assert rollups["Western Zone"]["with_current_snapshot"] == 0
 
     paged = get(
         client, "submission-completeness", officer, academic_year=YEAR, page_size=2
@@ -548,7 +548,7 @@ def test_case_overdue_escalated_filters_and_table(
     )
     scoped = get(client, "case-performance", officer, institution_id=str(MAPLE))
     assert scoped["totals"]["all"] == 1 and len(scoped["data"]) == 1
-    regional = get(client, "case-performance", officer, region="DEMO_REGION_1")
+    regional = get(client, "case-performance", officer, region="Northern Zone")
     assert regional["totals"]["all"] == 3
     paged = get(client, "case-performance", officer, page_size=2, page=2)
     assert len(paged["data"]) == 1 and paged["pagination"]["total"] == 3

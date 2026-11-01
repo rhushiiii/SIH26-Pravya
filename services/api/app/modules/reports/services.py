@@ -42,14 +42,16 @@ from app.modules.validation.services import selected_runs_bulk
 from app.modules.verification.models import ApaarVerification
 
 AGGREGATE_ROLES = {Role.AICTE_OFFICER, Role.AICTE_MANAGER, Role.INSTITUTION_ADMIN}
+CASE_LEVEL_ROLES = {Role.AICTE_OFFICER, Role.INSTITUTION_ADMIN}
 KIND_ROLES: dict[str, set[Role]] = {
     "enrolment-summary": AGGREGATE_ROLES,
     "intake-utilisation": AGGREGATE_ROLES,
     "submission-completeness": AGGREGATE_ROLES,
-    "resolution-times": AGGREGATE_ROLES,
-    "validation-findings": AGGREGATE_ROLES,
-    # Case work is an officer function; managers see aggregates only.
-    "open-cases": {Role.AICTE_OFFICER, Role.INSTITUTION_ADMIN},
+    # Case and finding-level detail is an officer function; managers see
+    # coverage and trend aggregates only, never case-by-case detail.
+    "resolution-times": CASE_LEVEL_ROLES,
+    "validation-findings": CASE_LEVEL_ROLES,
+    "open-cases": CASE_LEVEL_ROLES,
     "verification-activity": {Role.AICTE_OFFICER},
 }
 YEAR_FILTERS = (

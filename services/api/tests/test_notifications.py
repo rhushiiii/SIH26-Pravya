@@ -51,7 +51,7 @@ def test_assignment_notifies_only_the_assignee(
     assert inbox(client, heads["admin"]) == []
     note = created[0]
     assert str(case_id)[:8] in note.title
-    assert "Demo Cedar Institute" in note.body
+    assert "Cedarbrook Institute of Technology" in note.body
     text = (note.title + note.body).lower()
     for private in ("synthetic one", "demo-one", "900000000001"):
         assert private not in text
