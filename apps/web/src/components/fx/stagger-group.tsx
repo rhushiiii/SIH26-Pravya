@@ -28,7 +28,9 @@ export function StaggerGroup({ children }: { children: ReactNode }) {
   const staggered = useMemo(
     () =>
       Children.map(children, (child, index) => (
-        <StaggerContext.Provider value={{ index }}>{child}</StaggerContext.Provider>
+        <StaggerContext.Provider value={{ index }}>
+          {child}
+        </StaggerContext.Provider>
       )),
     [children],
   );

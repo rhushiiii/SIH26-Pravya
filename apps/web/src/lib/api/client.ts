@@ -77,7 +77,11 @@ export function classifyMutationError(error: unknown): {
     if (error.status === 409)
       return { kind: "conflict", status: 409, message: errorMessage(error) };
     if (error.status >= 400 && error.status < 500)
-      return { kind: "client", status: error.status, message: errorMessage(error) };
+      return {
+        kind: "client",
+        status: error.status,
+        message: errorMessage(error),
+      };
   }
   return {
     kind: "uncertain",

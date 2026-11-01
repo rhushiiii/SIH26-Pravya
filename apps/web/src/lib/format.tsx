@@ -66,5 +66,7 @@ export function snapshotTone(state: string): string {
 
 /** Sorted, deduplicated region list for filter dropdowns. */
 export function regionsOf(institutions: Array<{ region: string }>): string[] {
-  return [...new Set(institutions.map((institution) => institution.region))].sort();
+  return [
+    ...new Set(institutions.map((institution) => institution.region)),
+  ].sort();
 }

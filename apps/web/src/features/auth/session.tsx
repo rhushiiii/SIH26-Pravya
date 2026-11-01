@@ -134,10 +134,10 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       login.current = controller;
       setSigningIn(true);
       try {
-        const credentials = await apiFetch<LoginResponse>(
-          "/auth/demo-login",
-          { ...jsonInit("POST", { demo_alias: alias }), signal: controller.signal },
-        );
+        const credentials = await apiFetch<LoginResponse>("/auth/demo-login", {
+          ...jsonInit("POST", { demo_alias: alias }),
+          signal: controller.signal,
+        });
         if (
           !credentials ||
           typeof credentials.access_token !== "string" ||

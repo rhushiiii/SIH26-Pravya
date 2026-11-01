@@ -57,33 +57,34 @@ export function AuditExplorer() {
     setPage(1);
     setExpanded(null);
   };
-  const { draft, setDraft, filters, error, apply, clear } = useDraftFilters<Filters>(
-    EMPTY,
-    (candidate) => {
-      const actor = candidate.actor.trim();
-      if (actor && !UUID.test(actor))
-        return "Actor id must be a user id in UUID format.";
-      const from = candidate.from ? toIso(candidate.from) : "";
-      const to = candidate.to ? toIso(candidate.to) : "";
-      if (from === null || to === null)
-        return "Enter valid from and to dates.";
-      if (from && to && from > to)
-        return "The from date must be before the to date.";
-      return null;
-    },
-    {
-      // Validation guarantees toIso succeeds here; the conversion is repeated,
-      // not duplicated logic.
-      prepare: (candidate) => ({
-        ...candidate,
-        actor: candidate.actor.trim(),
-        from: candidate.from ? (toIso(candidate.from) as string) : "",
-        to: candidate.to ? (toIso(candidate.to) as string) : "",
-      }),
-      onApplied: restart,
-      onCleared: restart,
-    },
-  );
+  const { draft, setDraft, filters, error, apply, clear } =
+    useDraftFilters<Filters>(
+      EMPTY,
+      (candidate) => {
+        const actor = candidate.actor.trim();
+        if (actor && !UUID.test(actor))
+          return "Actor id must be a user id in UUID format.";
+        const from = candidate.from ? toIso(candidate.from) : "";
+        const to = candidate.to ? toIso(candidate.to) : "";
+        if (from === null || to === null)
+          return "Enter valid from and to dates.";
+        if (from && to && from > to)
+          return "The from date must be before the to date.";
+        return null;
+      },
+      {
+        // Validation guarantees toIso succeeds here; the conversion is repeated,
+        // not duplicated logic.
+        prepare: (candidate) => ({
+          ...candidate,
+          actor: candidate.actor.trim(),
+          from: candidate.from ? (toIso(candidate.from) as string) : "",
+          to: candidate.to ? (toIso(candidate.to) as string) : "",
+        }),
+        onApplied: restart,
+        onCleared: restart,
+      },
+    );
 
   const actions = useApiQuery<Actions>(
     useScope("audit", "actions"),
@@ -190,11 +191,7 @@ export function AuditExplorer() {
           <button className="button secondary" type="submit">
             Apply filters
           </button>
-          <button
-            className="button secondary"
-            type="button"
-            onClick={clear}
-          >
+          <button className="button secondary" type="button" onClick={clear}>
             Clear
           </button>
         </form>

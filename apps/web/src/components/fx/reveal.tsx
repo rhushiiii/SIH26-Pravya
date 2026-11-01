@@ -40,5 +40,9 @@ export function Reveal({
     "--fx-rise": `${rise}px`,
   } as CSSProperties;
 
-  return <div ref={ref} className={classes} style={style}>{children}</div>;
+  return (
+    <div ref={ref} className={classes} style={style}>
+      {children}
+    </div>
+  );
 }

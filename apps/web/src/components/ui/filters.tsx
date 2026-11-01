@@ -56,10 +56,7 @@ export function RegionSelect({
   return (
     <label className={className}>
       Region
-      <select
-        value={value}
-        onChange={(event) => onChange(event.target.value)}
-      >
+      <select value={value} onChange={(event) => onChange(event.target.value)}>
         <option value="">{allLabel}</option>
         {regions.map((region) => (
           <option key={region} value={region}>
@@ -92,10 +89,7 @@ export function EnumSelect({
   return (
     <label className={className}>
       {label}
-      <select
-        value={value}
-        onChange={(event) => onChange(event.target.value)}
-      >
+      <select value={value} onChange={(event) => onChange(event.target.value)}>
         <option value="">{allLabel}</option>
         {values.map((item) => (
           <option key={item} value={item}>
@@ -117,5 +111,10 @@ export function FilterField({
   children: ReactNode;
   className?: string;
 }) {
-  return <label className={className}>{label}{children}</label>;
+  return (
+    <label className={className}>
+      {label}
+      {children}
+    </label>
+  );
 }

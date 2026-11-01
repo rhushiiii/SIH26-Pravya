@@ -21,7 +21,10 @@ export function Marquee({
 }) {
   return (
     <div className="fx-marquee" role="group" aria-label={ariaLabel}>
-      <div className="fx-marquee-track" style={{ animationDuration: `${duration}s` }}>
+      <div
+        className="fx-marquee-track"
+        style={{ animationDuration: `${duration}s` }}
+      >
         <div className="fx-marquee-group">{children}</div>
         <div className="fx-marquee-group" aria-hidden="true">
           {children}

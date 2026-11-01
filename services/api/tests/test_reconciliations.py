@@ -38,7 +38,7 @@ def upload(
         files={"file": ("synthetic.csv", admission_csv({}), "text/csv")},
     )
     assert response.status_code == 201, response.text
-    return response.json()["id"]
+    return str(response.json()["id"])
 
 
 def activate(client: TestClient, headers: dict[str, str], batch_id: str) -> None:

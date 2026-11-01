@@ -232,7 +232,12 @@ export function StudentEntry({
             </label>
             <label>
               PwD
-              <select value={row.is_pwd ? "YES" : "NO"} onChange={(e) => change(index, "is_pwd", e.target.value === "YES")}>
+              <select
+                value={row.is_pwd ? "YES" : "NO"}
+                onChange={(e) =>
+                  change(index, "is_pwd", e.target.value === "YES")
+                }
+              >
                 <option value="NO">No</option>
                 <option value="YES">Yes</option>
               </select>

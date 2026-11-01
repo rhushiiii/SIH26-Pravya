@@ -2,7 +2,11 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { DemoBanner, EmptyState, QueryBoundary } from "@/components/ui/feedback";
+import {
+  DemoBanner,
+  EmptyState,
+  QueryBoundary,
+} from "@/components/ui/feedback";
 import { Pagination } from "@/components/ui/pagination";
 import { useApiQuery, useScope } from "@/lib/api/hooks";
 import { validAcademicYear } from "@/lib/academic-year";

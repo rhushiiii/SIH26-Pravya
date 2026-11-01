@@ -105,11 +105,21 @@ export function SimulatorPanel({ institutionId }: { institutionId: string }) {
               return setError(
                 "Each addition needs a whole number count of at least 1.",
               );
-            if (pwdCount !== "" && (!/^\\d+$/.test(pwdCount) || Number(pwdCount) > 1_000_000))
-              return setError("PwD additions must be a whole number from 0 to 1,000,000.");
-            const totalMain = additions.reduce((total, row) => total + row.count, 0);
+            if (
+              pwdCount !== "" &&
+              (!/^\\d+$/.test(pwdCount) || Number(pwdCount) > 1_000_000)
+            )
+              return setError(
+                "PwD additions must be a whole number from 0 to 1,000,000.",
+              );
+            const totalMain = additions.reduce(
+              (total, row) => total + row.count,
+              0,
+            );
             if (Number(pwdCount || 0) > totalMain)
-              return setError("PwD additions cannot exceed the total main-category additions.");
+              return setError(
+                "PwD additions cannot exceed the total main-category additions.",
+              );
             setError("");
             run.mutate({
               programme_id: programmeId,
@@ -205,9 +215,17 @@ export function SimulatorPanel({ institutionId }: { institutionId: string }) {
             </div>
             <label>
               Additional PwD records (overlapping count)
-              <input inputMode="numeric" value={pwdCount} onChange={(e) => setPwdCount(e.target.value)} />
+              <input
+                inputMode="numeric"
+                value={pwdCount}
+                onChange={(e) => setPwdCount(e.target.value)}
+              />
             </label>
-            <p className="form-help">PwD is reported as an overlapping count and is not added as a separate reservation category. It cannot exceed the total main-category additions.</p>
+            <p className="form-help">
+              PwD is reported as an overlapping count and is not added as a
+              separate reservation category. It cannot exceed the total
+              main-category additions.
+            </p>
           </fieldset>
         </form>
         {error && (
@@ -271,7 +289,10 @@ export function SimulatorPanel({ institutionId }: { institutionId: string }) {
             </tbody>
           </ScrollTable>
           <p className="data-note">{run.data.notice}</p>
-          <p className="form-help">The PwD reporting row overlaps the four main categories and is excluded from their sum.</p>
+          <p className="form-help">
+            The PwD reporting row overlaps the four main categories and is
+            excluded from their sum.
+          </p>
         </div>
       )}
     </section>
