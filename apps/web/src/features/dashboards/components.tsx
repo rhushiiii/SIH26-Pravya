@@ -2,10 +2,41 @@ import { motion } from "framer-motion";
 import { usePrefersReducedMotion as useReducedMotion } from "@/components/fx/use-fx";
 
 export { valueObject, countValue, displayCount } from "@/lib/format";
+import { displayCount } from "@/lib/format";
 
 import { categoryLabel } from "@/features/intake/shared";
 
 export const prettyLabel = categoryLabel;
+
+export function CategorySummary({
+  items,
+  primaryLabel,
+  secondaryLabel,
+}: {
+  items: Array<{
+    key: string;
+    primary: number | null;
+    secondary: number | null;
+  }>;
+  primaryLabel: string;
+  secondaryLabel: string;
+}) {
+  return (
+    <div className="category-summary">
+      {items.map((item) => (
+        <span className="category-summary-item" key={item.key}>
+          <strong>{prettyLabel(item.key)}</strong>
+          <small
+            aria-label={`${displayCount(item.primary)} ${primaryLabel}, ${displayCount(item.secondary)} ${secondaryLabel}`}
+          >
+            {displayCount(item.primary, "", "—")} /{" "}
+            {displayCount(item.secondary, "", "—")}
+          </small>
+        </span>
+      ))}
+    </div>
+  );
+}
 
 export function MetricCard({
   label,
@@ -155,7 +186,13 @@ export function StatusDonut({
         {segments.map((segment) => (
           <li key={segment.label}>
             <span style={{ background: segment.color }} aria-hidden="true" />
-            {prettyLabel(segment.label)} · {segment.value.toLocaleString()}
+            <span className="status-donut-legend-label">
+              {prettyLabel(segment.label)}
+            </span>
+            <strong>{segment.value.toLocaleString()}</strong>
+            <span className="status-donut-legend-share">
+              {Math.round((segment.value / total) * 100)}%
+            </span>
           </li>
         ))}
       </ul>

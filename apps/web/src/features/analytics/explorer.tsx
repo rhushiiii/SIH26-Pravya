@@ -16,6 +16,7 @@ import type { components } from "@/lib/api/generated";
 import { displayCount, when } from "@/lib/format";
 import {
   CategoryBars,
+  CategorySummary,
   DashboardTable,
   MetricCard,
   prettyLabel,
@@ -481,21 +482,17 @@ function TrendsView({ data, officer }: { data: Trends; officer: boolean }) {
               </td>
               <td>
                 {row.categories && Object.keys(row.categories).length > 0 ? (
-                  <ul className="analytics-category-summary">
-                    {Object.entries(row.categories).map(
-                      ([category, counts]) => (
-                        <li key={category}>
-                          <span>{prettyLabel(category)}</span>
-                          <strong
-                            aria-label={`${displayCount(counts.active_records)} active, ${displayCount(counts.declared_records)} declared`}
-                          >
-                            {displayCount(counts.active_records)} /{" "}
-                            {displayCount(counts.declared_records)}
-                          </strong>
-                        </li>
-                      ),
+                  <CategorySummary
+                    items={Object.entries(row.categories).map(
+                      ([category, counts]) => ({
+                        key: category,
+                        primary: counts.active_records,
+                        secondary: counts.declared_records,
+                      }),
                     )}
-                  </ul>
+                    primaryLabel="active"
+                    secondaryLabel="declared"
+                  />
                 ) : (
                   NO_DATA
                 )}

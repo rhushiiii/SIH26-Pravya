@@ -374,18 +374,18 @@ export function LandingPage() {
             <StaggerGroup>
               <MetricCard
                 label="Current declared records"
-                value="—"
-                note="Activated snapshots only; candidates and history excluded"
+                value="1,240"
+                note="Demo figure. Activated snapshots only; candidates and history excluded"
               />
               <MetricCard
                 label="Active enrolments"
-                value="—"
-                note="Internal status accounting, not official policy"
+                value="1,118"
+                note="Demo figure. Internal status accounting, not official policy"
               />
               <MetricCard
                 label="Programme coverage"
-                value="—"
-                note="Illustrative; missing is not zero"
+                value="26"
+                note="Demo figure. Illustrative; missing is not zero"
               />
             </StaggerGroup>
           </div>
@@ -396,11 +396,11 @@ export function LandingPage() {
               </p>
               <CategoryBars
                 categories={[
-                  { label: "General/Open", value: null },
-                  { label: "SC/ST", value: null },
-                  { label: "NT", value: null },
-                  { label: "OBC", value: null },
-                  { label: "PwD (overlapping)", value: null },
+                  { label: "General/Open", value: 612 },
+                  { label: "SC/ST", value: 214 },
+                  { label: "NT", value: 168 },
+                  { label: "OBC", value: 246 },
+                  { label: "PwD (overlapping)", value: 38 },
                 ]}
               />
             </div>
@@ -408,10 +408,10 @@ export function LandingPage() {
               <p className="chart-subheading">Status breakdown</p>
               <StatusDonut
                 statuses={[
-                  { label: "ACTIVE", value: 0 },
-                  { label: "INACTIVE", value: 0 },
+                  { label: "ACTIVE", value: 1118 },
+                  { label: "INACTIVE", value: 122 },
                 ]}
-                total={0}
+                total={1240}
               />
             </div>
           </div>

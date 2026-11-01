@@ -51,7 +51,9 @@ export function homeFor(role: Role): string {
     ? "/institution"
     : role === "AUTHORIZED_VERIFIER"
       ? "/verify"
-      : "/aicte";
+      : role === "AICTE_MANAGER"
+        ? "/analytics"
+        : "/aicte";
 }
 
 export function SessionProvider({ children }: { children: ReactNode }) {

@@ -11,6 +11,7 @@ import { isUUID } from "@/lib/api/client";
 import type { components } from "@/lib/api/generated";
 import {
   CategoryBars,
+  CategorySummary,
   CoverageBadge,
   DashboardFilters,
   DashboardTable,
@@ -690,24 +691,17 @@ export function AicteDashboard() {
                         </td>
                         <td>
                           {Object.keys(institutionCategories).length ? (
-                            <div className="category-summary">
-                              {Object.entries(institutionCategories).map(
-                                ([key, value]) => (
-                                  <span
-                                    className="category-summary-item"
-                                    key={key}
-                                  >
-                                    <strong>{prettyLabel(key)}</strong>
-                                    <small
-                                      aria-label={`${displayCount(value.declared)} declared, ${displayCount(value.active)} active`}
-                                    >
-                                      {displayCount(value.declared)} /{" "}
-                                      {displayCount(value.active)}
-                                    </small>
-                                  </span>
-                                ),
+                            <CategorySummary
+                              items={Object.entries(institutionCategories).map(
+                                ([key, value]) => ({
+                                  key,
+                                  primary: value.declared,
+                                  secondary: value.active,
+                                }),
                               )}
-                            </div>
+                              primaryLabel="declared"
+                              secondaryLabel="active"
+                            />
                           ) : data && coverage?.status === "NONE" ? (
                             "No declaration"
                           ) : (

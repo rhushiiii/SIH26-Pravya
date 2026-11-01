@@ -89,7 +89,7 @@ export function AppShell({ children }: { children: ReactNode }) {
                 icon: "building" as const,
               },
             ]),
-        ...(!institution && !verifier
+        ...(!institution && !verifier && destination !== "/analytics"
           ? [
               {
                 href: "/analytics",

@@ -3,7 +3,7 @@ import { AicteDashboard } from "@/features/dashboards/aicte-dashboard";
 
 export default function AicteDashboardPage() {
   return (
-    <Protected roles={["AICTE_OFFICER", "AICTE_MANAGER"]}>
+    <Protected roles={["AICTE_OFFICER"]}>
       <AicteDashboard />
     </Protected>
   );
