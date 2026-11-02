@@ -489,8 +489,8 @@ export function LandingPage() {
         >
           <p>
             “A finding is a lead for review, never a verdict. PRAVYA keeps the
-            evidence, the versions and the audit trail, so the decision — and
-            the accountability — stays with the officer.”
+            evidence, the versions and the audit trail, so the decision and
+            the accountability stay with the officer.”
           </p>
           <footer>PRAVYA design principle · synthetic data only</footer>
         </motion.blockquote>
