@@ -11,7 +11,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ErrorPanel, Loading } from "@/components/ui/feedback";
 import { Pagination } from "@/components/ui/pagination";
 import { useSession } from "@/features/auth/session";
-import { useApiQuery, useCopy, useScope } from "@/lib/api/hooks";
+import { useApiQuery, useScope } from "@/lib/api/hooks";
 import {
   ApiError,
   classifyMutationError,
@@ -228,8 +228,6 @@ export function ReviewActivation({
   const [activationResult, setActivationResult] = useState<Activation | null>(
     null,
   );
-  const [copyMessage, setCopyMessage] = useState("");
-  const { copy } = useCopy();
   const page = Math.max(1, omissionPage);
   const baseKey = useScope("validation", batch.id);
   const receiptPath = `/submissions/${batch.id}/reviews/${reviewId}?page=${page}&page_size=${omissionPageSize}`;
@@ -1137,26 +1135,6 @@ export function ReviewActivation({
             {status}
           </p>
         )}
-      </div>
-
-      <footer className="review-receipt-footer">
-        <span>Receipt ID {data.id}</span>
-        <button
-          className="button secondary small"
-          type="button"
-          onClick={() => {
-            void copy(window.location.href).then((ok) =>
-              setCopyMessage(
-                ok
-                  ? "Review link copied; the receiving user must sign in with an authorized account."
-                  : "Could not access clipboard. Share the review ID with an authorized officer.",
-              ),
-            );
-          }}
-        >
-          Copy review link
-        </button>
-        {copyMessage && <span role="status">{copyMessage}</span>}
         {data.validation_run_id !== run.id && (
           <button
             className="button secondary small"
@@ -1166,7 +1144,7 @@ export function ReviewActivation({
             Open this receipt’s selected run
           </button>
         )}
-      </footer>
+      </div>
     </section>
   );
 }

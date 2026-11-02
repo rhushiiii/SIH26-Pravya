@@ -801,9 +801,23 @@
 .portal-layout .finding-highlight p {
   margin: 0;
 }
-.portal-layout .review-workspace > .review-scope-grid {
+.portal-layout
+  .review-workspace
+  > :is(
+    .review-scope-grid,
+    .review-callout,
+    .review-count-grid,
+    .review-subsection
+  ) {
   margin-inline: 20px;
+}
+.portal-layout .review-workspace > .review-scope-grid {
   gap: 16px;
+}
+.portal-layout .review-subsection > .table-scroll {
+  width: auto;
+  max-width: 100%;
+  margin: 0;
 }
 .portal-layout .validation-page > .submission-lifecycle {
   margin-bottom: 0;

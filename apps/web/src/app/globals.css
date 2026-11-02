@@ -4,7 +4,7 @@ html {
   scroll-behavior: smooth;
 }
 .landing-page section[id] {
-  scroll-margin-top: 88px;
+  scroll-margin-top: 120px;
 }
 
 .heading-actions {
@@ -2046,18 +2046,6 @@ td strong {
   border: 1px solid #e4d5a9;
   background: #fbf7e9;
 }
-.review-receipt-footer {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 10px;
-  padding-top: 14px;
-  border-top: 1px solid var(--line, #e8e7e2);
-}
-.review-receipt-footer > span:first-child {
-  margin-right: auto;
-  overflow-wrap: anywhere;
-}
 .review-entry {
   display: flex;
   flex-wrap: wrap;
@@ -2437,13 +2425,6 @@ td strong {
   }
   .review-findings-list article {
     grid-template-columns: 1fr;
-  }
-  .review-receipt-footer {
-    align-items: stretch;
-    flex-direction: column;
-  }
-  .review-receipt-footer > span:first-child {
-    margin-right: 0;
   }
   .dashboard-heading {
     align-items: stretch;

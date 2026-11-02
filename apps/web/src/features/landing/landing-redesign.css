@@ -519,12 +519,23 @@
   box-shadow: none;
 }
 .landing-page .preview-badge {
+  position: static;
+  top: auto;
+  left: auto;
+  display: inline-flex;
+  margin: 0 0 16px;
   text-transform: none;
   letter-spacing: 0;
   border-color: var(--landing-line);
   color: var(--landing-muted);
   background: #f6f7f4;
   font-size: 13px;
+}
+.landing-page .preview-metrics {
+  margin-top: 0;
+}
+.landing-page .preview-shell .dashboard-metric::after {
+  content: none;
 }
 .landing-page .preview-panel {
   border-color: var(--landing-line);
