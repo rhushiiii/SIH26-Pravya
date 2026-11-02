@@ -103,9 +103,12 @@ export function apiBase(): string {
   const base =
     process.env.NEXT_PUBLIC_API_BASE_URL || "http://127.0.0.1:8000/api/v1";
   const url = new URL(base);
+  const isLocal =
+    url.protocol === "http:" &&
+    new Set(["localhost", "127.0.0.1", "[::1]"]).has(url.hostname);
+  const isSecureDeployment = url.protocol === "https:";
   if (
-    !new Set(["localhost", "127.0.0.1", "[::1]"]).has(url.hostname) ||
-    !["http:", "https:"].includes(url.protocol) ||
+    (!isLocal && !isSecureDeployment) ||
     url.username ||
     url.password ||
     url.search ||
