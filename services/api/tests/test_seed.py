@@ -74,3 +74,18 @@ def test_seed_cli_denied_without_demo_mode(settings: Settings) -> None:
     ):
         assert main() == 1
         engine.assert_not_called()
+
+
+def test_public_demo_seed_is_idempotent(
+    db_session: Session, demo_settings: Settings
+) -> None:
+    public_settings = demo_settings.model_copy(
+        update={
+            "app_env": "production",
+            "demo_auth_public": True,
+            "cors_origins": ["https://sih-26-pravya.vercel.app"],
+        }
+    )
+    assert seed_demo(db_session, public_settings)["created"] == 46
+    db_session.flush()
+    assert seed_demo(db_session, public_settings)["created"] == 0

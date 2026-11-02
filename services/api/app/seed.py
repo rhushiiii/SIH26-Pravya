@@ -65,8 +65,12 @@ def ensure_fixture[Model: Base](
 
 
 def seed_demo(session: Session, settings: Settings) -> dict[str, int]:
-    if settings.app_env != "local" or not settings.demo_auth:
-        raise ValueError("Seeding requires explicitly enabled local demo mode")
+    if not settings.demo_auth or (
+        settings.app_env != "local" and not settings.demo_auth_public
+    ):
+        raise ValueError(
+            "Seeding requires explicitly enabled local or public demo mode"
+        )
     created = 0
     institution_names = {
         "cedar": "Cedarbrook Institute of Technology",
@@ -203,9 +207,11 @@ def seed_reservation_rules(session: Session) -> int:
 def main() -> int:
     try:
         settings = Settings()
-        # Refuse before opening a connection if the local demo opt-in is absent.
-        if settings.app_env != "local" or not settings.demo_auth:
-            raise ValueError("Local demo mode is required")
+        # Refuse before opening a connection unless demo mode is explicitly opted in.
+        if not settings.demo_auth or (
+            settings.app_env != "local" and not settings.demo_auth_public
+        ):
+            raise ValueError("Local or public demo mode is required")
         engine = build_engine(settings)
         try:
             with Session(engine) as session, session.begin():
@@ -216,7 +222,7 @@ def main() -> int:
             engine.dispose()
     except (ValueError, SQLAlchemyError):
         print(
-            "Demo seed failed: check local demo settings, migrations "
+            "Demo seed failed: check demo settings, migrations "
             "and fixture conflicts."
         )
         return 1

@@ -36,8 +36,19 @@ def unauthenticated(code: str = "NOT_AUTHENTICATED") -> APIError:
 
 
 def require_demo_access(request: Request, settings: Settings) -> None:
-    if not settings.demo_auth or settings.app_env != "local":
+    if not settings.demo_auth or (
+        settings.app_env != "local" and not settings.demo_auth_public
+    ):
         raise unauthenticated()
+    origin = request.headers.get("origin")
+    if settings.demo_auth_public:
+        if origin not in settings.cors_origins:
+            raise APIError(
+                403,
+                "DEMO_PUBLIC_ORIGIN_REQUIRED",
+                "Demo access requires an approved public origin",
+            )
+        return
     peer = request.client.host if request.client else ""
     try:
         local_peer = ip_address(peer).is_loopback
@@ -47,7 +58,6 @@ def require_demo_access(request: Request, settings: Settings) -> None:
         key in {"forwarded", "via", "x-real-ip"} or key.startswith("x-forwarded-")
         for key in request.headers
     )
-    origin = request.headers.get("origin")
     if (
         not local_peer
         or request.url.hostname not in {"localhost", "127.0.0.1", "::1"}
@@ -65,7 +75,9 @@ class TokenVerifier(Protocol):
 
 class DemoTokenVerifier:
     def __init__(self, settings: Settings) -> None:
-        if not settings.demo_auth or settings.app_env != "local":
+        if not settings.demo_auth or (
+            settings.app_env != "local" and not settings.demo_auth_public
+        ):
             raise ValueError("Demo authentication is disabled")
         assert settings.demo_auth_secret is not None
         self._key = settings.demo_auth_secret.get_secret_value()

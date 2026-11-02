@@ -53,6 +53,68 @@ def test_demo_configuration_fails_closed(
         )
 
 
+def test_public_demo_configuration_requires_explicit_vercel_origin(
+    settings: Settings,
+) -> None:
+    public = Settings(
+        _env_file=None,
+        database_url=settings.database_url,
+        app_env="production",
+        demo_auth=True,
+        demo_auth_public=True,
+        demo_auth_secret=SecretStr("synthetic-public-demo-key-" + "x" * 32),
+        cors_origins=["https://sih-26-pravya.vercel.app"],
+    )
+    assert public.demo_auth_public is True
+
+    with pytest.raises(ValidationError):
+        Settings(
+            _env_file=None,
+            database_url=settings.database_url,
+            app_env="production",
+            demo_auth=True,
+            demo_auth_public=True,
+            demo_auth_secret=SecretStr("synthetic-public-demo-key-" + "x" * 32),
+            cors_origins=["https://example.com"],
+        )
+
+
+def test_public_demo_auth_accepts_allowlisted_origin_from_nonlocal_peer(
+    application: FastAPI,
+    demo_settings: Settings,
+) -> None:
+    public = demo_settings.model_copy(
+        update={
+            "app_env": "production",
+            "demo_auth_public": True,
+            "cors_origins": ["https://sih-26-pravya.vercel.app"],
+        }
+    )
+    application.state.settings = public
+    application.state.token_verifier = DemoTokenVerifier(public)
+    with TestClient(
+        application,
+        base_url="https://api.example.onrender.com",
+        client=("203.0.113.10", 1234),
+    ) as client:
+        response = client.post(
+            "/api/v1/auth/demo-login",
+            json={"demo_alias": "demo_officer"},
+            headers={"Origin": "https://sih-26-pravya.vercel.app"},
+        )
+        assert response.status_code == 200
+        token = response.json()["access_token"]
+        identity = client.get(
+            "/api/v1/me",
+            headers={
+                "Authorization": "Bearer " + token,
+                "Origin": "https://sih-26-pravya.vercel.app",
+            },
+        )
+        assert identity.status_code == 200
+        assert identity.json()["role"] == "AICTE_OFFICER"
+
+
 def test_disabled_login_and_authentication(settings: Settings) -> None:
     with TestClient(create_app(settings)) as client:
         assert (

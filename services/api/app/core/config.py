@@ -23,6 +23,7 @@ class Settings(BaseSettings):
     database_url: SecretStr
     cors_origins: list[str] = ["http://localhost:3000"]
     demo_auth: bool = False
+    demo_auth_public: bool = False
     app_env: Literal["local", "production"] = "production"
     demo_auth_secret: SecretStr | None = None
     demo_token_ttl_seconds: int = Field(default=900, ge=60, le=3600)
@@ -90,10 +91,17 @@ class Settings(BaseSettings):
 
     @model_validator(mode="after")
     def restrict_demo_mode(self) -> Self:
+        if self.demo_auth_public and not self.demo_auth:
+            raise ValueError("DEMO_AUTH_PUBLIC requires DEMO_AUTH=true")
         if not self.demo_auth:
             return self
-        if self.app_env != "local":
-            raise ValueError("DEMO_AUTH requires APP_ENV=local")
+        if self.demo_auth_public:
+            if self.app_env != "production":
+                raise ValueError("DEMO_AUTH_PUBLIC requires APP_ENV=production")
+        elif self.app_env != "local":
+            raise ValueError(
+                "DEMO_AUTH requires APP_ENV=local unless DEMO_AUTH_PUBLIC=true"
+            )
         if (
             self.demo_auth_secret is None
             or len(self.demo_auth_secret.get_secret_value().encode()) < 32
@@ -103,7 +111,22 @@ class Settings(BaseSettings):
             )
         for origin in self.cors_origins:
             parsed = urlsplit(origin)
-            if (
+            if self.demo_auth_public:
+                if (
+                    parsed.scheme != "https"
+                    or parsed.hostname is None
+                    or not parsed.hostname.endswith(".vercel.app")
+                    or parsed.hostname == "vercel.app"
+                    or parsed.username is not None
+                    or parsed.password is not None
+                    or parsed.path
+                    or parsed.query
+                    or parsed.fragment
+                ):
+                    raise ValueError(
+                        "Public demo CORS origins must be explicit HTTPS Vercel origins"
+                    )
+            elif (
                 parsed.scheme not in {"http", "https"}
                 or parsed.hostname not in {"localhost", "127.0.0.1", "::1"}
                 or parsed.username is not None
