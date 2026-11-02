@@ -4173,6 +4173,23 @@ td strong {
   font-size: 14px;
   font-weight: 650;
 }
+
+.report-pdf-preview {
+  margin-top: 22px;
+}
+
+.report-pdf-preview h3 {
+  margin: 0 0 10px;
+  font-size: 14px;
+}
+
+.report-pdf-preview iframe {
+  display: block;
+  width: 100%;
+  min-height: 720px;
+  border: 1px solid var(--line);
+  background: #fff;
+}
 .directory-item h3 {
   color: var(--ink);
   font-size: 15px;

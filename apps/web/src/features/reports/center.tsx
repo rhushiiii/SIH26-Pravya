@@ -1,7 +1,7 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { useSession, type Role } from "@/features/auth/session";
 import { AcademicYearSelect } from "@/components/academic-year-select";
@@ -30,7 +30,8 @@ type Kind =
   | "resolution-times"
   | "validation-findings"
   | "open-cases"
-  | "verification-activity";
+  | "verification-activity"
+  | "consolidated-overview";
 type Filters = {
   categoryScheme: "RESERVATION" | "LEGACY" | "";
   year: string;
@@ -58,50 +59,12 @@ const REPORTS: {
   cases?: boolean;
 }[] = [
   {
-    kind: "enrolment-summary",
-    title: "Enrolment summary",
-    description: "Aggregate enrolment by academic year, programme and region.",
-    roles: ["INSTITUTION_ADMIN", "AICTE_OFFICER", "AICTE_MANAGER"],
-  },
-  {
-    kind: "intake-utilisation",
-    title: "Intake utilisation",
+    kind: "consolidated-overview",
+    title: "Complete monitoring report",
     description:
-      "Declared enrolment against approved capacity per seat category.",
-    roles: ["INSTITUTION_ADMIN", "AICTE_OFFICER", "AICTE_MANAGER"],
-  },
-  {
-    kind: "submission-completeness",
-    title: "Submission completeness",
-    description: "Which programmes have a current activated snapshot.",
-    roles: ["INSTITUTION_ADMIN", "AICTE_OFFICER", "AICTE_MANAGER"],
-  },
-  {
-    kind: "resolution-times",
-    title: "Resolution times",
-    description: "How long cases take to resolve, by priority.",
+      "All six monitoring insights in one consolidated CSV, Excel or PDF report.",
     roles: ["INSTITUTION_ADMIN", "AICTE_OFFICER"],
     cases: true,
-  },
-  {
-    kind: "validation-findings",
-    title: "Validation findings",
-    description: "Counts of validation findings by rule and severity.",
-    roles: ["INSTITUTION_ADMIN", "AICTE_OFFICER"],
-    cases: true,
-  },
-  {
-    kind: "open-cases",
-    title: "Open cases",
-    description: "Cases that are still open, with priority and age.",
-    roles: ["INSTITUTION_ADMIN", "AICTE_OFFICER"],
-    cases: true,
-  },
-  {
-    kind: "verification-activity",
-    title: "Verification activity",
-    description: "Summary of recorded verification requests and outcomes.",
-    roles: ["AICTE_OFFICER"],
   },
 ];
 
@@ -134,10 +97,21 @@ function ReportCard({
   const [validation, setValidation] = useState("");
   const [status, setStatus] = useState("");
   const [preview, setPreview] = useState<ParsedReport | null>(null);
+  const [pdfPreviewUrl, setPdfPreviewUrl] = useState<string | null>(null);
   const id = `report-${report.kind}`;
+  useEffect(
+    () => () => {
+      if (pdfPreviewUrl) URL.revokeObjectURL(pdfPreviewUrl);
+    },
+    [pdfPreviewUrl],
+  );
   const set = (key: keyof Filters, value: string) => {
     setFilters((f) => ({ ...f, [key]: value }));
     setPreview(null);
+    if (pdfPreviewUrl) {
+      URL.revokeObjectURL(pdfPreviewUrl);
+      setPdfPreviewUrl(null);
+    }
     setStatus("");
     setValidation("");
   };
@@ -193,6 +167,21 @@ function ReportCard({
     retry: false,
     onMutate: () => setStatus(""),
     onSuccess: (parsed) => setPreview(parsed),
+  });
+  const previewPdf = useMutation({
+    mutationFn: async () => {
+      const query = buildQuery("pdf");
+      const { blob } = await download(`/reports/${report.kind}?${query}`, undefined, {
+        accept: FORMATS.pdf.accept,
+        fallbackName: `${report.kind}.pdf`,
+      });
+      return blob;
+    },
+    retry: false,
+    onSuccess: (blob) => {
+      if (pdfPreviewUrl) URL.revokeObjectURL(pdfPreviewUrl);
+      setPdfPreviewUrl(URL.createObjectURL(blob));
+    },
   });
 
   function validateFilters(): boolean {
@@ -320,6 +309,17 @@ function ReportCard({
           {previewReport.isPending ? "Loading preview…" : "Preview report"}
         </button>
         <button
+          className="button secondary"
+          type="button"
+          disabled={previewPdf.isPending}
+          aria-describedby={`${id}-status`}
+          onClick={() => {
+            if (validateFilters()) previewPdf.mutate();
+          }}
+        >
+          {previewPdf.isPending ? "Loading PDF…" : "Preview PDF"}
+        </button>
+        <button
           className="button"
           type="submit"
           disabled={exportReport.isPending}
@@ -346,6 +346,11 @@ function ReportCard({
           Preview could not be loaded. {errorMessage(previewReport.error)}
         </p>
       )}
+      {previewPdf.isError && (
+        <p className="form-error" role="alert">
+          PDF preview could not be loaded. {errorMessage(previewPdf.error)}
+        </p>
+      )}
       <p id={`${id}-status`} aria-live="polite" className="data-note">
         {exportReport.isPending
           ? "Preparing report…"
@@ -353,6 +358,16 @@ function ReportCard({
             ? "Loading preview…"
             : status}
       </p>
+      {pdfPreviewUrl && (
+        <div className="report-pdf-preview">
+          <h3>PDF preview</h3>
+          <iframe
+            title={`${report.title} PDF preview`}
+            src={pdfPreviewUrl}
+            loading="lazy"
+          />
+        </div>
+      )}
       {preview && (
         <div className="report-preview">
           <p className="data-note">

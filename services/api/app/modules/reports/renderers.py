@@ -59,6 +59,10 @@ def pretty_column(name: str) -> str:
     return name.replace("_", " ")
 
 
+def sections_of(report: ReportDocument) -> list[ReportTable]:
+    return report.sections or [report.totals, report.data]
+
+
 # ------------------------------------------------------------------------ CSV
 
 
@@ -74,7 +78,7 @@ def to_csv(report: ReportDocument) -> bytes:
 
     for key, value in report.metadata():
         row([f"# {key}", value])
-    for section in (report.totals, report.data):
+    for section in sections_of(report):
         row([])
         row([f"# {section.title}"])
         row([pretty_column(c) for c in section.columns])
@@ -115,7 +119,7 @@ def to_xlsx(report: ReportDocument) -> bytes:
     meta.column_dimensions["B"].width = 100
 
     number = 1
-    for section in (report.totals, report.data):
+    for section in sections_of(report):
         write_row(data, number, [section.title], head=True)
         write_row(
             data, number + 1, [pretty_column(c) for c in section.columns], head=True
@@ -126,7 +130,7 @@ def to_xlsx(report: ReportDocument) -> bytes:
             number += 1
         number += 1
     for index in range(
-        1, max(len(report.data.columns), len(report.totals.columns)) + 1
+        1, max((len(section.columns) for section in sections_of(report)), default=1) + 1
     ):
         data.column_dimensions[get_column_letter(index)].width = 24
     output = io.BytesIO()
@@ -212,8 +216,8 @@ def to_pdf(report: ReportDocument) -> bytes:
             0, 4, latin1(f"{key}: {value}"), new_x=XPos.LMARGIN, new_y=YPos.NEXT
         )
     pdf.ln(3)
-    pdf_table(pdf, report.totals)
-    pdf_table(pdf, report.data)
+    for section in sections_of(report):
+        pdf_table(pdf, section)
     return bytes(pdf.output())
 
 

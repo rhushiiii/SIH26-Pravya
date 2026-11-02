@@ -7575,7 +7575,8 @@ export interface operations {
           | "resolution-times"
           | "validation-findings"
           | "open-cases"
-          | "verification-activity";
+          | "verification-activity"
+          | "consolidated-overview";
       };
       cookie?: never;
     };

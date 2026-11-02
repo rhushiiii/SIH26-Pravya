@@ -17,6 +17,7 @@ ReportKind = Literal[
     "validation-findings",
     "open-cases",
     "verification-activity",
+    "consolidated-overview",
 ]
 ReportFormat = Literal["csv", "xlsx", "pdf"]
 Cell = str | int | float | bool | None
@@ -44,6 +45,7 @@ class ReportDocument(BaseModel):
     provenance: str = PROVENANCE
     totals: ReportTable
     data: ReportTable
+    sections: list[ReportTable] | None = None
 
     def metadata(self) -> list[tuple[str, str]]:
         """Leading metadata rows, in display order (identical in every format)."""

@@ -53,6 +53,7 @@ KIND_ROLES: dict[str, set[Role]] = {
     "validation-findings": CASE_LEVEL_ROLES,
     "open-cases": CASE_LEVEL_ROLES,
     "verification-activity": {Role.AICTE_OFFICER},
+    "consolidated-overview": CASE_LEVEL_ROLES,
 }
 YEAR_FILTERS = (
     "academic_year",
@@ -70,6 +71,15 @@ FILTER_NAMES: dict[str, tuple[str, ...]] = {
     "resolution-times": CASE_FILTERS,
     "open-cases": CASE_FILTERS,
     "verification-activity": ("institution_id", "region"),
+    "consolidated-overview": (
+        "academic_year",
+        "institution_id",
+        "region",
+        "programme_code",
+        "category_scheme",
+        "priority",
+        "severity",
+    ),
 }
 NO_YEAR = "Not applicable: this report is not scoped by academic year"
 UNATTRIBUTED = "(not attributable to an institution)"
@@ -714,6 +724,52 @@ def verification_activity(
     )
 
 
+def consolidated_overview(
+    session: Session,
+    user: User,
+    params: ReportParams,
+    settings: Settings,
+    now: datetime,
+) -> ReportDocument:
+    reports = [
+        enrolment_summary(session, user, params, now),
+        intake_utilisation(session, user, params, settings, now),
+        submission_completeness(session, user, params, settings, now),
+        resolution_times(session, user, params, settings, now),
+        validation_findings(session, user, params, now),
+        open_cases(session, user, params, settings, now),
+    ]
+    sections = [
+        section
+        for report in reports
+        for section in (report.totals, report.data)
+    ]
+    return document(
+        "consolidated-overview",
+        "PRAVYA consolidated monitoring overview",
+        user,
+        now,
+        params,
+        year_context(params.filters),
+        "Includes enrolment, intake, submission, resolution, validation and "
+        "open-case insights. Case-level sections are available only to "
+        "authorised officers and institution administrators.",
+        table(
+            "Included insights",
+            ["insight", "sections"],
+            [
+                ["Enrolment summary", 2],
+                ["Intake utilisation", 2],
+                ["Submission completeness", 2],
+                ["Resolution times", 2],
+                ["Validation findings", 2],
+                ["Open cases", 2],
+            ],
+        ),
+        table("Consolidated sections", ["insight", "included"], [["ALL", True]]),
+    ).model_copy(update={"sections": sections})
+
+
 # ------------------------------------------------------------------ entry points
 
 
@@ -741,7 +797,13 @@ def build_report(
             report = validation_findings(session, user, params, now)
         case "verification-activity":
             report = verification_activity(session, user, params, now)
-    if len(report.data.rows) > settings.report_max_rows:
+        case "consolidated-overview":
+            report = consolidated_overview(session, user, params, settings, now)
+    report_row_count = sum(
+        len(section.rows)
+        for section in (report.sections or [report.totals, report.data])
+    )
+    if report_row_count > settings.report_max_rows:
         raise APIError(
             422,
             "REPORT_TOO_LARGE",
