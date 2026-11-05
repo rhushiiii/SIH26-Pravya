@@ -51,9 +51,14 @@ export function AppShell({ children }: { children: ReactNode }) {
   const role = session.user.role;
   const institution = role === "INSTITUTION_ADMIN";
   const officer = role === "AICTE_OFFICER";
+  const manager = role === "AICTE_MANAGER";
   const verifier = role === "AUTHORIZED_VERIFIER";
   const destination = homeFor(role);
-  const label = verifier ? "Verify credential" : "Dashboard";
+  const label = verifier
+    ? "Verify credential"
+    : manager
+      ? "Executive dashboard"
+      : "Dashboard";
   const verifyLinks = [
     {
       href: "/verify",
@@ -95,7 +100,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           : [
               {
                 href: "/aicte/institutions",
-                label: "Institutions",
+                label: manager ? "Institution monitoring" : "Institutions",
                 icon: "building" as const,
               },
             ]),
@@ -103,7 +108,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           ? [
               {
                 href: "/analytics",
-                label: "Analytics",
+                label: manager ? "Admission analytics" : "Analytics",
                 icon: "grid" as const,
               },
             ]
@@ -113,6 +118,25 @@ export function AppShell({ children }: { children: ReactNode }) {
           label: "Reports",
           icon: "history" as const,
         },
+        ...(manager
+          ? [
+              {
+                href: "/aicte/case-oversight",
+                label: "Case oversight",
+                icon: "flag" as const,
+              },
+              {
+                href: "/manager/priority",
+                label: "Integrity & priority",
+                icon: "flag" as const,
+              },
+              {
+                href: "/manager/governance",
+                label: "Audit & governance",
+                icon: "history" as const,
+              },
+            ]
+          : []),
         ...(officer
           ? [
               {
@@ -205,6 +229,8 @@ export function AppShell({ children }: { children: ReactNode }) {
             "/verify",
             "/verify/log",
             "/cases",
+            "/aicte/case-oversight",
+            "/manager/priority",
             "/institution/integrity",
           ].includes(link.href) && link.href !== destination,
       ),
@@ -212,9 +238,13 @@ export function AppShell({ children }: { children: ReactNode }) {
     {
       heading: "Governance",
       links: links.filter((link) =>
-        ["/reports", "/audit", "/reconciliations", "/notifications"].includes(
-          link.href,
-        ),
+        [
+          "/reports",
+          "/audit",
+          "/manager/governance",
+          "/reconciliations",
+          "/notifications",
+        ].includes(link.href),
       ),
     },
   ].filter((group) => group.links.length > 0);

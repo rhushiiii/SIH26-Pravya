@@ -246,6 +246,13 @@ def test_openapi_is_limited_to_implemented_milestones(client: TestClient) -> Non
         "/api/v1/audit/events",
         "/api/v1/audit/events/{event_id}",
         "/api/v1/audit/actions",
+        "/api/v1/oversight/cases",
+        "/api/v1/oversight/cases/{case_id}",
+        "/api/v1/oversight/case-distribution",
+        "/api/v1/oversight/institutions",
+        "/api/v1/oversight/findings",
+        "/api/v1/oversight/institutions/{institution_id}/signals",
+        "/api/v1/oversight/governance",
     }
     assert "401" in paths["/api/v1/institutions"]["get"]["responses"]
 

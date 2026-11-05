@@ -1,10 +1,10 @@
 import { Protected } from "@/components/app-shell";
-import { InstitutionDirectory } from "@/features/institutions/directory";
+import { InstitutionWorkspace } from "@/features/manager/workspace";
 
 export default function DirectoryPage() {
   return (
     <Protected roles={["AICTE_OFFICER", "AICTE_MANAGER"]}>
-      <InstitutionDirectory />
+      <InstitutionWorkspace />
     </Protected>
   );
 }

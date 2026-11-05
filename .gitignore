@@ -17,3 +17,4 @@ next-env.d.ts
 
 .worktrees
 .playwright-mcp
+.npm-cache

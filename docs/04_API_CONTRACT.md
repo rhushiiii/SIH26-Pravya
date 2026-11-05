@@ -277,3 +277,37 @@ Use the existing redacted error envelope without CSV values/filenames:
 
 All candidate writes roll back on failure. Validation findings, eligibility,
 revalidation, feedback export and activation remain unimplemented in Milestone 2.
+
+## Manager oversight additions
+
+The following current-runtime endpoints supplement the historical milestone
+contract above. Each requires an authenticated `AICTE_MANAGER`; they do not
+grant access to Officer case actions or the Officer audit explorer.
+
+- `GET /api/v1/oversight/cases` returns paginated case metadata, a linked-record
+  count and the overdue flag. It omits summaries and student identifiers.
+- `GET /api/v1/oversight/cases/{case_id}` adds an ordered timeline of event
+  types and timestamps. Free-text comments and record identifiers are omitted.
+- `GET /api/v1/oversight/case-distribution` counts non-terminal cases by
+  priority and severity.
+- `GET /api/v1/oversight/findings` groups findings by rule and severity in
+  the latest completed validation of each current snapshot in the required
+  academic year. It reports validation coverage and omits record details.
+- `GET /api/v1/oversight/institutions` combines existing completeness,
+  enrolment, category-level intake and integrity calculations per programme
+  for a required academic year. Priority bands are institution-wide, even
+  when a programme filter is applied.
+- `GET /api/v1/oversight/institutions/{institution_id}/signals` returns
+  deterministic rule identifiers, severity, calculation and dismissal state;
+  record-level evidence references are omitted.
+- `GET /api/v1/oversight/governance` returns counts by audit action and month,
+  without actor identifiers or audit payloads.
+
+The Manager dashboard uses the existing analytics endpoints. Institution
+coverage is the number with at least one current activated snapshot divided by
+institutions in scope; active records exclude withdrawn and transferred rows
+and pending candidates. Case metrics are all-year unless a case filter says
+otherwise. A missing snapshot is unknown, not zero. Category-specific intake
+comparisons remain separate; partial pagination is labelled in the UI. All
+data and rule values are synthetic demo material, and signals are not fraud
+determinations or official verification.
