@@ -52,7 +52,7 @@ export function homeFor(role: Role): string {
     : role === "AUTHORIZED_VERIFIER"
       ? "/verify"
       : role === "AICTE_MANAGER"
-        ? "/analytics"
+        ? "/manager"
         : "/aicte";
 }
 

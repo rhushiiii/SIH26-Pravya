@@ -621,6 +621,125 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/api/v1/oversight/case-distribution": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Case Distribution */
+    get: operations["case_distribution_api_v1_oversight_case_distribution_get"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/oversight/cases": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Cases */
+    get: operations["cases_api_v1_oversight_cases_get"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/oversight/cases/{case_id}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Case Detail */
+    get: operations["case_detail_api_v1_oversight_cases__case_id__get"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/oversight/findings": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Finding Summary */
+    get: operations["finding_summary_api_v1_oversight_findings_get"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/oversight/governance": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Governance */
+    get: operations["governance_api_v1_oversight_governance_get"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/oversight/institutions": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Institution Monitoring */
+    get: operations["institution_monitoring_api_v1_oversight_institutions_get"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/api/v1/oversight/institutions/{institution_id}/signals": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Institution Signals */
+    get: operations["institution_signals_api_v1_oversight_institutions__institution_id__signals_get"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/api/v1/ready": {
     parameters: {
       query?: never;
@@ -1121,6 +1240,13 @@ export interface components {
        */
       validation_run_id: string;
     };
+    /** ActivityCount */
+    ActivityCount: {
+      /** Action */
+      action: string;
+      /** Count */
+      count: number;
+    };
     /** Addition */
     Addition: {
       category: components["schemas"]["AdmissionCategory"];
@@ -1487,6 +1613,53 @@ export interface components {
       /** Summary */
       summary: string;
     };
+    /** CaseDetail */
+    CaseDetail: {
+      /** Category */
+      category: string;
+      /** Due At */
+      due_at: string | null;
+      /** Evidence Count */
+      evidence_count: number;
+      /**
+       * Id
+       * Format: uuid
+       */
+      id: string;
+      /**
+       * Institution Id
+       * Format: uuid
+       */
+      institution_id: string;
+      /** Institution Name */
+      institution_name: string;
+      /**
+       * Opened At
+       * Format: date-time
+       */
+      opened_at: string;
+      /** Overdue */
+      overdue: boolean;
+      /** Priority */
+      priority: string;
+      /** Resolved At */
+      resolved_at: string | null;
+      /** Severity */
+      severity: string;
+      /** Status */
+      status: string;
+      /** Timeline */
+      timeline: components["schemas"]["TimelineEntry"][];
+    };
+    /** CaseDistribution */
+    CaseDistribution: {
+      /** Count */
+      count: number;
+      /** Priority */
+      priority: string;
+      /** Severity */
+      severity: string;
+    };
     /** CaseEventResponse */
     CaseEventResponse: {
       /**
@@ -1637,6 +1810,42 @@ export interface components {
         | "CLOSED";
       /** Summary */
       summary: string;
+    };
+    /** CaseSummary */
+    CaseSummary: {
+      /** Category */
+      category: string;
+      /** Due At */
+      due_at: string | null;
+      /** Evidence Count */
+      evidence_count: number;
+      /**
+       * Id
+       * Format: uuid
+       */
+      id: string;
+      /**
+       * Institution Id
+       * Format: uuid
+       */
+      institution_id: string;
+      /** Institution Name */
+      institution_name: string;
+      /**
+       * Opened At
+       * Format: date-time
+       */
+      opened_at: string;
+      /** Overdue */
+      overdue: boolean;
+      /** Priority */
+      priority: string;
+      /** Resolved At */
+      resolved_at: string | null;
+      /** Severity */
+      severity: string;
+      /** Status */
+      status: string;
     };
     /** CaseTotals */
     CaseTotals: {
@@ -1985,6 +2194,15 @@ export interface components {
       /** Previous */
       previous: string | null;
     };
+    /** FindingCount */
+    FindingCount: {
+      /** Count */
+      count: number;
+      /** Rule Code */
+      rule_code: string;
+      /** Severity */
+      severity: string;
+    };
     /** FindingResponse */
     FindingResponse: {
       /**
@@ -2037,6 +2255,15 @@ export interface components {
        */
       severity: "ERROR" | "WARNING" | "INFO";
     };
+    /** FindingSummary */
+    FindingSummary: {
+      /** Findings */
+      findings: components["schemas"]["FindingCount"][];
+      /** Snapshots */
+      snapshots: number;
+      /** Validated Snapshots */
+      validated_snapshots: number;
+    };
     /** FormatValidation */
     FormatValidation: {
       /**
@@ -2048,6 +2275,18 @@ export interface components {
       rule: string;
       /** Valid */
       valid: boolean;
+    };
+    /** GovernanceSummary */
+    GovernanceSummary: {
+      /** Activities */
+      activities: components["schemas"]["ActivityCount"][];
+      /** Monthly */
+      monthly: components["schemas"]["MonthlyActivity"][];
+      /**
+       * Notice
+       * @default SIMULATED / DEMO DATA. Counts include audit events; no event payloads are exposed.
+       */
+      notice: string;
     };
     /** HistoryEntry */
     HistoryEntry: {
@@ -2133,6 +2372,66 @@ export interface components {
       region: string;
       /** Resolved */
       resolved: number;
+    };
+    /** InstitutionMonitoringRow */
+    InstitutionMonitoringRow: {
+      /** Academic Year */
+      academic_year: string | null;
+      /** Active Signals */
+      active_signals: number;
+      /** Current Active Records */
+      current_active_records: number | null;
+      /** Current Declared Records */
+      current_declared_records: number | null;
+      /** Declared Total */
+      declared_total: number | null;
+      /** Drilldown */
+      drilldown: {
+        [key: string]: string;
+      };
+      /** Exceeded Categories */
+      exceeded_categories: number;
+      /** Freshness Days */
+      freshness_days: number | null;
+      /**
+       * Freshness Status
+       * @enum {string}
+       */
+      freshness_status: "FRESH" | "STALE" | "NO_CURRENT_SNAPSHOT";
+      /** Has Current Snapshot */
+      has_current_snapshot: boolean;
+      /** Has Declaration */
+      has_declaration: boolean;
+      /** Institution Code */
+      institution_code: string;
+      /**
+       * Institution Id
+       * Format: uuid
+       */
+      institution_id: string;
+      /** Institution Name */
+      institution_name: string;
+      /** Known Capacity Categories */
+      known_capacity_categories: number;
+      /** Last Activated At */
+      last_activated_at: string | null;
+      /** Pending Candidate Count */
+      pending_candidate_count: number;
+      /** Priority Band */
+      priority_band: string;
+      /** Programme Code */
+      programme_code: string;
+      /**
+       * Programme Id
+       * Format: uuid
+       */
+      programme_id: string;
+      /** Region */
+      region: string;
+      /** Shortfall */
+      shortfall: number | null;
+      /** Stale */
+      stale: boolean | null;
     };
     /** InstitutionResponse */
     InstitutionResponse: {
@@ -2243,6 +2542,18 @@ export interface components {
        * @constant
        */
       status: "ok";
+    };
+    /** MonthlyActivity */
+    MonthlyActivity: {
+      /** Action */
+      action: string;
+      /** Count */
+      count: number;
+      /**
+       * Month
+       * Format: date-time
+       */
+      month: string;
     };
     /** NotificationResponse */
     NotificationResponse: {
@@ -2361,6 +2672,12 @@ export interface components {
       data: components["schemas"]["CaseResponse"][];
       pagination: components["schemas"]["Pagination"];
     };
+    /** Page[CaseSummary] */
+    Page_CaseSummary_: {
+      /** Data */
+      data: components["schemas"]["CaseSummary"][];
+      pagination: components["schemas"]["Pagination"];
+    };
     /** Page[CredentialSummary] */
     Page_CredentialSummary_: {
       /** Data */
@@ -2383,6 +2700,12 @@ export interface components {
     Page_FindingResponse_: {
       /** Data */
       data: components["schemas"]["FindingResponse"][];
+      pagination: components["schemas"]["Pagination"];
+    };
+    /** Page[InstitutionMonitoringRow] */
+    Page_InstitutionMonitoringRow_: {
+      /** Data */
+      data: components["schemas"]["InstitutionMonitoringRow"][];
       pagination: components["schemas"]["Pagination"];
     };
     /** Page[InstitutionResponse] */
@@ -3305,6 +3628,19 @@ export interface components {
       /** Title */
       title: string;
     };
+    /** SignalSummary */
+    SignalSummary: {
+      /** Calculation */
+      calculation: string;
+      /** Dismissed */
+      dismissed: boolean;
+      /** Rule Id */
+      rule_id: string;
+      /** Severity */
+      severity: string;
+      /** Title */
+      title: string;
+    };
     /** SignalsResponse */
     SignalsResponse: {
       /** Academic Year */
@@ -3439,6 +3775,16 @@ export interface components {
         | "CLOSED";
       /** Total */
       total: number;
+    };
+    /** TimelineEntry */
+    TimelineEntry: {
+      /** Action */
+      action: string;
+      /**
+       * Created At
+       * Format: date-time
+       */
+      created_at: string;
     };
     /** TokenResponse */
     TokenResponse: {
@@ -6730,6 +7076,480 @@ export interface operations {
       };
       /** @description Internal Server Error */
       500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+      /** @description Service Unavailable */
+      503: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+    };
+  };
+  case_distribution_api_v1_oversight_case_distribution_get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["CaseDistribution"][];
+        };
+      };
+      /** @description Unauthorized */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+      /** @description Forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+      /** @description Not Found */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+      /** @description Unprocessable Content */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+      /** @description Service Unavailable */
+      503: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+    };
+  };
+  cases_api_v1_oversight_cases_get: {
+    parameters: {
+      query?: {
+        page?: number;
+        page_size?: number;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["Page_CaseSummary_"];
+        };
+      };
+      /** @description Unauthorized */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+      /** @description Forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+      /** @description Not Found */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+      /** @description Unprocessable Content */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+      /** @description Service Unavailable */
+      503: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+    };
+  };
+  case_detail_api_v1_oversight_cases__case_id__get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        case_id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["CaseDetail"];
+        };
+      };
+      /** @description Unauthorized */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+      /** @description Forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+      /** @description Not Found */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+      /** @description Unprocessable Content */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+      /** @description Service Unavailable */
+      503: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+    };
+  };
+  finding_summary_api_v1_oversight_findings_get: {
+    parameters: {
+      query: {
+        academic_year: string;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["FindingSummary"];
+        };
+      };
+      /** @description Unauthorized */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+      /** @description Forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+      /** @description Not Found */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+      /** @description Unprocessable Content */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+      /** @description Service Unavailable */
+      503: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+    };
+  };
+  governance_api_v1_oversight_governance_get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["GovernanceSummary"];
+        };
+      };
+      /** @description Unauthorized */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+      /** @description Forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+      /** @description Not Found */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+      /** @description Unprocessable Content */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+      /** @description Service Unavailable */
+      503: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+    };
+  };
+  institution_monitoring_api_v1_oversight_institutions_get: {
+    parameters: {
+      query: {
+        academic_year: string;
+        institution_id?: string | null;
+        region?: string | null;
+        programme_code?: string | null;
+        band?: ("LOW" | "MEDIUM" | "HIGH") | null;
+        page?: number;
+        page_size?: number;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["Page_InstitutionMonitoringRow_"];
+        };
+      };
+      /** @description Unauthorized */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+      /** @description Forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+      /** @description Not Found */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+      /** @description Unprocessable Content */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+      /** @description Service Unavailable */
+      503: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+    };
+  };
+  institution_signals_api_v1_oversight_institutions__institution_id__signals_get: {
+    parameters: {
+      query?: {
+        academic_year?: string | null;
+      };
+      header?: never;
+      path: {
+        institution_id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["SignalSummary"][];
+        };
+      };
+      /** @description Unauthorized */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+      /** @description Forbidden */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+      /** @description Not Found */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ErrorResponse"];
+        };
+      };
+      /** @description Unprocessable Content */
+      422: {
         headers: {
           [name: string]: unknown;
         };

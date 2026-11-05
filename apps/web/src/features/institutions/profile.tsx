@@ -20,6 +20,7 @@ import { IntegritySignalsPanel } from "@/features/integrity/panel";
 import { IntakeRulesPanel } from "@/features/intake/rules-panel";
 import { SimulatorPanel } from "@/features/intake/simulator-panel";
 import type { Programmes } from "@/features/submissions/data";
+import { ManagerSignals } from "@/features/manager/workspace";
 
 type Institution = components["schemas"]["InstitutionResponse"];
 
@@ -189,6 +190,9 @@ export function InstitutionProfile({
                   </strong>
                 </section>
               </div>
+              {session?.user.role === "AICTE_MANAGER" && (
+                <ManagerSignals institutionId={institutionId} />
+              )}
             </div>
             <div
               className="institution-tab-panel"

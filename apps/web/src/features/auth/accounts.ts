@@ -33,7 +33,7 @@ export const demoAccounts: DemoAccount[] = [
   {
     alias: "demo_manager",
     label: "Admissions Manager",
-    role: "Institution metadata access",
+    role: "Regulatory oversight access",
     monogram: "MG",
   },
   {

@@ -111,6 +111,13 @@ ROLE_TABLE: dict[Route, tuple[str, str]] = {
     ("GET", "/api/v1/analytics/submission-completeness"): (ALLOW, DENY),
     ("GET", "/api/v1/analytics/intake-utilisation"): (ALLOW, DENY),
     ("GET", "/api/v1/analytics/case-performance"): (ALLOW, DENY),
+    ("GET", "/api/v1/oversight/cases"): (ALLOW, DENY),
+    ("GET", "/api/v1/oversight/cases/{case_id}"): (ALLOW, DENY),
+    ("GET", "/api/v1/oversight/case-distribution"): (ALLOW, DENY),
+    ("GET", "/api/v1/oversight/institutions"): (ALLOW, DENY),
+    ("GET", "/api/v1/oversight/institutions/{institution_id}/signals"): (ALLOW, DENY),
+    ("GET", "/api/v1/oversight/governance"): (ALLOW, DENY),
+    ("GET", "/api/v1/oversight/findings"): (ALLOW, DENY),
     # Managers may export aggregate kinds; the probe uses open-cases (manager 403).
     ("GET", "/api/v1/reports/{kind}"): (DENY, DENY),
     ("GET", "/api/v1/audit/events"): (DENY, DENY),
