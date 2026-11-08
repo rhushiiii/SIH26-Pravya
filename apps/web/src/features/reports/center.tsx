@@ -21,7 +21,6 @@ import {
 } from "@/features/institutions/options";
 import { DashboardTable } from "@/features/dashboards/components";
 import { Loading } from "@/components/ui/feedback";
-import { Loading } from "@/components/ui/feedback";
 import { parseReportCsv, type ParsedReport } from "./parse-csv";
 
 type Format = "csv" | "xlsx" | "pdf";
@@ -487,7 +486,6 @@ export function ReportCenter() {
           reconcile with the analytics views for the same filters. Every report
           is labelled <strong>{DEMO_TAG}</strong>: all records are synthetic.
           {fixedInstitution && " Reports are limited to your institution."}
-          {roleKey === "AICTE_MANAGER" &&
           {roleKey === "AICTE_MANAGER" &&
             " As manager, you see coverage and trend reports only; case-by-case detail (resolution times, validation findings) is an officer function."}
         </p>
