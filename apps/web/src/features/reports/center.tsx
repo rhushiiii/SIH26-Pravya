@@ -20,6 +20,7 @@ import {
   type InstitutionPage,
 } from "@/features/institutions/options";
 import { DashboardTable } from "@/features/dashboards/components";
+import { Loading } from "@/components/ui/feedback";
 import { parseReportCsv, type ParsedReport } from "./parse-csv";
 
 type Format = "csv" | "xlsx" | "pdf";
@@ -58,6 +59,27 @@ const REPORTS: {
   roles: Role[];
   cases?: boolean;
 }[] = [
+  {
+    kind: "enrolment-summary",
+    title: "Enrolment summary",
+    description:
+      "Aggregate active-record and category counts by academic year and programme.",
+    roles: ["INSTITUTION_ADMIN", "AICTE_OFFICER", "AICTE_MANAGER"],
+  },
+  {
+    kind: "intake-utilisation",
+    title: "Intake utilisation",
+    description:
+      "Compare declared enrolment with configured intake capacity by programme.",
+    roles: ["INSTITUTION_ADMIN", "AICTE_OFFICER", "AICTE_MANAGER"],
+  },
+  {
+    kind: "submission-completeness",
+    title: "Submission completeness",
+    description:
+      "Review aggregate submission coverage and current snapshot completeness.",
+    roles: ["INSTITUTION_ADMIN", "AICTE_OFFICER", "AICTE_MANAGER"],
+  },
   {
     kind: "consolidated-overview",
     title: "Complete monitoring report",
@@ -420,10 +442,16 @@ function ReportCard({
 export function ReportCenter() {
   const { session } = useSession();
   const search = useSearchParams();
+  const [selectedReport, setSelectedReport] =
+    useState<Kind>("enrolment-summary");
   const role = session?.user.role;
-  const fixedInstitution = role === "INSTITUTION_ADMIN";
+  // Normalize the serialized role before applying report capabilities. This
+  // prevents a harmless casing/whitespace difference at a deployment boundary
+  // from making the page silently render no report cards.
+  const roleKey = typeof role === "string" ? role.trim().toUpperCase() : "";
+  const fixedInstitution = roleKey === "INSTITUTION_ADMIN";
   const institutions = useInstitutionOptions(!!session && !fixedInstitution);
-  if (!role) return null;
+  if (!roleKey) return null;
   const list = institutions.data?.data ?? [];
   const regions = regionsOf(list);
   const year = search.get("academic_year") ?? "";
@@ -441,7 +469,12 @@ export function ReportCenter() {
       ? (search.get("region") ?? "")
       : "",
   };
-  const available = REPORTS.filter((r) => r.roles.includes(role));
+  const available = REPORTS.filter((r) => r.roles.includes(roleKey as Role));
+  // Keep the selected value aligned with the reports allowed for the current
+  // role. The default state is intentionally generic, so without this fallback
+  // an officer/manager could see the page shell and dropdown but no report card.
+  const selected =
+    available.find((report) => report.kind === selectedReport) ?? available[0];
 
   return (
     <div className="dashboard-page report-page">
@@ -453,7 +486,7 @@ export function ReportCenter() {
           reconcile with the analytics views for the same filters. Every report
           is labelled <strong>{DEMO_TAG}</strong>: all records are synthetic.
           {fixedInstitution && " Reports are limited to your institution."}
-          {role === "AICTE_MANAGER" &&
+          {roleKey === "AICTE_MANAGER" &&
             " As manager, you see coverage and trend reports only; case-by-case detail (resolution times, validation findings) is an officer function."}
         </p>
       </header>
@@ -462,17 +495,84 @@ export function ReportCenter() {
           Institution and region options could not be loaded.
         </p>
       )}
-      {available.map((report) => (
-        <ReportCard
-          // Remount once options load so query-param prefill can apply.
-          key={`${report.kind}-${list.length}`}
-          report={report}
-          institutions={list}
-          regions={regions}
-          fixedInstitution={fixedInstitution}
-          initial={initial}
-        />
-      ))}
+      {!fixedInstitution && institutions.isPending ? (
+        <Loading label="Loading report filters…" />
+      ) : available.length > 0 ? (
+        <>
+          <label>
+            Report type
+            <select
+              value={selectedReport}
+              onChange={(event) =>
+                setSelectedReport(event.target.value as Kind)
+              }
+            >
+              {available.map((report) => (
+                <option key={report.kind} value={report.kind}>
+                  {report.title}
+                </option>
+              ))}
+            </select>
+          </label>
+          {selected && (
+            <ReportCard
+              key={selected.kind}
+              report={selected}
+              institutions={list}
+              regions={regions}
+              fixedInstitution={fixedInstitution}
+              initial={initial}
+            />
+          )}
+        </>
+      ) : (
+        <section className="empty-state" aria-live="polite">
+          <h2>Reports unavailable for this role</h2>
+          <p>
+            No report definitions are available for the current workspace.
+            Refresh after confirming the session role with the API.
+          </p>
+        </section>
+      )}
+      {!fixedInstitution && institutions.isPending ? (
+        <Loading label="Loading report filters…" />
+      ) : available.length > 0 ? (
+        <>
+          <label>
+            Report type
+            <select
+              value={selectedReport}
+              onChange={(event) =>
+                setSelectedReport(event.target.value as Kind)
+              }
+            >
+              {available.map((report) => (
+                <option key={report.kind} value={report.kind}>
+                  {report.title}
+                </option>
+              ))}
+            </select>
+          </label>
+          {selected && (
+            <ReportCard
+              key={selected.kind}
+              report={selected}
+              institutions={list}
+              regions={regions}
+              fixedInstitution={fixedInstitution}
+              initial={initial}
+            />
+          )}
+        </>
+      ) : (
+        <section className="empty-state" aria-live="polite">
+          <h2>Reports unavailable for this role</h2>
+          <p>
+            No report definitions are available for the current workspace.
+            Refresh after confirming the session role with the API.
+          </p>
+        </section>
+      )}
     </div>
   );
 }
