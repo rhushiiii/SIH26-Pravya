@@ -60,6 +60,27 @@ const REPORTS: {
   cases?: boolean;
 }[] = [
   {
+    kind: "enrolment-summary",
+    title: "Enrolment summary",
+    description:
+      "Aggregate active-record and category counts by academic year and programme.",
+    roles: ["INSTITUTION_ADMIN", "AICTE_OFFICER", "AICTE_MANAGER"],
+  },
+  {
+    kind: "intake-utilisation",
+    title: "Intake utilisation",
+    description:
+      "Compare declared enrolment with configured intake capacity by programme.",
+    roles: ["INSTITUTION_ADMIN", "AICTE_OFFICER", "AICTE_MANAGER"],
+  },
+  {
+    kind: "submission-completeness",
+    title: "Submission completeness",
+    description:
+      "Review aggregate submission coverage and current snapshot completeness.",
+    roles: ["INSTITUTION_ADMIN", "AICTE_OFFICER", "AICTE_MANAGER"],
+  },
+  {
     kind: "consolidated-overview",
     title: "Complete monitoring report",
     description:
@@ -449,7 +470,11 @@ export function ReportCenter() {
       : "",
   };
   const available = REPORTS.filter((r) => r.roles.includes(roleKey as Role));
-  const selected = available.find((report) => report.kind === selectedReport);
+  // Keep the selected value aligned with the reports allowed for the current
+  // role. The default state is intentionally generic, so without this fallback
+  // an officer/manager could see the page shell and dropdown but no report card.
+  const selected =
+    available.find((report) => report.kind === selectedReport) ?? available[0];
 
   return (
     <div className="dashboard-page report-page">
